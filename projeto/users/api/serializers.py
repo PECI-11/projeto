@@ -10,7 +10,7 @@ class TouristSignupSerializer(serializers.ModelSerializer):
     password = serializers.CharField(style={"input_type":"password"}, write_only = True)
     class Meta:
         model=User
-        fields=['username', 'email', 'password']
+        fields=['username', 'email', 'phone', 'password']
         extra_kwargs={
             'password':{'write_only':True}
         }
@@ -31,7 +31,7 @@ class SellerSignupSerializer(serializers.ModelSerializer):
     password = serializers.CharField(style={"input_type":"password"}, write_only = True)
     class Meta:
         model=User
-        fields=['username', 'email', 'password']
+        fields=['company', 'address', 'nif', 'cae', 'phone' 'email', 'region', 'website', 'password']
         extra_kwargs={
             'password':{'write_only':True}
         }
