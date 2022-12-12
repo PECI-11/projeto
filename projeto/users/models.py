@@ -9,26 +9,23 @@ from rest_framework.authtoken.models import Token
 # Create your models here.
 
 class User(AbstractUser):
-    is_admin = models.BooleanField('is admin', default=False)
-    is_tourist = models.BooleanField('is tourist', default=False)
-    is_seller = models.BooleanField('is seller', default=False)
+    is_tourist = models.BooleanField(default=False)
+    is_seller = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.username
+        return self.username 
 
-@receiver(post_save, sender = settings.AUTH_USER_MODEL)
-def auth_token(sender, instance=None, created=False, **k):
-    if created:
-        Token.objects.create(user=instance)
-
-
+# @receiver(post_save, sender = settings.AUTH_USER_MODEL)
+# def auth_token(sender, instance=None, created=False, **kwargs):
+#     if created:
+#         Token.objects.create(user=instance)
     
 class Tourist(models.Model):
-    user=models.OneToOneField(User, related_name="tourist", on_delete=models.CASCADE)
-    phone = models.CharField(max_length=9)
+    tourist=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, blank=True, null=True)
+    phone = models.CharField(max_length=9, default='nothing')
 
     def __str__(self):
-        return self.user.username
+        return self.tourist.username
 
 class Seller(models.Model):
     Region = [
@@ -39,15 +36,15 @@ class Seller(models.Model):
         ("Madeira","Madeira"),
     ]
 
-    company = models.OneToOneField(User, related_name="seller", on_delete=models.CASCADE)
-    address = models.TextField(default="")
-    nif = models.CharField(max_length=9,default="")
-    cae = models.CharField(max_length=5,default="")
-    phone = models.CharField(max_length=9,default="")
-    email = models.CharField(max_length=100,default="")
+    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    address = models.TextField(default='nothing')
+    nif = models.CharField(max_length=9,default="nothing")
+    cae = models.CharField(max_length=5,default="nothing")
+    phone = models.CharField(max_length=9,default="nothing")
+    email = models.CharField(max_length=100,default="nothing")
     region = models.CharField(max_length = 13, choices = Region, default="Regiao Norte")
-    website = models.CharField(max_length=100,default="")
+    website = models.CharField(max_length=100,default="nothing")
 
 
     def __str__(self):
-        return self.company
+        return self.seller.username
