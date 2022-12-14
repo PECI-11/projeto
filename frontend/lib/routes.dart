@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/pages/login_turista.dart';
+import 'package:frontend/auth/login_turista.dart';
 
 class FrontendRouter {
   static const homePage = '/';
