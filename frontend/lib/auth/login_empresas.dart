@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class LoginTurista extends StatelessWidget {
-  const LoginTurista({Key? key}) : super(key: key);
-  static const String _title = 'Login - Turista';
+class LoginEmpresas extends StatelessWidget {
+  const LoginEmpresas({Key? key}) : super(key: key);
+  static const String _title = 'Login - Empresas';
 
   //This widget is the root of your application.
   @override
@@ -11,20 +11,20 @@ class LoginTurista extends StatelessWidget {
       title: _title,
       home: Scaffold(
         appBar: AppBar(title: const Text(_title)),
-        body: const LoginTuristaState(),
+        body: const LoginEmpresasState(),
       ),
     );
   }
 }
 
-class LoginTuristaState extends StatefulWidget {
-  const LoginTuristaState({Key? key}) : super(key: key);
+class LoginEmpresasState extends StatefulWidget {
+  const LoginEmpresasState({Key? key}) : super(key: key);
 
   @override
-  State<LoginTuristaState> createState() => _LoginTuristaState();
+  State<LoginEmpresasState> createState() => _LoginEmpresasState();
 }
 
-class _LoginTuristaState extends State<LoginTuristaState> {
+class _LoginEmpresasState extends State<LoginEmpresasState> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -90,7 +90,6 @@ class _LoginTuristaState extends State<LoginTuristaState> {
                 )
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 const Text('Does not have account?'),
                 TextButton(
@@ -103,6 +102,7 @@ class _LoginTuristaState extends State<LoginTuristaState> {
                   },
                 )
               ],
+              mainAxisAlignment: MainAxisAlignment.center,
             ),
           ],
         ));
