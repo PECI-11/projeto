@@ -40,7 +40,7 @@ class _SideNavigationState extends State<SideNavigation> {
         children: [
           SideNavigationBar(
               selectedIndex: selectedIndex,
-              items: const[
+              items: [
                 SideNavigationBarItem(
                     icon: Icons.person,
                     label: 'Perfil'

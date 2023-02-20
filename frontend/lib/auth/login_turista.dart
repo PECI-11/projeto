@@ -90,7 +90,6 @@ class _LoginTuristaState extends State<LoginTuristaState> {
                 )
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 const Text('Does not have account?'),
                 TextButton(
@@ -103,6 +102,7 @@ class _LoginTuristaState extends State<LoginTuristaState> {
                   },
                 )
               ],
+              mainAxisAlignment: MainAxisAlignment.center,
             ),
           ],
         ));

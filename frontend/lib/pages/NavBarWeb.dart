@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 class NavigationBarWeb extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: 100.0,
       child: Row(
         mainAxisSize: MainAxisSize.max,
@@ -29,6 +29,6 @@ class NavigationBarWeb extends StatelessWidget {
 
         ],
       ),
-    );
+    )
   }
 }
