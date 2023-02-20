@@ -21,7 +21,16 @@ class SectionTitle extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            
+            margin: EdgeInsets.only(right: kDefaultPadding),
+            padding: EdgeInsets.only(bottom: 72),
+            width: 8,
+            height: 100,
+            color: Colors.black,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: color,
+              ),
+            ),
           ),
         ],
       ),
