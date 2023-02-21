@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'assets/files/empresas.json';
 
 class RegistoEmpresaPage extends StatefulWidget {
   @override
