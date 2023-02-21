@@ -28,7 +28,6 @@ class _AreaEmpresaState extends State<AreaEmpresa> {
       ),
 
 
-
       // DRAWER SIDE BAR MENU ----------------------------------------------------
       drawer: Drawer(
         child: Column(

@@ -3,10 +3,10 @@ import 'constants.dart';
 
 class SectionTitle extends StatelessWidget {
   const SectionTitle ({
-    Key key,
-    this.title,
-    this.subtitle,
-    this.color,
+    required Key key,
+    required this.title,
+    required this.subtitle,
+    required this.color,
   }) : super(key: key);
 
   final String title, subtitle;
@@ -32,6 +32,31 @@ class SectionTitle extends StatelessWidget {
               ),
             ),
           ),
+
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                subtitle,
+                style: TextStyle(
+                    fontWeight: FontWeight.w200,
+                    color: kTextColor
+                ),
+              ),
+
+              Text(
+                title,
+                style: Theme.of(context)
+                  .textTheme
+                  .headline2?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black
+                ),
+              ),
+            ],
+          ),
+
         ],
       ),
     );
