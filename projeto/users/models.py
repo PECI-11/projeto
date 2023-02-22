@@ -5,6 +5,7 @@ from django.conf import settings
 from django.dispatch import receiver
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
+from django.core.validators import MinLengthValidator, EmailValidator
 
 # Create your models here.
 
@@ -38,12 +39,12 @@ class Seller(models.Model):
 
     seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     address = models.TextField(default='nothing')
-    nif = models.CharField(max_length=9,default="nothing")
-    cae = models.CharField(max_length=5,default="nothing")
-    phone = models.CharField(max_length=9,default="nothing")
-    email = models.CharField(max_length=100,default="nothing")
+    nif = models.CharField(max_length=9,validators=[MinLengthValidator(9)],default="nothing")
+    cae = models.CharField(max_length=5,validators=[MinLengthValidator(5)],default="nothing")
+    phone = models.CharField(max_length=9,validators=[MinLengthValidator(9)],default="nothing") 
+    email = models.CharField(max_length=100,validators=[EmailValidator()],default="nothing") #devia estar a funcionar
     region = models.CharField(max_length = 13, choices = Region, default="Regiao Norte")
-    website = models.CharField(max_length=100,default="nothing")
+    website = models.URLField(max_length=100,default="nothing")
 
 
     def __str__(self):
