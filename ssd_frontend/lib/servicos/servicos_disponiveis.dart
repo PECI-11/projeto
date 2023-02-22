@@ -11,14 +11,15 @@ class ServicosDisponiveis extends StatelessWidget {
       child: Column(
         children: [
           SectionTitle(
-            color: Color(0xFFFF0000),
             title: "Serviços Disponíveis",
-            subtitle: "", key: null,
+            subtitle: "",
+            color: Color(0xFFFF0000),
+            key: ValueKey(1)  // VERIFICAR MELHOR ISTO 
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: List.generate(
-                servicos.length, (index) => CartaoServicos(index: index, key: null,)),
+                servicos.length, (index) => CartaoServicos(index: index, key: ValueKey(1),)), // VERIFICAR MELHOR ISTO
           )
         ],
       ),

@@ -26,7 +26,7 @@
 
 		{
 			"nome": "Restaurante Açúcar e Canela",
-			"morada": "Avenida 25 de Abril,
+			"morada": "Avenida 25 de Abril",
 			"nif": "1456987523",
 			"cae": "54329",
 			"contacto": "924567158",
@@ -34,7 +34,7 @@
 			"regioes": "Centro",
 			"cidades": "Aveiro",
 			"website": "restauranteacucarcanela.pt"
-		},
+		}
 	
 	]
 }

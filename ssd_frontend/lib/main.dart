@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ssd_frontend/login/login_turista.dart';
+import 'package:ssd_frontend/registo_empresas/registo.dart';
+import 'package:ssd_frontend/servicos/servicos.dart';
 
 void main() {
   //runApp(const MyApp());
@@ -65,7 +68,113 @@ class _MainPageState extends State<MainPage> {
                   alignment: Alignment.topCenter,
                   child: Wrap(
                     runSpacing: (height+200)*0.02,
+                    children: [
 
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(
+                            width: width*0.80,
+                            height: height*0.1,
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) => ServicosDisponiveis())
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shadowColor: Colors.black,
+                                  elevation: 15,
+                                  backgroundColor: const Color.fromARGB(230, 152, 0, 1),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13.0)),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: const [
+                                    Text('Serviços Disponíveis',
+                                      style: TextStyle(
+                                          fontSize: Checkbox.width,
+                                          color: Colors.white
+                                      ),
+                                    ),
+                                  ],
+                                )
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      /*
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(
+                            width: width*0.80,
+                            height: height*0.1,
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) => RegistoEmpresaPage())
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shadowColor: Colors.black,
+                                  elevation: 15,
+                                  backgroundColor: const Color.fromARGB(230, 152, 0, 1),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13.0)),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: const [
+                                    Text('Registar Empresa',
+                                      style: TextStyle(
+                                          fontSize: Checkbox.width,
+                                          color: Colors.white
+                                      ),
+                                    ),
+                                  ],
+                                )
+                            ),
+                          ),
+                        ],
+                      ),*/
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(
+                            width: width*0.80,
+                            height: height*0.1,
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) => const LoginTurista())
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shadowColor: Colors.black,
+                                  elevation: 15,
+                                  backgroundColor: const Color.fromARGB(230, 152, 0, 1),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13.0)),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: const [
+                                    Text('Login Turista',
+                                      style: TextStyle(
+                                          fontSize: Checkbox.width,
+                                          color: Colors.white
+                                      ),
+                                    ),
+                                  ],
+                                )
+                            ),
+                          ),
+                        ],
+                      ),
+
+
+                    ],
                   ),
                 ),
             ),

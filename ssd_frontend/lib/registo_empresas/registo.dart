@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'assets/files/empresas.json';
 
 class RegistoEmpresaPage extends StatefulWidget {
@@ -63,7 +63,8 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
+              children: [
+
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Nome da Empresa'),
                   validator: (value) {
@@ -74,6 +75,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                   },
                   onSaved: (value) => _empresa.nome = value,
                 ),
+
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Morada'),
                   validator: (value) {
@@ -84,6 +86,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                   },
                   onSaved: (value) => _empresa.morada = value,
                 ),
+
                 TextFormField(
                   decoration: InputDecoration(labelText: 'NIF'),
                   validator: (value) {
@@ -94,6 +97,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                   },
                   onSaved: (value) => _empresa.nif = value,
                 ),
+
                 TextFormField(
                   decoration: InputDecoration(labelText: 'CAE'),
                   validator: (value) {
@@ -104,6 +108,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                   },
                   onSaved: (value) => _empresa.cae = value,
                 ),
+
                 TextFormField(
                   decoration:
                       InputDecoration(labelText: 'Contacto telefónico'),
@@ -115,6 +120,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                   },
                   onSaved: (value) => _empresa.contacto = value,
                 ),
+
                 TextFormField(
                   decoration: InputDecoration(labelText: 'E-mail'),
                   validator: (value) {
@@ -126,7 +132,9 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                   onSaved: (value) => _empresa.email = value,
                 ),
                 SizedBox(height: 16),
+
                 Text('Região da Atividade'),
+
                 Column(
                   children: _regioes
                       .map(
@@ -169,11 +177,14 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                       )
                       .toList(),
                 ),
+
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Website da empresa'),
                   onSaved: (value) => _empresa.website = value,
                 ),
+
                 SizedBox(height: 16),
+
                 RaisedButton(
                   onPressed: _submitForm,
                   child: Text('Registar Empresa'),
@@ -196,15 +207,15 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
 }
 
 class Empresa {
-  String nome;
-  String morada;
-  String nif;
-  String cae;
-  String contacto;
-  String email;
+  late String nome;
+  late String morada;
+  late String nif;
+  late String cae;
+  late String contacto;
+  late String email;
   List<String> regioes = [];
   Map<String, String> cidades = {};
-  String website;
+  late String website;
 
   @override
   String toString() {
@@ -212,5 +223,5 @@ class Empresa {
         'contacto: $contacto, email: $email, regioes: $regioes, '
         'cidades: $cidades, website: $website)';
   }
-}
+}*/
 
