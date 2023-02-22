@@ -18,6 +18,7 @@ class _AreaEmpresaState extends State<AreaEmpresa> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.cyanAccent,
+        foregroundColor: const Color.fromRGBO(224, 231, 88, 1.0),
         title: const Text(
           "Área da Empresa",
           style: TextStyle(
