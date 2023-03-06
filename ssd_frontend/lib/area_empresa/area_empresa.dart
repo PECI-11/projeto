@@ -1,145 +1,105 @@
 import 'package:flutter/material.dart';
-import 'package:ssd_frontend/login/logout.dart';
+import 'perfil_empresa.dart';
 
 class AreaEmpresa extends StatefulWidget {
   const AreaEmpresa({Key? key}) : super(key: key);
 
   @override
-  _AreaEmpresaState createState() => _AreaEmpresaState();
+  State<AreaEmpresa> createState() => _AreaEmpresaState();
 }
 
+const _navBarItems = [
+  BottomNavigationBarItem(
+    icon: Icon(Icons.home_outlined),
+    activeIcon: Icon(Icons.home_rounded),
+    label: 'Perfil',
+  ),
+  BottomNavigationBarItem(
+    icon: Icon(Icons.bookmark_border_outlined),
+    activeIcon: Icon(Icons.bookmark_rounded),
+    label: 'Anúncios das Ofertas',
+  ),
+  BottomNavigationBarItem(
+    icon: Icon(Icons.chat_rounded),
+    activeIcon: Icon(Icons.chat_rounded),
+    label: 'Notícias',
+  ),
+  BottomNavigationBarItem(
+    icon: Icon(Icons.dataset_rounded),
+    activeIcon: Icon(Icons.dataset_rounded),
+    label: 'Serviços Disponíveis',
+  ),
+  BottomNavigationBarItem(
+    icon: Icon(Icons.logout_rounded),
+    activeIcon: Icon(Icons.logout_rounded),
+    label: 'Terminar sessão',
+  ),
+];
+
+List<Widget> _widgetOptions = <Widget> [
+  Container(
+    child: ProfilePageCompany(),
+  ),
+
+  Container(
+
+  ),
+];
+
 class _AreaEmpresaState extends State<AreaEmpresa> {
+  int _selectedIndex = 0;
 
   @override
-  Widget build (BuildContext context) {
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final bool isSmallScreen = width < 600;
+    final bool isLargeScreen = width > 800;
 
     return Scaffold(
-
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.cyanAccent,
-        foregroundColor: const Color.fromRGBO(224, 231, 88, 1.0),
-        title: const Text(
-          "Área da Empresa",
-          style: TextStyle(
-              fontSize: 20,
-              color: Colors.black38,
-          ),
-        ),
+        title: const Text('Área da Empresa'),
       ),
 
-
-      // DRAWER SIDE BAR MENU ----------------------------------------------------
-      drawer: Drawer(
-        child: Column(
-          children: [
-            Expanded(
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  children: [
-
-                    // PERFIL
-                    ListTile(
-                      leading: const Icon(
-                        Icons.account_box
-                      ),
-                      title: const Text(
-                        "Perfil",
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                      onTap: () {
-
-                      },
-                    ),
-
-                    // ANUNCIOS DAS OFERTAS
-                    ListTile(
-                      leading: const Icon(
-                        Icons.auto_awesome_mosaic
-                      ),
-                      title: const Text(
-                        "Anúncios das Ofertas",
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                      onTap: () {
-
-                      },
-                    ),
-
-                    // NOTICIAS
-                    ListTile(
-                      leading: const Icon(
-                        Icons.article
-                      ),
-                      title: const Text(
-                        "Notícias",
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                      onTap: () {
-
-                      },
-                    ),
-
-                    // SERVIÇOS DISPONIVEIS
-                    ListTile(
-                      leading: const Icon(
-                        Icons.book
-                      ),
-                      title: const Text(
-                        "Serviços Disponíveis",
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                      onTap: () {
-
-                      },
-                    ),
-
-                  ],
-                ),
+      bottomNavigationBar: isSmallScreen
+          ? BottomNavigationBar(
+          items: _navBarItems,
+          currentIndex: _selectedIndex,
+          onTap: (int index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          })
+          : null,
+      body: Row(
+        children: <Widget>[
+          if (!isSmallScreen)
+            NavigationRail(
+              selectedIndex: _selectedIndex,
+              onDestinationSelected: (int index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+              extended: isLargeScreen,
+              destinations: _navBarItems
+                  .map((item) => NavigationRailDestination(
+                  icon: item.icon,
+                  selectedIcon: item.activeIcon,
+                  label: Text(
+                    item.label!,
+                  )
+                )
+              ).toList(),
             ),
-
-            Container(
-              child: Align(
-                alignment: FractionalOffset.bottomCenter,
-                child: Container(
-                  child: Column(
-                    children: [
-                      Divider(),
-                      ListTile(
-                        leading: const Icon(
-                            Icons.logout
-                        ),
-                        title: const Text("Terminar sessão",
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => Logout())
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+          const VerticalDivider(thickness: 1, width: 1),
+          // This is the main content.
+          Expanded(
+            child: Center(
+              child: Text("${_navBarItems[_selectedIndex].label} Page"),
             ),
-
-          ],
-        ),
+          )
+        ],
       ),
-
-
     );
   }
-
 }
