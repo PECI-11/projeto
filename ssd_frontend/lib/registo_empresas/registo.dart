@@ -1,5 +1,4 @@
-/*import 'package:flutter/material.dart';
-import 'assets/files/empresas.json';
+import 'package:flutter/material.dart';
 
 class RegistoEmpresaPage extends StatefulWidget {
   @override
@@ -67,69 +66,69 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
 
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Nome da Empresa'),
-                  validator: (value) {
-                    if (value.isEmpty) {
+                  validator: (String? value) {
+                    if (value!.isEmpty) {
                       return 'Por favor, insira o nome da empresa.';
                     }
                     return null;
                   },
-                  onSaved: (value) => _empresa.nome = value,
+                  onSaved: (String? value) {},
                 ),
 
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Morada'),
-                  validator: (value) {
-                    if (value.isEmpty) {
+                  validator: (String? value) {
+                    if (value!.isEmpty) {
                       return 'Por favor, insira a morada da empresa.';
                     }
                     return null;
                   },
-                  onSaved: (value) => _empresa.morada = value,
+                  onSaved: (value) {},
                 ),
 
                 TextFormField(
                   decoration: InputDecoration(labelText: 'NIF'),
-                  validator: (value) {
-                    if (value.isEmpty) {
+                  validator: (String? value) {
+                    if (value!.isEmpty) {
                       return 'Por favor, insira o NIF da empresa.';
                     }
                     return null;
                   },
-                  onSaved: (value) => _empresa.nif = value,
+                  onSaved: (value) {},
                 ),
 
                 TextFormField(
                   decoration: InputDecoration(labelText: 'CAE'),
-                  validator: (value) {
-                    if (value.isEmpty) {
+                  validator: (String? value) {
+                    if (value!.isEmpty) {
                       return 'Por favor, insira o CAE da empresa.';
                     }
                     return null;
                   },
-                  onSaved: (value) => _empresa.cae = value,
+                  onSaved: (value) {},
                 ),
 
                 TextFormField(
                   decoration:
                       InputDecoration(labelText: 'Contacto telefónico'),
-                  validator: (value) {
-                    if (value.isEmpty) {
+                  validator: (String? value) {
+                    if (value!.isEmpty) {
                       return 'Por favor, insira o contacto telefónico da empresa.';
                     }
                     return null;
                   },
-                  onSaved: (value) => _empresa.contacto = value,
+                  onSaved: (value) {},
                 ),
 
                 TextFormField(
                   decoration: InputDecoration(labelText: 'E-mail'),
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value!.isEmpty) {
                       return 'Por favor, insira o e-mail da empresa.';
                     }
                     return null;
                   },
-                  onSaved: (value) => _empresa.email = value,
+                  onSaved: (value) {},
                 ),
                 SizedBox(height: 16),
 
@@ -144,7 +143,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                               value: _empresa.regioes.contains(regiao),
                               onChanged: (value) {
                                 setState(() {
-                                  if (value) {
+                                  if (value!) {
                                     _empresa.regioes.add(regiao);
                                   } else {
                                     _empresa.regioes.remove(regiao);
@@ -157,13 +156,13 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                               Expanded(
                                 child: DropdownButton<String>(
                                   value: _empresa.cidades[regiao],
-                                  onChanged: (value) {
+                                  onChanged: (String? value) {
                                     setState(() {
-                                      _empresa.cidades[regiao] = value;
+                                      _empresa.cidades[regiao] = value!;
                                     });
                                   },
                                   items: _cidadesPorRegiao[regiao]
-                                      .map(
+                                      ?.map(
                                         (cidade) => DropdownMenuItem<String>(
                                           value: cidade,
                                           child: Text(cidade),
@@ -180,12 +179,12 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
 
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Website da empresa'),
-                  onSaved: (value) => _empresa.website = value,
+                  onSaved: (value) {},
                 ),
 
                 SizedBox(height: 16),
 
-                RaisedButton(
+                ElevatedButton(
                   onPressed: _submitForm,
                   child: Text('Registar Empresa'),
                 )
@@ -198,8 +197,8 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
   }
 
   void _submitForm() {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
       print(_empresa);
       // Salvar os dados no banco de dados ou em outro local de armazenamento.
     }
@@ -223,5 +222,5 @@ class Empresa {
         'contacto: $contacto, email: $email, regioes: $regioes, '
         'cidades: $cidades, website: $website)';
   }
-}*/
+}
 

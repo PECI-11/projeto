@@ -105,7 +105,7 @@ class _MainPageState extends State<MainPage> {
                         ],
                       ),
 
-                      /*
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -138,7 +138,7 @@ class _MainPageState extends State<MainPage> {
                             ),
                           ),
                         ],
-                      ),*/
+                      ),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
