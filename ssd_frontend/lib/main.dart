@@ -183,7 +183,7 @@ class _MainPageState extends State<MainPage> {
                             child: ElevatedButton(
                                 onPressed: () {
                                   Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) => const AreaEmpresa())
+                                      builder: (context) => AreaEmpresa())
                                   );
                                 },
                                 style: ElevatedButton.styleFrom(

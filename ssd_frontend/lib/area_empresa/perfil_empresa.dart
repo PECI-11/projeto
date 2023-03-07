@@ -22,6 +22,8 @@ class ProfilePageCompany extends StatelessWidget {
 
   Widget build (BuildContext context) {
     return Scaffold(
+      body: Text("Hello World!"),
+      /*
       body: Column(
         children: [
           const Expanded(
@@ -172,7 +174,7 @@ class _TopPortion extends StatelessWidget {
             ),
           ),
         ),
-      ],
+      ],*/
     );
   }
 
