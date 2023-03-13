@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:ssd_frontend/servicos/servicos.dart';
+import 'package:ssd_frontend/servicos/servicos_disponiveis.dart';
 
-class FeaturesEmpresa extends StatefulWidget {
-  const FeaturesEmpresa({Key? key}) : super(key: key);
+class FeatureNoticias extends StatefulWidget {
+  const FeatureNoticias({Key? key}) : super(key: key);
 
   @override
-  _FeaturesEmpresaState createState() => _FeaturesEmpresaState();
+  _FeatureNoticiasState createState() => _FeatureNoticiasState();
 }
 
-class _FeaturesEmpresaState extends State<FeaturesEmpresa> {
+class _FeatureNoticiasState extends State<FeatureNoticias> {
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +20,8 @@ class _FeaturesEmpresaState extends State<FeaturesEmpresa> {
         title: const Text(
           "Área da Empresa",
           style: TextStyle(
-            fontSize: 20,
-            color: Colors.white
+              fontSize: 20,
+              color: Colors.white
           ),
         ),
       ),
@@ -34,13 +34,13 @@ class _FeaturesEmpresaState extends State<FeaturesEmpresa> {
                 padding: EdgeInsets.zero,
                 children: [
                   const DrawerHeader(
-                      child: Image(image: AssetImage("assets/icons/icon_app.png"),
-                      ),
+                    child: Image(image: AssetImage("assets/icons/icon_app.png"),
+                    ),
                   ),
 
                   ListTile(
                     leading: const Icon(
-                      Icons.dataset_rounded
+                        Icons.dataset_rounded
                     ),
                     title: const Text(
                       "Serviços Disponíveis",
@@ -55,39 +55,16 @@ class _FeaturesEmpresaState extends State<FeaturesEmpresa> {
                     },
                   ),
 
+
+
                 ],
               ),
             ),
 
-            Container(
-              child: Align(
-                alignment: FractionalOffset.bottomCenter,
-                child: Container(
-                  child: Column(
-                    children: [
-                      Divider(),
-                      ListTile(
-                        leading: const Icon(
-                          Icons.logout,
-                        ),
-                        title: const Text(
-                          "Terminar Sessão",
-                          style: TextStyle(
-                            fontSize: 18
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       ),
     );
   }
 
-
 }
-

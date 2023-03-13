@@ -65,6 +65,7 @@ flutter:
     - assets/servicos_icons/
     - assets/files/
     - assets/json_profiles/
+    - assets/icons/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
