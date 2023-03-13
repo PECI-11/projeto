@@ -5,23 +5,35 @@ import '../modelos/exemplos_servicos.dart';
 
 class ServicosDisponiveis extends StatelessWidget {
   @override
-  Widget build (BuildContext context) {
-    return Container(
-      constraints: BoxConstraints(maxWidth: 1110),
-      child: Column(
-        children: [
-          SectionTitle(
-            title: "Serviços Disponíveis",
-            subtitle: "",
-            color: Color(0xFFFF0000),
-            key: ValueKey(1)  // VERIFICAR MELHOR ISTO 
+  Widget build(BuildContext context) {
+    return Material(
+      child: Scaffold(
+        body: Container(
+          constraints: BoxConstraints(maxWidth: 1110),
+          child: Column(
+            children: [
+              SectionTitle(
+                title: "Serviços Disponíveis",
+                subtitle: "",
+                color: Color(0xFFFF0000),
+                key: ValueKey(1),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: servicos.length,
+                  itemBuilder: (context, index) {
+                    return Expanded(
+                      child: CartaoServicos(
+                        index: index,
+                        key: ValueKey(index),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: List.generate(
-                servicos.length, (index) => CartaoServicos(index: index, key: ValueKey(1),)), // VERIFICAR MELHOR ISTO
-          )
-        ],
+        ),
       ),
     );
   }
