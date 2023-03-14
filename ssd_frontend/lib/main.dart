@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:ssd_frontend/area_empresa/area.dart';
 import 'package:ssd_frontend/features_empresa/empresa.dart';
 import 'package:ssd_frontend/login/login_turista.dart';
 import 'package:ssd_frontend/registo_empresas/registo.dart';
@@ -184,7 +183,7 @@ class _MainPageState extends State<MainPage> {
                             child: ElevatedButton(
                                 onPressed: () {
                                   Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) => FeaturesEmpresa())
+                                      builder: (context) => const FeaturesEmpresa())
                                   );
                                 },
                                 style: ElevatedButton.styleFrom(
