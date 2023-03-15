@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class RegistoEmpresaPage extends StatefulWidget {
+  const RegistoEmpresaPage({Key? key}) : super(key: key);
+
   @override
   _RegistoEmpresaPageState createState() => _RegistoEmpresaPageState();
 }
@@ -183,14 +185,14 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                         if (_empresa.distritos.contains(distrito))
                           Expanded(
                             child: Checkbox(
-                              value: _empresa.concelhos.containsKey(key)[distrito],
+                              value: _empresa.concelhos.containsKey(_formKey)[distrito],
                               onChanged: (value) {
                                 setState(() {
                                   if(value!) {
-                                    _empresa.concelhos[distrito].add(_concelhosPorDistrito);
+                                    _empresa.concelhos[distrito]?.add(_concelhosPorDistrito);
                                   }
                                   else{
-                                    _empresa.concelhos[distrito].remove(_concelhosPorDistrito);
+                                    _empresa.concelhos[distrito]?.remove(_concelhosPorDistrito);
                                   }
                                 });
                               },
