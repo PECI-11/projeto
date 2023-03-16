@@ -24,7 +24,6 @@ urlpatterns = [
     re_path('', views.home, name='home'),
     re_path('admin/', admin.site.urls),
     re_path('api/', include('api.urls')),
-    re_path('admin/', admin.site.urls),
     #re_path('api-auth/', include('rest_framework.urls')),
     #re_path('rest-auth/', include('rest_auth.urls')),
     #re_path('rest-auth/registration/', include('rest_auth.registration.urls')),
