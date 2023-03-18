@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'api',
     'Contas',
     'djongo',
+    'db_handling',
+    'db_handling.management',
     # 'users',
     # 'rest_framework',
     # 'rest_framework.authtoken',
