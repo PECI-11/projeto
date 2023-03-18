@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',
     'Contas',
+    'djongo',
     # 'users',
     # 'rest_framework',
     # 'rest_framework.authtoken',
@@ -90,33 +91,24 @@ DATABASES = {
         'ENGINE': 'djongo',
         'NAME': 'mydatabase',
         'CLIENT': {
-            'host': 'mongodb://localhost:27017/',
-            'username': 'myuser',
-            'password': 'mypassword',
-            'authSource': 'myauthdatabase',
-            'authMechanism': 'SCRAM-SHA-256'
+            'host': 'localhost',
         },
         'OPTIONS': {
             'ssl': False
         }
     },
-
-
- 'regions_db': {
+    'regions_db': {
         'ENGINE': 'djongo',
         'NAME': 'regions',
         'CLIENT': {
-            'host': 'mongodb://localhost:27017/',
-            'username': 'myuser',
-            'password': 'mypassword',
-            'authSource': 'myauthdatabase',
-            'authMechanism': 'SCRAM-SHA-256'
+            'host': 'localhost',
         },
         'OPTIONS': {
             'ssl': False
         }
     }
 }
+
 
 
 # Password validation
