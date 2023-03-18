@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+
+
 class RegistoEmpresaPage extends StatefulWidget {
   const RegistoEmpresaPage({Key? key}) : super(key: key);
 
@@ -16,65 +18,65 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
 
   final Map<String, List<String>> _concelhosPorDistrito = {
     'Aveiro': [ "Águeda", "Albergaria-a-Velha", "Anadia", "Arouca", "Aveiro", "Castelo de Paiva", "Espinho", "Estarreja", "Ílhavo", "Mealhada", "Murtosa",
-                "Oliveira de Azeméis", "Oliveira do Bairro", "Ovar", "Santa Maria da Feira", "São João da Madeira", "Sever do Vouga", "Vagos", "Vale de Cambra"],
+      "Oliveira de Azeméis", "Oliveira do Bairro", "Ovar", "Santa Maria da Feira", "São João da Madeira", "Sever do Vouga", "Vagos", "Vale de Cambra"],
 
     'Beja': [   "Aljustrel", "Almodôvar", "Alvito", "Barrancos", "Beja", "Castro Verde", "Cuba", "Ferreira do Alentejo", "Mértola", "Moura", "Odemira",
-                "Ourique", "Serpa", "Vidigueira"],
+      "Ourique", "Serpa", "Vidigueira"],
 
     'Braga': [  "Amares", "Barcelos", "Braga", "Cabeceiras de Basto", "Celorico de Basto", "Esposende", "Fafe", "Guimarães", "Póvoa de Lanhoso", "Terras de Bouro",
-                "Vieira do Minho", "Vila Nova de Famalicão", "Vila Verde", "Vizela"],
+      "Vieira do Minho", "Vila Nova de Famalicão", "Vila Verde", "Vizela"],
 
     'Bragança':[  "Alfândega da Fé", "Bragança", "Carrazeda de Ansiães", "Freixo de Espada à Cinta", "Macedo de Cavaleiros", "Miranda do Douro", "Mirandela", "Mogadouro",
-                  "Torre de Moncorvo", "Vila Flor", "Vimioso", "Vinhais"],
+      "Torre de Moncorvo", "Vila Flor", "Vimioso", "Vinhais"],
 
     'Castelo Branco': [ "Belmonte", "Castelo Branco", "Covilhã", "Fundão", "Idanha-a-Nova","Oleiros", "Penamacor", "Proença-a-Nova", "Sertã", "Vila de Rei",
-                        "Vila Velha de Ródão"],
+      "Vila Velha de Ródão"],
 
     'Coimbra':[ "Arganil", "Cantanhede", "Coimbra", "Condeixa-a-Nova", "Figueira da Foz", "Góis", "Lousã", "Mealhada", "Mira", "Miranda do Corvo",
-                "Montemor-o-Velho", "Oliveira do Hospital", "Pampilhosa da Serra", "Penacova", "Penela", "Soure", "Tábua", "Vila Nova de Poiares"],
+      "Montemor-o-Velho", "Oliveira do Hospital", "Pampilhosa da Serra", "Penacova", "Penela", "Soure", "Tábua", "Vila Nova de Poiares"],
 
     'Évora': [  "Alandroal", "Arraiolos", "Borba", "Estremoz", "Évora", "Montemor-o-Novo", "Mora", "Mourão", "Portel", "Redondo", "Reguengos de Monsaraz",
-                "Vendas Novas", "Viana do Alentejo", "Vila Viçosa"],
+      "Vendas Novas", "Viana do Alentejo", "Vila Viçosa"],
 
     'Faro': [ "Albufeira", "Alcoutim", "Aljezur", "Castro Marim", "Faro", "Lagoa", "Lagos", "Loulé", "Monchique", "Olhão", "Portimão", "São Brás de Alportel",
-              "Silves", "Tavira", "Vila do Bispo", "Vila Real de Santo António"],
+      "Silves", "Tavira", "Vila do Bispo", "Vila Real de Santo António"],
 
     'Guarda': [ "Aguiar da Beira", "Almeida", "Celorico da Beira", "Figueira de Castelo Rodrigo", "Fornos de Algodres", "Gouveia", "Guarda", "Manteigas",
-                "Mêda", "Pinhel","Sabugal", "Seia", "Trancoso", "Vila Nova de Foz Côa"],
+      "Mêda", "Pinhel","Sabugal", "Seia", "Trancoso", "Vila Nova de Foz Côa"],
 
     'Leiria': [ "Alcobaça", "Alvaiázere", "Ansião", "Batalha", "Bombarral", "Caldas da Rainha", "Castanheira de Pera", "Figueiró dos Vinhos", "Leiria",
-                "Marinha Grande", "Nazaré", "Óbidos", "Pedrógão Grande", "Peniche", "Pombal", "Porto de Mós"],
+      "Marinha Grande", "Nazaré", "Óbidos", "Pedrógão Grande", "Peniche", "Pombal", "Porto de Mós"],
 
     'Lisboa': [ "Alenquer", "Amadora", "Arruda dos Vinhos", "Azambuja", "Cadaval", "Cascais", "Lisboa", "Loures", "Lourinhã", "Mafra", "Odivelas",
-                "Oeiras", "Sintra", "Sobral de Monte Agraço", "Torres Vedras", "Vila Franca de Xira"],
+      "Oeiras", "Sintra", "Sobral de Monte Agraço", "Torres Vedras", "Vila Franca de Xira"],
 
     'Portalegre': [ "Alter do Chão", "Arronches", "Avis", "Campo Maior", "Castelo de Vide", "Crato", "Elvas", "Fronteira", "Gavião", "Marvão", "Monforte",
-                    "Nisa", "Ponte de Sor", "Portalegre", "Sousel" ],
+      "Nisa", "Ponte de Sor", "Portalegre", "Sousel" ],
 
     'Porto': [  "Amarante", "Baião", "Felgueiras", "Gondomar", "Lousada", "Maia", "Marco de Canaveses", "Matosinhos", "Paços de Ferreira", "Paredes",
-                "Penafiel", "Porto", "Póvoa de Varzim", "Santo Tirso", "Valongo", "Vila do Conde", "Vila Nova de Gaia"],
+      "Penafiel", "Porto", "Póvoa de Varzim", "Santo Tirso", "Valongo", "Vila do Conde", "Vila Nova de Gaia"],
 
     'Santarém': [ "Abrantes", "Alcanena", "Almeirim", "Alpiarça", "Benavente", "Cartaxo", "Chamusca", "Constância", "Coruche", "Entroncamento", "Ferreira do Zêzere",
-                  "Golegã", "Mação", "Rio Maior", "Salvaterra de Magos", "Santarém", "Sardoal", "Tomar", "Torres Novas", "Vila Nova da Barquinha" ],
+      "Golegã", "Mação", "Rio Maior", "Salvaterra de Magos", "Santarém", "Sardoal", "Tomar", "Torres Novas", "Vila Nova da Barquinha" ],
 
     'Setúbal': [  "Alcácer do Sal", "Alcochete", "Almada", "Barreiro", "Grândola", "Moita", "Montijo", "Palmela", "Santiago do Cacém", "Seixal", "Sesimbra", "Setúbal", "Sines" ],
 
     'Viana do Castelo': [ "Arcos de Valdevez", "Caminha", "Melgaço", "Monção", "Paredes de Coura", "Ponte da Barca", "Ponte de Lima", "Valença", "Viana do Castelo",
-                          "Vila Nova de Cerveira" ],
+      "Vila Nova de Cerveira" ],
 
     'Vila Real': [  "Alijó", "Boticas", "Chaves", "Mesão Frio", "Mondim de Basto", "Montalegre", "Murça", "Peso da Régua", "Ribeira de Pena",
-                    "Sabrosa", "Santa Marta de Penaguião", "Valpaços", "Vila Pouca de Aguiar", "Vila Real"],
+      "Sabrosa", "Santa Marta de Penaguião", "Valpaços", "Vila Pouca de Aguiar", "Vila Real"],
 
     'Viseu': ["Armamar", "Carregal do Sal", "Castro Daire", "Cinfães", "Lamego", "Mangualde", "Moimenta da Beira", "Mortágua", "Nelas", "Oliveira de Frades",
-              "Penalva do Castelo", "Penedono", "Resende", "Santa Comba Dão", "São João da Pesqueira", "São Pedro do Sul", "Sátão", "Sernancelhe", "Tabuaço",
-              "Tarouca", "Tondela", "Vila Nova de Paiva", "Viseu", "Vouzela"],
+      "Penalva do Castelo", "Penedono", "Resende", "Santa Comba Dão", "São João da Pesqueira", "São Pedro do Sul", "Sátão", "Sernancelhe", "Tabuaço",
+      "Tarouca", "Tondela", "Vila Nova de Paiva", "Viseu", "Vouzela"],
 
     'Açores': [ "Angra do Heroísmo", "Calheta (São Jorge)", "Corvo", "Horta", "Lagoa (São Miguel)", "Lajes das Flores", "Lajes do Pico", "Madalena", "Nordeste",
-                "Ponta Delgada", "Povoação", "Praia da Vitória", "Ribeira Grande", "Santa Cruz da Graciosa", "Santa Cruz das Flores", "São Roque do Pico",
-                "Velas", "Vila do Corvo", "Vila Franca do Campo", "Vila do Porto" ],
+      "Ponta Delgada", "Povoação", "Praia da Vitória", "Ribeira Grande", "Santa Cruz da Graciosa", "Santa Cruz das Flores", "São Roque do Pico",
+      "Velas", "Vila do Corvo", "Vila Franca do Campo", "Vila do Porto" ],
 
     'Madeira': ["Calheta (Madeira)", "Câmara de Lobos", "Funchal", "Machico", "Ponta do Sol", "Porto Moniz", "Porto Santo", "Ribeira Brava", "Santa Cruz",
-                "Santana", "São Vicente" ]
+      "Santana", "São Vicente" ]
   };
 
   var _empresa = Empresa();
@@ -140,7 +142,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
 
                 TextFormField(
                   decoration:
-                      InputDecoration(labelText: 'Contacto telefónico'),
+                  InputDecoration(labelText: 'Contacto telefónico'),
                   validator: (String? value) {
                     if (value!.isEmpty) {
                       return 'Por favor, insira o contacto telefónico da empresa.';
@@ -184,31 +186,25 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                         Text(distrito),
                         if (_empresa.distritos.contains(distrito))
                           Expanded(
-                            child: Checkbox(
-                              value: _empresa.concelhos.containsKey(_formKey)[distrito],
-                              onChanged: (value) {
-                                setState(() {
-                                  if(value!) {
-                                    _empresa.concelhos[distrito]?.add(_concelhosPorDistrito);
+                              child: Checkbox(
+                                value: _empresa.concelhos.containsKey(_concelhosPorDistrito),
+                                onChanged: (value){
+                                  if (value!){
+                                    // _empresa.concelhos.add(_concelhosPorDistrito);
+                                  } else{
+                                    _empresa.concelhos.remove(_concelhosPorDistrito);
                                   }
-                                  else{
-                                    _empresa.concelhos[distrito]?.remove(_concelhosPorDistrito);
-                                  }
-                                });
-                              },
-                                  ?.map(
-                                    (cidade) => DropdownMenuItem<String>(
-                                  value: cidade,
-                                  child: Text(cidade),
-                                ),
+                                },
+
                               )
-                            ),
                           ),
+
                       ],
                     ),
                   )
                       .toList(),
                 ),
+
 
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Website da empresa'),
@@ -257,4 +253,3 @@ class Empresa {
   }
 
 }
-
