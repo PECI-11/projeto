@@ -19,7 +19,7 @@ class Destinos extends StatelessWidget {
   Widget build(BuildContext context) {
   return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Sistema de Gestão de Destinos',
+      title: 'Descobre+',
       initialRoute: '/',
       routes: {
         "/": (context) => MainPage(),
