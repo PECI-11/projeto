@@ -5,7 +5,7 @@ import 'dart:convert';
 // ...
 
 // Define a function to get the concelhos for a given district
-Future<List<dynamic>> getConcelhos(String districtId) async {
+Future<List<String>> getConcelhos(String districtId) async {
   final response = await http.get(
     Uri.parse('http://localhost:8000/regions/$districtId/concelhos/'),
   );
@@ -98,7 +98,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
   };
 
   var _empresa = Empresa();
-  List concelhos;
+  Future<List<String>> concelhos = getConcelhos("Aveiro");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -204,7 +204,8 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                         ),
                         Text(distrito),
                         if (_empresa.distritos.contains(distrito))
-                        concelhos = getConcelhos(distrito);
+
+                       // concelhos = getConcelhos(distrito);
                         //print(concelhos)
                           Expanded(
                               child: Checkbox(
