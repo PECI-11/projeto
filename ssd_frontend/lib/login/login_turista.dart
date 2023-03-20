@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class LoginTurista extends StatelessWidget {
   const LoginTurista({Key? key}) : super(key: key);
-  static const String _title = 'Login - Turista';
+  static const String _title = 'Login';
 
   //This widget is the root of your application.
   @override
@@ -38,7 +38,7 @@ class _LoginTuristaState extends State<LoginTuristaState> {
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(10),
                 child: const Text(
-                  'Login Turista',
+                  'Login',
                   style: TextStyle(
                       color: Colors.blue,
                       fontWeight: FontWeight.w500,
@@ -95,7 +95,7 @@ class _LoginTuristaState extends State<LoginTuristaState> {
                 const Text('Does not have account?'),
                 TextButton(
                   child: const Text(
-                    'Sign in',
+                    'Sign up',
                     style: TextStyle(fontSize: 20),
                   ),
                   onPressed: () {
