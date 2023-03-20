@@ -1,5 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
+// ...
+
+// Define a function to get the concelhos for a given district
+Future<List<dynamic>> getConcelhos(String districtId) async {
+  final response = await http.get(
+    Uri.parse('http://localhost:8000/regions/$districtId/concelhos/'),
+  );
+
+  if (response.statusCode == 200) {
+    // If the call to the server was successful, parse the JSON
+    return json.decode(response.body);
+  } else {
+    // If that call was not successful, throw an error.
+    throw Exception('Failed to load concelhos');
+  }
+}
 
 
 class RegistoEmpresaPage extends StatefulWidget {
@@ -80,7 +98,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
   };
 
   var _empresa = Empresa();
-
+  List concelhos;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -175,6 +193,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                           value: _empresa.distritos.contains(distrito),
                           onChanged: (value) {
                             setState(() {
+                               
                               if (value!) {
                                 _empresa.distritos.add(distrito);
                               } else {
@@ -185,6 +204,8 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                         ),
                         Text(distrito),
                         if (_empresa.distritos.contains(distrito))
+                        concelhos = getConcelhos(distrito);
+                        //print(concelhos)
                           Expanded(
                               child: Checkbox(
                                 value: _empresa.concelhos.containsKey(_concelhosPorDistrito),
@@ -204,6 +225,8 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                   )
                       .toList(),
                 ),
+
+                  
 
 
                 TextFormField(
