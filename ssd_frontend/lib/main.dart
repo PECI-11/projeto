@@ -6,7 +6,6 @@ import 'package:ssd_frontend/login/login_turista.dart';
 import 'package:ssd_frontend/registo_empresas/registo.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:image_card/image_card.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 
 void main() {
   //runApp(const MyApp());
@@ -64,8 +63,7 @@ class _MainPageState extends State<MainPage> {
   Widget build (BuildContext context) {
 
     final double width = MediaQuery.of(context).size.width;
-    final double height = MediaQuery.of(context).size.height;
-    final double height1 = height*0.5;
+    // final double height = MediaQuery.of(context).size.height;
 
     final List<String> images = [
       'assets/main_images/alojamento.jpeg',

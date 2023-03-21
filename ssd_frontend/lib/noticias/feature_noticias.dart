@@ -21,7 +21,7 @@ class _FeatureNoticiasState extends State<FeatureNoticias> {
         foregroundColor: Colors.white,
         shadowColor: Colors.transparent,
         title: const Text(
-          "Área da Empresa",
+          "Alertas / Notícias",
           style: TextStyle(
               fontSize: 20,
               color: Colors.white
