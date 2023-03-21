@@ -5,19 +5,19 @@ import 'dart:convert';
 // ...
 
 // Define a function to get the concelhos for a given district
-//Future<List<String>> getConcelhos(String districtId) async {
- // final response = await http.get(
-//    Uri.parse('http://localhost:8000/regions/$districtId/concelhos/'),
-//  );
+Future<List<String>> getConcelhos(String districtId) async {
+ final response = await http.get(
+    Uri.parse('http://localhost:8000/regions/$districtId/concelhos/'),
+  );
 
-//  if (response.statusCode == 200) {
-    // If the call to the server was successful, parse the JSON
-//    return json.decode(response.body);
-//  } else {
-    // If that call was not successful, throw an error.
-//    throw Exception('Failed to load concelhos');
- // }
-//}
+  if (response.statusCode == 200) {
+// If the call to the server was successful, parse the JSON
+    return json.decode(response.body);
+  } else {
+// If that call was not successful, throw an error.
+    throw Exception('Failed to load concelhos');
+ }
+}
 
 
 class RegistoEmpresaPage extends StatefulWidget {
@@ -100,16 +100,17 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
   final List<String> _servicos = ['Alojamento', 'Transporte', 'Hotelaria', 'Restauração'];
 
   final Map<String, List<String>> _servicosdisponveis = {'Alojamento': ['AirBnB', 'Alojamento Local'],
-  'Transporte': ['Bicicleta', 'Moliceiro', 'Trotinete'],
-  'Hotelaria': ['Hotel', 'Hostal'],
-  'Restauração': ['Café', 'Restaurante', 'Tasca', 'Snack-Bar']};
-
-  List<String> selectedConcelhos =[];
+    'Transporte': ['Bicicleta', 'Moliceiro', 'Trotinete'],
+    'Hotelaria': ['Hotel', 'Hostal'],
+    'Restauração': ['Café', 'Restaurante', 'Tasca', 'Snack-Bar']};
 
   var _empresa = Empresa();
+  //List<String> selectedConcelhos =[];
+  List<String> selectedServico =[];
 
-  var concelhos;
   //Future<List<String>> concelhos = getConcelhos("Aveiro");
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -204,6 +205,52 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                           value: _empresa.distritos.contains(distrito),
                           onChanged: (value) {
                             setState(() {
+                              if (value!) {
+                                _empresa.distritos.add(distrito);
+                              } else {
+                                _empresa.distritos.remove(distrito);
+                              }
+                            });
+                          },
+                        ),
+                        Text(distrito),
+                        if (_empresa.distritos.contains(distrito))
+                          Expanded(
+                            child: DropdownButton<String>(
+                              value: _empresa.concelhos[distrito],
+                              onChanged: (String? value) {
+                                setState(() {
+                                  _empresa.concelhos[distrito] = value!;
+                                });
+                              },
+                              items: _concelhosPorDistrito[distrito]
+                                  ?.map(
+                                    (cidade) => DropdownMenuItem<String>(
+                                  value: cidade,
+                                  child: Text(cidade),
+                                ),
+                              )
+                                  .toList(),
+                            ),
+                          ),
+                      ],
+                    ),
+                  )
+                      .toList(),
+                ),
+
+
+                /*  Text('Região da Atividade'),
+
+                Column(
+                  children: _distritos
+                      .map(
+                        (distrito) => Row(
+                      children: <Widget>[
+                        Checkbox(
+                          value: _empresa.distritos.contains(distrito),
+                          onChanged: (value) {
+                            setState(() {
 
                               if (value!) {
                                 _empresa.distritos.add(distrito);
@@ -242,13 +289,12 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                     ),
                   )
                       .toList(),
-                ),
+                ), */
+
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Website da empresa'),
                   onSaved: (value) {},
                 ),
-
-                Text('Tipo de Serviço'),
 
                 Column(
                   children: _servicos
@@ -271,7 +317,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                         if (_empresa.servicos.contains(servico))
                           Expanded(
                             child: DropdownButton<String>(
-                              //value: _empresa.servicoconcreto[servico],
+                              //value: selectedServico.contains(_servicosdisponveis),
                               onChanged: (String? value) {
                                 setState(() {
                                   _empresa.servicoconcreto[servico] = value! as List<String>;
@@ -324,16 +370,16 @@ class Empresa {
   late String contacto;
   late String email;
   List<String> distritos = [];
-  List<String> servicos = [];
-  Map<String, List<String>> concelhos = {};
-  Map<String, List<String>> servicoconcreto = {};
+  Map<String, String> concelhos = {};
   late String website;
+  List<String> servicos = [];
+  Map<String, List<String>> servicoconcreto = {};
 
   @override
   String toString() {
     return 'Empresa(nome: $nome, morada: $morada, nif: $nif, cae: $cae, '
         'contacto: $contacto, email: $email, distritos: $distritos, '
-        'concelhos: $concelhos, website: $website, serviços: $servicos, serviçoconcreto: $servicoconcreto)';
+        'concelhos: $concelhos, website: $website servicos: $servicos, '
+        'servicoconcreto: $servicoconcreto)';
   }
-
 }
