@@ -10,7 +10,12 @@ class LoginTurista extends StatelessWidget {
     return MaterialApp(
       title: _title,
       home: Scaffold(
-        appBar: AppBar(title: const Text(_title)),
+        appBar: AppBar(
+            title: const Text(_title),
+            leading: const BackButton(
+              color: Colors.white,
+            ),
+        ),
         body: const LoginTuristaState(),
       ),
     );

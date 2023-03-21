@@ -1,12 +1,13 @@
 import 'dart:convert';
+import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ssd_frontend/features_empresa/empresa.dart';
 import 'package:ssd_frontend/login/login_turista.dart';
 import 'package:ssd_frontend/registo_empresas/registo.dart';
-import 'package:ssd_frontend/servicos/servicos.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:image_card/image_card.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 void main() {
   //runApp(const MyApp());
@@ -65,11 +66,12 @@ class _MainPageState extends State<MainPage> {
 
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
+    final double height1 = height*0.5;
 
     final List<String> images = [
-      'assets/main_images/alojamento_local.jpeg',
-      'assets/main_images/restaurante.jpeg',
-      'assets/main_images/hotelaria.jpeg',
+      'assets/main_images/alojamento.jpeg',
+      'assets/main_images/restaurante1.jpeg',
+      'assets/main_images/cafe.jpeg',
     ];
 
     return Scaffold(
@@ -165,9 +167,24 @@ class _MainPageState extends State<MainPage> {
                     child: FittedBox(
                       fit: BoxFit.fitWidth,
                       alignment: Alignment.topCenter,
-                      child: ImageSlideshow(
+                      child:
+                          /*
+                      CarouselSlider(
+                        items: [
+                          ImageView('assets/main_images/alojamento.jpeg'),
+                          ImageView('assets/main_images/restaurante1.jpeg'),
+                          ImageView('assets/main_images/hotelaria.jpeg'),
+                        ],
+                        options: CarouselOptions(
+                          height: 400,
+                          autoPlay: true,
+                          enlargeCenterPage: true,
+                        ),
+                      ),*/
+
+                      ImageSlideshow(
                         width: width,
-                        height: width * 0.5,
+                        height: width * 0.43,
                         indicatorColor: Colors.redAccent,
                         indicatorBackgroundColor: Colors.grey,
                         //isLoop: true,
@@ -181,7 +198,7 @@ class _MainPageState extends State<MainPage> {
                   ),
 
                   Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, width*0.45, 0, 0),
+                      padding: EdgeInsetsDirectional.fromSTEB(0, width*0.4, 0, 0),
                       child: Container(
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
@@ -210,14 +227,14 @@ class _MainPageState extends State<MainPage> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Padding(
-                                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 16),
+                                        padding: const EdgeInsets.fromLTRB(60, 0, 500, 16),
                                         child: TextField(
                                           style: TextStyle(
                                             color: Color.fromRGBO(44, 73, 108, 1.0)
                                           ),
                                           cursorColor: Color.fromRGBO(44, 73, 108, 1.0),
                                           decoration: InputDecoration(
-                                            labelText: "Procurar por Localidade",
+                                            labelText: "Procurar",
                                             labelStyle:
                                             TextStyle(color: Color.fromRGBO(44, 73, 108, 1.0)),
                                             focusedBorder: UnderlineInputBorder(
@@ -415,7 +432,7 @@ class _MainPageState extends State<MainPage> {
 
       bottomNavigationBar: const BottomAppBar(
         child: Padding(
-            padding: EdgeInsets.all(30),
+            padding: EdgeInsets.all(25),
             child: Text(
               "Este website foi criado no âmbito da Unidade Curricular de Projeto de Engenharia de Computadores e Informática"
                   "\nOrientador: Prof. Osvaldo Pacheco",
@@ -442,17 +459,11 @@ class ElevatedCardAnuncios extends StatelessWidget {
           FillImageCard(
             width: 200,
             heightImage: 140,
-            imageProvider: AssetImage('assets/main_images/alojamento_local.jpeg'),
+            imageProvider: AssetImage('assets/main_images/alojamento.jpeg'),
             //tags: [_tag('Category', () {}), _tag('Product', () {})],
             title: Text("Alojamento Local"),
             description: Text("Aveiro, Portugal"),
           ),
-
-          /*Image.asset(
-              'assets/main_images/alojamento_local.jpeg',
-            height: 100,
-            width: 300,
-          ),*/
 
           //Image(image: AssetImage('assets/main_images/alojamento_local.jpeg')),
           /*Text(
@@ -468,3 +479,19 @@ class ElevatedCardAnuncios extends StatelessWidget {
     );
   }
 }
+
+/*
+class ImageView extends StatelessWidget {
+  String imgPath;
+  ImageView(this.imgPath);
+  @override
+  Widget build (BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 5),
+      child: FittedBox(
+        fit: BoxFit.fill,
+        child: Image.asset(imgPath),
+      ),
+    );
+  }
+}*/

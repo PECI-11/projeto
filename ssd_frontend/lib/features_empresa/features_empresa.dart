@@ -62,7 +62,7 @@ class _FeaturesEmpresaState extends State<FeaturesEmpresa> {
                         Icons.home
                     ),
                     title: const Text(
-                      "Notícias",
+                      "Alertas",          // CRIAR
                       style: TextStyle(
                         fontSize: 18,
                       ),
@@ -79,7 +79,7 @@ class _FeaturesEmpresaState extends State<FeaturesEmpresa> {
                       Icons.dataset_rounded
                     ),
                     title: const Text(
-                      "Serviços Disponíveis",
+                      "Criação de Anúncios",      // CRIAR
                       style: TextStyle(
                         fontSize: 18,
                       ),

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ssd_frontend/servicos/cartao_servico.dart';
-import '../componentes/section_title.dart';
 import '../features_empresa/features_empresa.dart';
 import '../main.dart';
-import '../modelos/exemplos_servicos.dart';
 import '../noticias/feature_noticias.dart';
 
 class ServicosDisponiveis extends StatelessWidget {
@@ -16,7 +13,7 @@ class ServicosDisponiveis extends StatelessWidget {
           foregroundColor: Colors.white,
           shadowColor: Colors.transparent,
           title: const Text(
-            "Serviços Disponíveis",
+            "Serviços Disponíveis / Criar Anúncios",
             style: TextStyle(
                 fontSize: 20,
                 color: Colors.white
@@ -99,7 +96,129 @@ class ServicosDisponiveis extends StatelessWidget {
 
 
 
-        body: Container(
+        body: Center(
+          child: Column(
+            children: [
+
+              SizedBox(
+                height: 50,
+              ),
+
+              ElevatedButton(
+                onPressed: () {},
+                // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                style: ElevatedButton.styleFrom(
+                    elevation: 12.0,
+                    textStyle: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                    )
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: const [
+                    Icon(
+                        Icons.hotel,
+                        size: 45,
+                        color: Colors.white
+                    ),
+
+                    SizedBox(
+                      height: 5,
+                    ),
+
+                    Text('CRIAR ANÚNCIO - HOTELARIA',
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontFamily: 'Montserrat',
+                          color: Colors.white
+                      ),
+                    ),
+                  ],
+                )
+              ),
+
+              SizedBox(
+                height: 15,
+              ),
+
+              ElevatedButton(
+                  onPressed: () {},
+                  // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                  style: ElevatedButton.styleFrom(
+                      elevation: 12.0,
+                      textStyle: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                      )
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: const [
+                      Icon(
+                          Icons.house,
+                          size: 45,
+                          color: Colors.white
+                      ),
+
+                      SizedBox(
+                        height: 5,
+                      ),
+
+                      Text('CRIAR ANÚNCIO - ALOJAMENTO LOCAL',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'Montserrat',
+                            color: Colors.white
+                        ),
+                      ),
+                    ],
+                  )
+              ),
+
+              SizedBox(
+                height: 15,
+              ),
+
+              ElevatedButton(
+                  onPressed: () {},
+                  // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
+                  style: ElevatedButton.styleFrom(
+                      elevation: 12.0,
+                      textStyle: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                      )
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: const [
+                      Icon(
+                          Icons.local_cafe,
+                          size: 45,
+                          color: Colors.white
+                      ),
+
+                      SizedBox(
+                        height: 5,
+                      ),
+
+                      Text('CRIAR ANÚNCIO - CAFETARIA',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'Montserrat',
+                            color: Colors.white
+                        ),
+                      ),
+                    ],
+                  )
+              ),
+
+            ],
+          ),
+        ),
+
+        /*Container(
           constraints: BoxConstraints(maxWidth: 2000),
             child: Column(
               children: [
@@ -118,7 +237,7 @@ class ServicosDisponiveis extends StatelessWidget {
                 ),
               ],
             ),
-        ),
+        ),*/
       ),
     );
   }
