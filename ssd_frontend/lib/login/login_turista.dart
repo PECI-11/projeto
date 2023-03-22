@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import '../features_empresa/features_empresa.dart';
 
 class LoginTurista extends StatelessWidget {
   const LoginTurista({Key? key}) : super(key: key);
@@ -29,12 +32,39 @@ class LoginTuristaState extends StatefulWidget {
   State<LoginTuristaState> createState() => _LoginTuristaState();
 }
 
+
+
 class _LoginTuristaState extends State<LoginTuristaState> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+
+  // Login function
+  static Future<User?> loginUsingEmailPassword({required String email, required String password, required BuildContext context}) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
+
+    try {
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email, password: password);
+      user = userCredential.user;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "user-not-found")
+        print ("Não há nenhum utilizador para este endereço de email");
+    }
+    return user;
+  }
+
+  // Initialize Firebase App
+  Future<FirebaseApp> _initializeFirebase () async {
+
+    FirebaseApp firebaseapp = await Firebase.initializeApp();
+    return firebaseapp;
+
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+
     return Padding(
         padding: const EdgeInsets.all(10),
         child: ListView(
@@ -59,7 +89,7 @@ class _LoginTuristaState extends State<LoginTuristaState> {
             Container(
               padding: const EdgeInsets.all(10),
               child: TextField(
-                controller: nameController,
+                controller: emailController,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'User Name',
@@ -88,9 +118,16 @@ class _LoginTuristaState extends State<LoginTuristaState> {
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: ElevatedButton(
                   child: const Text('Login'),
-                  onPressed: () {
-                    print(nameController.text);
+                  onPressed: () async {
+                    User? user = await loginUsingEmailPassword(email: emailController.text, password: passwordController.text, context: context);
+                    print(user);
+                    print(emailController.text);
                     print(passwordController.text);
+                    if (user != null) {
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => FeaturesEmpresa())
+                      );
+                    }
                   },
                 )
             ),

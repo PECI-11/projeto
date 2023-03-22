@@ -49,6 +49,12 @@ dependencies:
 
   image_card: ^0.0.4
 
+  firebase_core_platform_interface: 4.5.1
+  firebase_auth: ^3.11.2
+  cloud_firestore: ^3.5.1
+  firebase_storage: ^10.3.11
+  firebase_core: ^1.24.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
