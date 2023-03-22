@@ -4,20 +4,20 @@ import 'dart:convert';
 
 // ...
 
-// Define a function to get the concelhos for a given district
-Future<List<String>> getConcelhos(String districtId) async {
- final response = await http.get(
-    Uri.parse('http://localhost:8000/regions/$districtId/concelhos/'),
-  );
+// // Define a function to get the concelhos for a given district
+// Future<List<String>> getConcelhos(String districtId) async {
+//  final response = await http.get(
+//     Uri.parse('http://localhost:8000/regions/$districtId/concelhos/'),
+//   );
 
-  if (response.statusCode == 200) {
-// If the call to the server was successful, parse the JSON
-    return json.decode(response.body);
-  } else {
-// If that call was not successful, throw an error.
-    throw Exception('Failed to load concelhos');
- }
-}
+//   if (response.statusCode == 200) {
+// // If the call to the server was successful, parse the JSON
+//     return json.decode(response.body);
+//   } else {
+// // If that call was not successful, throw an error.
+//     throw Exception('Failed to load concelhos');
+//  }
+// }
 
 
 class RegistoEmpresaPage extends StatefulWidget {
@@ -29,6 +29,7 @@ class RegistoEmpresaPage extends StatefulWidget {
 
 class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
   final _formKey = GlobalKey<FormState>();
+
 
   final List<String>_distritos = [
     'Aveiro', 'Beja', 'Braga', 'Bragança', 'Castelo Branco', 'Coimbra', 'Évora', 'Faro', 'Guarda', 'Leiria', 'Lisboa', 'Portalegre', 'Porto', 'Santarém',
@@ -104,7 +105,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
     'Hotelaria': ['Hotel', 'Hostal'],
     'Restauração': ['Café', 'Restaurante', 'Tasca', 'Snack-Bar']};
 
-  var _empresa = Empresa();
+  Empresa _empresa = Empresa();
   //List<String> selectedConcelhos =[];
   List<String> selectedServico =[];
 
@@ -134,7 +135,9 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                     }
                     return null;
                   },
-                  onSaved: (String? value) {},
+                  onSaved: (String? value) {
+                    _empresa.nome = value!;
+                  },
                 ),
 
                 TextFormField(
@@ -145,7 +148,9 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                     }
                     return null;
                   },
-                  onSaved: (value) {},
+                  onSaved: (value) {
+                    _empresa.morada = value!;
+                  },
                 ),
 
                 TextFormField(
@@ -156,7 +161,9 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                     }
                     return null;
                   },
-                  onSaved: (value) {},
+                  onSaved: (value) {
+                    _empresa.nif = value!;
+                  },
                 ),
 
                 TextFormField(
@@ -167,7 +174,9 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                     }
                     return null;
                   },
-                  onSaved: (value) {},
+                  onSaved: (value) {
+                    _empresa.cae = value!;
+                  },
                 ),
 
                 TextFormField(
@@ -179,7 +188,9 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                     }
                     return null;
                   },
-                  onSaved: (value) {},
+                  onSaved: (value) {
+                    _empresa.contacto = value!;
+                  },
                 ),
 
                 TextFormField(
@@ -190,7 +201,9 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                     }
                     return null;
                   },
-                  onSaved: (value) {},
+                  onSaved: (value) {
+                    _empresa.email = value!;
+                  },
                 ),
                 SizedBox(height: 16),
 
@@ -293,7 +306,9 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
 
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Website da empresa'),
-                  onSaved: (value) {},
+                  onSaved: (value) {
+                    _empresa.website = value!;
+                  },
                 ),
 
                 Column(
@@ -353,13 +368,27 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
     );
   }
 
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      print(_empresa);
-      // Salvar os dados no banco de dados ou em outro local de armazenamento.
+  void _submitForm() async {
+  if (_formKey.currentState!.validate()) {
+    _formKey.currentState!.save();
+    print(_empresa);
+
+    // Convert the _empresa object to a JSON string
+    String empresaJson = jsonEncode(_empresa);
+    
+    // Send the JSON string to the Django back-end
+    final response = await http.post(Uri.parse('http://localhost:8000/empresa'),
+    body: jsonEncode(_empresa.toDict()),
+    headers: {'Content-Type': 'application/json'});
+    
+    // Handle the response from the Django back-end
+    if (response.statusCode == 200) {
+      print('Empresa object sent successfully');
+    } else {
+      print('Failed to send Empresa object');
     }
   }
+}
 }
 
 class Empresa {
@@ -374,6 +403,57 @@ class Empresa {
   late String website;
   List<String> servicos = [];
   Map<String, List<String>> servicoconcreto = {};
+
+  Map<String, dynamic> toDict() {
+    return {
+      'nome': nome,
+      'morada': morada,
+      'nif': nif,
+      'cae': cae,
+      'contacto': contacto,
+      'email': email,
+      'distritos': distritos,
+      'concelhos': concelhos,
+      'website': website,
+      'servicos': servicos,
+      'servicoconcreto': servicoconcreto,
+    };
+  }
+
+  String toJson() => jsonEncode(toDict());
+
+  static Empresa fromJson(String source) => fromMap(json.decode(source));
+
+  static Empresa fromMap(Map<String, dynamic> map) {
+    return Empresa()
+      ..nome = map['nome']
+      ..morada = map['morada']
+      ..nif = map['nif']
+      ..cae = map['cae']
+      ..contacto = map['contacto']
+      ..email = map['email']
+      ..distritos = List<String>.from(map['distritos'])
+      ..concelhos = Map<String, String>.from(map['concelhos'])
+      ..website = map['website']
+      ..servicos = List<String>.from(map['servicos'])
+      ..servicoconcreto = Map<String, List<String>>.from(map['servicoconcreto']);
+  }
+
+  Map<String, dynamic> get empresa {
+    return {
+      'nome': nome,
+      'morada': morada,
+      'nif': nif,
+      'cae': cae,
+      'contacto': contacto,
+      'email': email,
+      'distritos': distritos,
+      'concelhos': concelhos,
+      'website': website,
+      'servicos': servicos,
+      'servicoconcreto': servicoconcreto,
+    };
+  }
 
   @override
   String toString() {

@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from . import views
 from regions.views import *
-
+from empresa.views import *
 
 urlpatterns = [
     re_path('', views.home, name='home'),
@@ -27,6 +27,7 @@ urlpatterns = [
     re_path('api/', include('api.urls')),
     path('regions/<int:district_id>/concelhos/', get_concelhos_by_district, name='get_concelhos_by_district'),
     path('regions/<int:concelhos_id>/freguesias/', get_freguesias_by_concelho, name='get_freguesias_by_concelho'),
+    path('empresa', empresa_view, name='empresa'),
 
     #re_path('api-auth/', include('rest_framework.urls')),
     #re_path('rest-auth/', include('rest_auth.urls')),
