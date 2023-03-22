@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ssd_frontend/servicos/servicos_disponiveis.dart';
-
-import '../features_empresa/features_empresa.dart';
-import '../main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -41,6 +37,7 @@ class _CriarAnuncioHotelariaState extends State<CriarAnuncioHotelaria> {
               height: MediaQuery.of(context).size.height / 6,
               child: Column(
                 children: [
+
                   ElevatedButton(
                     //if user click this button, user can upload image from gallery
                     onPressed: () {
@@ -54,6 +51,7 @@ class _CriarAnuncioHotelariaState extends State<CriarAnuncioHotelaria> {
                       ],
                     ),
                   ),
+
                   ElevatedButton(
                     //if user click this button. user can upload image from camera
                     onPressed: () {
@@ -155,10 +153,10 @@ class _CriarAnuncioHotelariaState extends State<CriarAnuncioHotelaria> {
                     ),
 
                     TextFormField(
-                      decoration: InputDecoration(labelText: 'Contacto'),
+                      decoration: InputDecoration(labelText: 'Descrição do anúncio'),
                       validator: (String? value) {
                         if (value!.isEmpty) {
-                          return 'Por favor, insira o contacto';
+                          return 'Por favor, insira a descrição';
                         }
                         return null;
                       },

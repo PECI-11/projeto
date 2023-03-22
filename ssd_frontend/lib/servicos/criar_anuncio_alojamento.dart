@@ -151,10 +151,10 @@ class _CriarAnuncioAlojamentoState extends State<CriarAnuncioAlojamento> {
                 ),
 
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Contacto'),
+                  decoration: InputDecoration(labelText: 'Descrição do anúncio'),
                   validator: (String? value) {
                     if (value!.isEmpty) {
-                      return 'Por favor, insira o contacto';
+                      return 'Por favor, insira a descrição';
                     }
                     return null;
                   },

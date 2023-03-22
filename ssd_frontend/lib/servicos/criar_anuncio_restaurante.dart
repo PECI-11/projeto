@@ -72,6 +72,8 @@ class _CriarAnuncioRestauranteState extends State<CriarAnuncioRestaurante> {
 
   bool valuefirst = false;
   bool valuesecond = false;
+  bool valuethree = false;
+  bool valuefour = false;
 
   @override
   Widget build(BuildContext context) {
@@ -114,21 +116,21 @@ class _CriarAnuncioRestauranteState extends State<CriarAnuncioRestaurante> {
 
                         image != null
                             ? Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.file(
-                              File(image!.path),
-                              fit: BoxFit.cover,
-                              width: MediaQuery.of(context).size.width,
-                              height: 300,
-                            ),
-                          ),
-                        )
-                            : Text(
-                          "Nenhuma imagem foi selecionada",
-                          style: TextStyle(fontSize: 18),
-                        ),
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Image.file(
+                                    File(image!.path),
+                                    fit: BoxFit.cover,
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 300,
+                                  ),
+                                ),
+                              )
+                              : Text(
+                                "Nenhuma imagem foi selecionada",
+                                style: TextStyle(fontSize: 18),
+                              ),
                       ],
                     ),
 
@@ -154,23 +156,70 @@ class _CriarAnuncioRestauranteState extends State<CriarAnuncioRestaurante> {
                       onSaved: (String? value) {},
                     ),
 
+                    TextFormField(
+                      decoration: InputDecoration(labelText: 'Descrição do anúncio'),
+                      validator: (String? value) {
+                        if (value!.isEmpty) {
+                          return 'Por favor, insira a descrição';
+                        }
+                        return null;
+                      },
+                      onSaved: (String? value) {},
+                    ),
+
+                    const SizedBox(
+                      height: 20,
+                    ),
+
                     Column(
                       children: [
 
-                        Text("Tipos de serviços disponíveis",),
+                        const Text(
+                          "Tipos de serviços disponíveis",
+                          style: TextStyle(
+                            fontSize: 20,
+                          ),
+                        ),
 
-                        /*
                         CheckboxListTile(
                           title: const Text("Takeaway"),
-                          value: valuefirst,
-                          onChanged: (bool value) {
+                            value: valuefirst,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                valuefirst = value!;
+                              });
+                            },
+                        ),
+
+                        CheckboxListTile(
+                          title: const Text("Self-service"),
+                          value: valuesecond,
+                          onChanged: (bool? value) {
                             setState(() {
-                              this.valuefirst = value;
+                              valuesecond = value!;
                             });
                           },
                         ),
 
-                         */
+                        CheckboxListTile(
+                          title: const Text("Serviço à mesa"),
+                          value: valuethree,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              valuethree = value!;
+                            });
+                          },
+                        ),
+
+                        CheckboxListTile(
+                          title: const Text("Bar aberto"),
+                          value: valuefour,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              valuefour = value!;
+                            });
+                          },
+                        ),
 
                       ],
                     ),
