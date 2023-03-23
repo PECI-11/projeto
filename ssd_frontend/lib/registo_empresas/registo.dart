@@ -106,7 +106,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
     'Restauração': ['Café', 'Restaurante', 'Tasca', 'Snack-Bar']};
 
   Empresa _empresa = Empresa();
-  //List<String> selectedConcelhos =[];
+  List<String> selectedConcelhos =[];
   List<String> selectedServico =[];
 
   //Future<List<String>> concelhos = getConcelhos("Aveiro");
@@ -207,7 +207,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                 ),
                 SizedBox(height: 16),
 
-                Text('Região da Atividade'),
+                /* Text('Região da Atividade'),
 
                 Column(
                   children: _distritos
@@ -250,10 +250,10 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                     ),
                   )
                       .toList(),
-                ),
+                ), */
 
 
-                /*  Text('Região da Atividade'),
+                Text('Região da Atividade'),
 
                 Column(
                   children: _distritos
@@ -291,6 +291,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                                       } else {
                                         selectedConcelhos.remove(_concelhosPorDistrito);
                                       }
+                                      //Text(_concelhosPorDistrito);
                                     });
                                   },
                                 );
@@ -302,7 +303,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                     ),
                   )
                       .toList(),
-                ), */
+                ),
 
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Website da empresa'),
@@ -332,10 +333,10 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                         if (_empresa.servicos.contains(servico))
                           Expanded(
                             child: DropdownButton<String>(
-                              //value: selectedServico.contains(_servicosdisponveis),
+                              value: _empresa.servicoconcreto[servico],
                               onChanged: (String? value) {
                                 setState(() {
-                                  _empresa.servicoconcreto[servico] = value! as List<String>;
+                                  _empresa.servicoconcreto[servico] = value!;
                                 });
                               },
                               items: _servicosdisponveis[servico]
@@ -402,7 +403,7 @@ class Empresa {
   Map<String, String> concelhos = {};
   late String website;
   List<String> servicos = [];
-  Map<String, List<String>> servicoconcreto = {};
+  Map<String, String> servicoconcreto = {};
 
   Map<String, dynamic> toDict() {
     return {
@@ -436,7 +437,7 @@ class Empresa {
       ..concelhos = Map<String, String>.from(map['concelhos'])
       ..website = map['website']
       ..servicos = List<String>.from(map['servicos'])
-      ..servicoconcreto = Map<String, List<String>>.from(map['servicoconcreto']);
+      ..servicoconcreto = Map<String, String>.from(map['servicoconcreto']);
   }
 
   Map<String, dynamic> get empresa {

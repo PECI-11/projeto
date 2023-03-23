@@ -117,7 +117,7 @@ class _LoginTuristaState extends State<LoginTuristaState> {
                 height: 50,
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: ElevatedButton(
-                  child: const Text('Login'),
+                  child: Text('LOGIN'),
                   onPressed: () async {
                     User? user = await loginUsingEmailPassword(email: emailController.text, password: passwordController.text, context: context);
                     print(user);
