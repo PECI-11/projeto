@@ -3,7 +3,7 @@ from django.http import JsonResponse
 import json
 #from myapp.models import Empresa  # Import the Empresa model from your app models.py file
 
-@csrf_exempt
+#@csrf_exempt
 def empresa_view(request):
     print("ola")
     print(request)

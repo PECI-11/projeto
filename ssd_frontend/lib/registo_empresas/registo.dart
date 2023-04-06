@@ -378,9 +378,10 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
     String empresaJson = jsonEncode(_empresa);
     
     // Send the JSON string to the Django back-end
-    final response = await http.post(Uri.parse('http://localhost:8000/empresa'),
-    body: jsonEncode(_empresa.toDict()),
-    headers: {'Content-Type': 'application/json'});
+    final response = await http.post(Uri.parse('http://127.0.0.1:8000/empresa'),
+      body: jsonEncode(_empresa.toDict())
+    );
+    //headers: {'Content-Type': 'application/json'});
     
     // Handle the response from the Django back-end
     if (response.statusCode == 200) {
