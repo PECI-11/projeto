@@ -5,7 +5,10 @@ import json
 
 @csrf_exempt
 def empresa_view(request):
+    print("ola")
+    print(request)
     if request.method == 'POST':
+    	
         try:
             data = json.loads(request.body)
             
