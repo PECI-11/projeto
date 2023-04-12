@@ -1,23 +1,27 @@
 import 'dart:convert';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ssd_frontend/componentes/constants.dart';
 import 'package:ssd_frontend/features_empresa/empresa.dart';
 import 'package:ssd_frontend/login/login_turista.dart';
 import 'package:ssd_frontend/registo_empresas/registo.dart';
-import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:image_card/image_card.dart';
 
-import 'login/login_newpage.dart';
+import 'home_screen.dart';
+
 
 void main() {
   //runApp(const MyApp());
+  /*
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);*/
   runApp(Destinos());
 }
 
 class Destinos extends StatelessWidget {
+  /*
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -30,9 +34,27 @@ class Destinos extends StatelessWidget {
       },
       themeMode: ThemeMode.dark,
     );
+  }*/
+
+  @override
+  Widget build(BuildContext context) {
+
+    return MaterialApp(
+      title: 'LusiTravel',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: kPrimaryColor,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: const HomeScreen(),
+    );
+
+
   }
 }
 
+
+/*
 class MainPage extends StatefulWidget {
   MainPage({Key ? key}) : super (key: key);
 
@@ -62,9 +84,11 @@ class _MainPageState extends State<MainPage> {
   }
 
   @override
-  Widget build (BuildContext context) {
-
-    final double width = MediaQuery.of(context).size.width;
+  Widget build(BuildContext context) {
+    final double width = MediaQuery
+        .of(context)
+        .size
+        .width;
     // final double height = MediaQuery.of(context).size.height;
 
     final List<String> images = [
@@ -73,8 +97,21 @@ class _MainPageState extends State<MainPage> {
       'assets/main_images/cafe.jpeg',
     ];
 
-    return Scaffold(
+    return MaterialApp(
+      title: 'LusiTravel',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: kPrimaryColor,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: HomeScreen(),
+    );
 
+
+  }
+}*/
+
+      /*
       appBar: AppBar(
         actions: [
 
@@ -167,7 +204,7 @@ class _MainPageState extends State<MainPage> {
                       fit: BoxFit.fitWidth,
                       alignment: Alignment.topCenter,
                       child:
-                          /*
+
                       CarouselSlider(
                         items: [
                           ImageView('assets/main_images/alojamento.jpeg'),
@@ -179,7 +216,7 @@ class _MainPageState extends State<MainPage> {
                           autoPlay: true,
                           enlargeCenterPage: true,
                         ),
-                      ),*/
+                      ),
 
                       ImageSlideshow(
                         width: width,
@@ -269,7 +306,7 @@ class _MainPageState extends State<MainPage> {
             ],
           ),
 
-      /*Center(
+      Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
@@ -425,7 +462,7 @@ class _MainPageState extends State<MainPage> {
             ),
           ],
         ),
-      ),*/
+      ),
 
       // ------------------------ BOTTOM NAV BAR DA MAIN PAGE ------------------------------ //
 
@@ -442,6 +479,7 @@ class _MainPageState extends State<MainPage> {
     );
   }
 }
+
 
 // ---------------- CARTOES PARA OS ANUNCIOS ---------------------- //
 class ElevatedCardAnuncios extends StatelessWidget {
@@ -479,7 +517,7 @@ class ElevatedCardAnuncios extends StatelessWidget {
   }
 }
 
-/*
+
 class ImageView extends StatelessWidget {
   String imgPath;
   ImageView(this.imgPath);

@@ -5,6 +5,11 @@ const kTextLightColor = Color(0xFF555555);
 
 const kDefaultPadding = 20.0;
 
+const kPrimaryColor = Color(0XFFFFC200);
+const kTextColor1 = Color(0xFF241424);
+const kDarkButton = Color(0xff372930);
+
+
 final kDefaultShadow = BoxShadow(
   offset: const Offset(0, 50),
   blurRadius: 50,
