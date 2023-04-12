@@ -10,14 +10,25 @@ import 'package:image_card/image_card.dart';
 
 import 'home_screen.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+
+
+Future<void> main() async {
+
   //runApp(const MyApp());
-  /*
+
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+  options: DefaultFirebaseOptions.currentPlatform,
+);
+
+  /*
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);*/
   runApp(Destinos());
+
 }
 
 class Destinos extends StatelessWidget {

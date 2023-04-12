@@ -326,25 +326,32 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.white,
-                              boxShadow: [BoxShadow(
+                              boxShadow: [
+                                BoxShadow(
                                   color: Colors.black12,
                                   offset: Offset(0.0,2.0),
                                   blurRadius: 10.0,
                                   spreadRadius: 6
-                              )]
+                                )
+                              ]
                           ),
-                          child: Center(
-                            child: Icon(
+                          child: const Center(
+                            child:
+                            Icon(
                               Icons.park,
                               color: Colors.red,
                             ),
                           ),
                         ),
-                        SizedBox(height: 5,),
-                        Text('Park',
+                        const SizedBox(
+                          height: 5,
+                        ),
+
+                        const Text('Park',
                           style: TextStyle(
                               color: Colors.red
-                          ),)
+                          ),
+                        )
                       ],
                     ),
                   ),
