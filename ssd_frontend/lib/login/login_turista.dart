@@ -44,6 +44,7 @@ class _LoginTuristaState extends State<LoginTuristaState> {
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email, password: password);
       user = userCredential.user;
+      print("Login successful: ${user?.email}"); // Print a message with the logged-in user's email
     } on FirebaseAuthException catch (e) {
       if (e.code == "user-not-found")
         print ("Não há nenhum utilizador para este endereço de email");

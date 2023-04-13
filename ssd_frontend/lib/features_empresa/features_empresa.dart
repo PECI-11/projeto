@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ssd_frontend/main.dart';
 import 'package:ssd_frontend/noticias/feature_noticias.dart';
 import 'package:ssd_frontend/servicos/servicos.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class FeaturesEmpresa extends StatefulWidget {
   const FeaturesEmpresa({Key? key}) : super(key: key);
@@ -12,8 +14,24 @@ class FeaturesEmpresa extends StatefulWidget {
 
 class _FeaturesEmpresaState extends State<FeaturesEmpresa> {
 
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User? currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    currentUser = auth.currentUser;
+  }
+
+  String userEmail = "";
+  String userPhoneNumber = "";
+
   @override
   Widget build(BuildContext context) {
+    if (currentUser != null) {
+      userEmail = currentUser!.email ?? "";
+      userPhoneNumber = currentUser!.phoneNumber ?? "";
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
@@ -128,7 +146,7 @@ class _FeaturesEmpresaState extends State<FeaturesEmpresa> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
-                children: const [
+                children: [
                   Text(
                     "Restaurante 5 maravilhas",
                     style: TextStyle(
@@ -140,7 +158,8 @@ class _FeaturesEmpresaState extends State<FeaturesEmpresa> {
                   SizedBox(height: 16,),
 
                   Text(
-                    "5maravilhas@gmail.com",
+                    //"5maravilhas@gmail.com",
+                    userEmail,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
