@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'services.dart';
 
 class DetailsScreen extends StatefulWidget {
-  final Hotel hotel;
+  final Servico servico;
 
-  DetailsScreen({required this.hotel});
+  DetailsScreen({required this.servico});
 
   @override
   _DetailsScreenState createState() => _DetailsScreenState();
@@ -29,9 +29,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           blurRadius: 6.0)
                     ]),
                     child: Hero(
-                      tag: widget.hotel.imgurl,
+                      tag: widget.servico.imgurl,
                       child: Image(
-                        image: AssetImage(widget.hotel.imgurl),
+                        image: AssetImage(widget.servico.imgurl),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -62,7 +62,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
               SizedBox(height: 10,),
               Padding(
                 padding: const EdgeInsets.only(left: 20,top: 20),
-                child: Text(widget.hotel.title,
+                child: Text(widget.servico.title,
                   style: TextStyle(
                       fontSize: 25.0,
                       fontWeight: FontWeight.w400
@@ -70,7 +70,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 20,top: 5),
-                child: Text(widget.hotel.location,
+                child: Text(widget.servico.location,
                   style: TextStyle(
                       fontSize: 16,
                       color: Colors.grey
@@ -79,7 +79,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
               SizedBox(height: 20,),
               Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: Text(widget.hotel.description),
+                child: Text(widget.servico.description),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 20.0,top: 10),
@@ -91,7 +91,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         children: [
                           Text('Price',style: TextStyle(color: Colors.grey),),
                           SizedBox(height: 10,),
-                          Text('${widget.hotel.price} Tk '),
+                          Text('${widget.servico.price} Tk '),
                         ],
                       ),
                     ),
@@ -103,7 +103,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           SizedBox(height: 10,),
                           Row(
                             children: [
-                              Text(widget.hotel.rating.toString()),
+                              Text(widget.servico.rating.toString()),
                               Icon(Icons.star,size: 12,color: Colors.red,),
                               Icon(Icons.star,size: 12,color: Colors.red),
                               Icon(Icons.star,size: 12,color: Colors.red),

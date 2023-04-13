@@ -4,7 +4,7 @@ import 'services.dart';
 import 'details.dart';
 
 class ServicesPackage extends StatelessWidget {
-  final hotel = Hotel.PeoplechoiceList();
+  final hotel = Servico.PeoplechoiceList();
   ServicesPackage({super.key});
 
   @override
@@ -16,13 +16,13 @@ class ServicesPackage extends StatelessWidget {
           separatorBuilder: (_,index) => const SizedBox(height: 10,),
           itemCount: hotel.length,
           itemBuilder: (context,index) {
-            Hotel hotelscreen = hotel[index];
+            Servico servicoScreen = hotel[index];
             return Padding(
               padding: const EdgeInsets.all(10.0),
               child: GestureDetector(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => DetailsScreen(hotel: hotelscreen,),
+                      MaterialPageRoute(builder: (_) => DetailsScreen(servico: servicoScreen,),
                       )
                   );
                 },
@@ -44,7 +44,7 @@ class ServicesPackage extends StatelessWidget {
                     children: [
                         Positioned(
                             child: Hero(
-                              tag: hotelscreen.imgurl,
+                              tag: servicoScreen.imgurl,
                               child: Container(
                                 height: 150,
                                 width: 120,
@@ -110,7 +110,7 @@ class ServicesPackage extends StatelessWidget {
                             child: Transform.rotate(
                               angle: pi / -2,
                               child: Container(
-                                height: 50,
+                                height: 100,
                                 width: 100,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),

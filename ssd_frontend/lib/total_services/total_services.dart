@@ -22,9 +22,9 @@ class _TodosServicosState extends State<TodosServicos> {
 
       appBar: AppBar(
         backgroundColor: Colors.white,
-        foregroundColor: Color.fromRGBO(44, 73, 108, 1.0),
+        foregroundColor: const Color.fromRGBO(44, 73, 108, 1.0),
         shadowColor: Colors.transparent,
-        title: Text(
+        title: const Text(
           "Todos os serviços",
           style: TextStyle(
             fontSize: 24,
@@ -43,9 +43,9 @@ class _TodosServicosState extends State<TodosServicos> {
                 height: 50,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    color: Color(0xFFEFEDEE),
+                    color: const Color(0xFFEFEDEE),
                     borderRadius: BorderRadius.circular(10.0),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                           color: Colors.black12,
                           offset: Offset(0.0, 10.0),
@@ -53,7 +53,7 @@ class _TodosServicosState extends State<TodosServicos> {
                     ]),
                 child: Row(
                   children: [
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10.0),
                       child: Icon(
                         Icons.search,
@@ -61,13 +61,13 @@ class _TodosServicosState extends State<TodosServicos> {
                         size: 30.0,
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       height: 50.0,
                       width: MediaQuery.of(context).size.width * 0.79,
-                      child: TextField(
+                      child: const TextField(
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: 'search your hotel'),
+                            hintText: 'Faça aqui a sua pesquisa'),
                       ),
                     )
                   ],
