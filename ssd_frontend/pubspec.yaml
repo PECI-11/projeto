@@ -84,6 +84,7 @@ flutter:
     - assets/json_profiles/
     - assets/icons/
     - assets/main_images/
+    - assets/images_servicos/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
