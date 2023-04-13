@@ -27,13 +27,7 @@ class _FeaturesEmpresaState extends State<FeaturesEmpresa> {
   String userEmail = "";
   String userPhoneNumber = "";
 
-  /*
-  FirebaseAuth auth = FirebaseAuth.instance;
-  User? currentUser = auth.currentUser;
 
-  String userEmail = currentUser?.email ?? ""; // Retrieve user email, or use empty string if user is null
-  String userPhoneNumber = currentUser?.phoneNumber ?? ""; // Retrieve user phone number, or use empty string if user is null
-  */
 
   @override
   Widget build(BuildContext context) {
