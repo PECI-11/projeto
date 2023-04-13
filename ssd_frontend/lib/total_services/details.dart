@@ -15,11 +15,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: ListView(
-          children:[Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+          children:[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+
               Stack(
                 children: [
+
                   Container(
                     height: MediaQuery.of(context).size.width * 0.8,
                     decoration: BoxDecoration(boxShadow: [
@@ -36,6 +39,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       ),
                     ),
                   ),
+
                   Positioned(
                       top: 50,
                       left: 30,
@@ -56,10 +60,15 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             ),
                           ),
                         ),
-                      ))
+                      )
+                  )
+
                 ],
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
+
               Padding(
                 padding: const EdgeInsets.only(left: 20,top: 20),
                 child: Text(widget.servico.title,
@@ -68,14 +77,17 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       fontWeight: FontWeight.w400
                   ),),
               ),
+
               Padding(
                 padding: const EdgeInsets.only(left: 20,top: 5),
                 child: Text(widget.servico.location,
                   style: TextStyle(
                       fontSize: 16,
                       color: Colors.grey
-                  ),),
+                  ),
+                ),
               ),
+
               SizedBox(height: 20,),
               Padding(
                 padding: const EdgeInsets.all(10.0),
@@ -89,9 +101,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+
                           Text('Price',style: TextStyle(color: Colors.grey),),
                           SizedBox(height: 10,),
-                          Text('${widget.servico.price} Tk '),
+                          Text('${widget.servico.price} € por noite '),
+
                         ],
                       ),
                     ),

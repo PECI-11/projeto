@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ssd_frontend/main.dart';
 import 'package:ssd_frontend/noticias/feature_noticias.dart';
@@ -11,6 +12,14 @@ class FeaturesEmpresa extends StatefulWidget {
 }
 
 class _FeaturesEmpresaState extends State<FeaturesEmpresa> {
+
+  /*
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User? currentUser = auth.currentUser;
+
+  String userEmail = currentUser?.email ?? ""; // Retrieve user email, or use empty string if user is null
+  String userPhoneNumber = currentUser?.phoneNumber ?? ""; // Retrieve user phone number, or use empty string if user is null
+  */
 
   @override
   Widget build(BuildContext context) {
