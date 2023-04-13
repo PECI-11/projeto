@@ -10,7 +10,7 @@ class ServicesPackage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 800,
       width: double.infinity,
       child: ListView.separated(
           separatorBuilder: (_,index) => const SizedBox(height: 10,),
@@ -107,9 +107,9 @@ class ServicesPackage extends StatelessWidget {
                           bottom: 40,
                           left: 300,
                           child: Center(
-                            child: Transform.rotate(
-                              angle: pi / -2,
-                              child: Container(
+                            child: //Transform.rotate(
+                              //angle: pi / -2,
+                               Container(
                                 height: 100,
                                 width: 100,
                                 decoration: BoxDecoration(
@@ -118,7 +118,7 @@ class ServicesPackage extends StatelessWidget {
                                 ),
                                 child: Center(child: Text('VER MAIS')),
                               ),
-                            ),
+                            //),
                           ))
                     ],
                   ),

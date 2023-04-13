@@ -8,6 +8,7 @@ class Servico {
 
   Servico(this.imgurl, this.title,this.description, this.location, this.price, this.rating);
 
+  /*
   static List<Servico> hotellist() {
     return [
       Servico('assets/images_servicos/image1.jpeg', 'Imperial Hotel','Situado no Alentejo, este cantinho possui todas as condições que necessita para um bom descanso no meio da Natureza.',"Salvaterra de Magos", 50, 4.3),
@@ -30,6 +31,7 @@ class Servico {
 
     ];
   }
+  */
 
   static List<Servico> PeoplechoiceList(){
     return[
