@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:ssd_frontend/registo_empresas/signUp_pessoa.dart';
 import '../features_empresa/features_empresa.dart';
 
 class LoginTurista extends StatelessWidget {
@@ -14,10 +15,21 @@ class LoginTurista extends StatelessWidget {
       title: _title,
       home: Scaffold(
         appBar: AppBar(
-            title: const Text(_title),
-            leading: const BackButton(
-              color: Colors.white,
+          automaticallyImplyLeading: false,
+          actions: const [
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 5, 10, 5),
+              child: Image(image: AssetImage("assets/icons/icon_app.png"),
+              ),
             ),
+          ],
+          leading: const BackButton(
+            color: Colors.white,
+          ),
+          title: const Text(_title),
+            /*leading: const BackButton(
+              color: Colors.white,
+            ),*/
         ),
         body: const LoginTuristaState(),
       ),
@@ -144,6 +156,9 @@ class _LoginTuristaState extends State<LoginTuristaState> {
                   ),
                   onPressed: () {
                     //signup screen
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => SignUpView())
+                    );
                   },
                 )
               ],
