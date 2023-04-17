@@ -24,7 +24,7 @@ class _SignUpViewState extends State<SignUpView> {
 
   @override
   void dispose() {
-    nameController.dispose();
+    //nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -50,7 +50,8 @@ class _SignUpViewState extends State<SignUpView> {
                 return _buildSmallScreen(size, simpleUIController, theme);
               }
             },
-          )),
+          )
+      ),
     );
   }
 
@@ -59,19 +60,26 @@ class _SignUpViewState extends State<SignUpView> {
       Size size, SimpleUIController simpleUIController, ThemeData theme) {
     return Row(
       children: [
-        /*
+
         Expanded(
           flex: 4,
           child: RotatedBox(
             quarterTurns: 3,
-            child: Lottie.asset(
-              'assets/icons/icon_app.png',
+            child:
+            /*Lottie.asset(
+              'assets/images_servicos/restaurante1.jpg',
+              height: size.height * 0.3,
+              width: double.infinity,
+              fit: BoxFit.fill,
+            ),*/
+            Image(
+              image: AssetImage('assets/images_servicos/apartamentos.jpg'),
               height: size.height * 0.3,
               width: double.infinity,
               fit: BoxFit.fill,
             ),
           ),
-        ),*/
+        ),
         SizedBox(width: size.width * 0.06),
         Expanded(
           flex: 5,
@@ -190,36 +198,36 @@ class _SignUpViewState extends State<SignUpView> {
                 /// password
                 Obx(
                       () => TextFormField(
-                    style: kTextFormFieldStyle(),
-                    controller: passwordController,
-                    obscureText: simpleUIController.isObscure.value,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.lock_open),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          simpleUIController.isObscure.value
-                              ? Icons.visibility
-                              : Icons.visibility_off,
+                      style: kTextFormFieldStyle(),
+                      controller: passwordController,
+                      obscureText: simpleUIController.isObscure.value,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.lock_open),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            simpleUIController.isObscure.value
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            simpleUIController.isObscureActive();
+                          },
                         ),
-                        onPressed: () {
-                          simpleUIController.isObscureActive();
-                        },
+                        hintText: 'Password',
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                        ),
                       ),
-                      hintText: 'Password',
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                      ),
-                    ),
-                    // The validator receives the text that the user has entered.
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
-                      } else if (value.length < 7) {
-                        return 'at least enter 6 characters';
-                      } else if (value.length > 13) {
-                        return 'maximum character is 13';
-                      }
-                      return null;
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        } else if (value.length < 7) {
+                          return 'at least enter 6 characters';
+                        } else if (value.length > 13) {
+                          return 'maximum character is 13';
+                        }
+                        return null;
                     },
                   ),
                 ),
@@ -248,7 +256,7 @@ class _SignUpViewState extends State<SignUpView> {
                         context,
                         CupertinoPageRoute(
                             builder: (ctx) => const LoginTurista()));
-                    nameController.clear();
+                    //nameController.clear();
                     emailController.clear();
                     passwordController.clear();
                     _formKey.currentState?.reset();
