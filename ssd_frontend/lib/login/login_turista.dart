@@ -268,9 +268,9 @@ class _LoginTuristaState extends State<LoginTurista> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                     return 'Please enter your e-mail';
-                    } else if ((!value.endsWith('@gmail.com')) || (!value.endsWith('@outlook.pt'))) {
-                    return 'please enter valid e-mail';
-                    }
+                    } //else if ((!value.endsWith('@gmail.com')) || (!value.endsWith('@outlook.pt'))) {
+                    //return 'please enter valid e-mail';
+                    //}
                     return null;
                   },
                 ),
