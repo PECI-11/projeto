@@ -12,7 +12,6 @@ import '../login/login_turista.dart';
 import 'package:ssd_frontend/componentes/constants.dart';
 import 'package:ssd_frontend/componentes/simple_ui_controller.dart';
 
-import '../users/user1.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({Key? key}) : super(key: key);
@@ -28,19 +27,19 @@ class _SignUpViewState extends State<SignUpView> {
 
   final _formKey = GlobalKey<FormState>();
 
-  Users _user = new Users();
+  Users _user = new Users(nome: '', email: '', password: '');
 
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      // print(_empresa);
+      print(_user);
 
       // Convert the _empresa object to a JSON string
-      String empresaJson = jsonEncode(_user);
+      String userJson = jsonEncode(_user);
 
       // Send the JSON string to the Django back-end
-      final response = await http.post(Uri.parse('http://127.0.0.1:8000/users'),
+      final response = await http.post(Uri.parse('http://127.0.0.1:8000/users/register'),
           body: jsonEncode(_user.toDict())
       );
       //headers: {'Content-Type': 'application/json'});
@@ -218,9 +217,9 @@ class _SignUpViewState extends State<SignUpView> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter e-mail';
-                    } else if ((!value.endsWith('@gmail.com')) || (!value.endsWith('@outlook.pt'))) {
-                      return 'please enter valid e-mail';
-                    }
+                    } //else if ((!value.endsWith('@gmail.com')) || (!value.endsWith('@outlook.pt'))) {
+                      //return 'please enter valid e-mail';
+                    //}
                     return null;
                   },
                 ),
@@ -346,6 +345,36 @@ class _SignUpViewState extends State<SignUpView> {
         child: const Text('Registar'),
       ),
     );
+  }
+}
+
+class Users {
+  String nome;
+  String email;
+  String password;
+
+  Users({required this.nome, required this.email, required this.password});
+
+  Map<String, dynamic> toDict() {
+    return {
+      'nome': nome,
+      'email': email,
+    };
+  }
+
+  String toJson() => jsonEncode(toDict());
+
+  static Empresa fromJson(String source) => fromMap(json.decode(source));
+
+  static Empresa fromMap(Map<String, dynamic> map) {
+    return Empresa()
+      ..nome = map['nome']
+      ..morada = map['morada'];
+  }
+
+  @override
+  String toString() {
+    return "Nome: $nome, Email: $email, Password: $password";
   }
 }
 
