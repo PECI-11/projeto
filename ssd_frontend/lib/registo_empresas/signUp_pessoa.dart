@@ -1,12 +1,18 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:http/http.dart' as http;
+
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:ssd_frontend/registo_empresas/empresas.dart';
 
 import '../login/login_turista.dart';
 import 'package:ssd_frontend/componentes/constants.dart';
 import 'package:ssd_frontend/componentes/simple_ui_controller.dart';
+
+import '../users/user1.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({Key? key}) : super(key: key);
@@ -21,6 +27,33 @@ class _SignUpViewState extends State<SignUpView> {
   TextEditingController passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  Users _user = new Users();
+
+  void _submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      // print(_empresa);
+
+      // Convert the _empresa object to a JSON string
+      String empresaJson = jsonEncode(_user);
+
+      // Send the JSON string to the Django back-end
+      final response = await http.post(Uri.parse('http://127.0.0.1:8000/users'),
+          body: jsonEncode(_user.toDict())
+      );
+      //headers: {'Content-Type': 'application/json'});
+
+      // Handle the response from the Django back-end
+      if (response.statusCode == 200) {
+        print('Empresa object sent successfully');
+      } else {
+        print('Failed to send Empresa object');
+      }
+    }
+  }
+
 
   @override
   void dispose() {
@@ -129,7 +162,7 @@ class _SignUpViewState extends State<SignUpView> {
         Padding(
           padding: const EdgeInsets.only(left: 20.0),
           child: Text(
-            'Create Account',
+            'Crie a sua conta',
             style: kLoginSubtitleStyle(size),
           ),
         ),
@@ -170,13 +203,13 @@ class _SignUpViewState extends State<SignUpView> {
                   height: size.height * 0.02,
                 ),
 
-                /// Gmail
+                /// Email
                 TextFormField(
                   style: kTextFormFieldStyle(),
                   controller: emailController,
                   decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.email_rounded),
-                    hintText: 'gmail',
+                    hintText: 'e-mail',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
@@ -184,13 +217,14 @@ class _SignUpViewState extends State<SignUpView> {
                   // The validator receives the text that the user has entered.
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter gmail';
-                    } else if (!value.endsWith('@gmail.com')) {
-                      return 'please enter valid gmail';
+                      return 'Please enter e-mail';
+                    } else if ((!value.endsWith('@gmail.com')) || (!value.endsWith('@outlook.pt'))) {
+                      return 'please enter valid e-mail';
                     }
                     return null;
                   },
                 ),
+
                 SizedBox(
                   height: size.height * 0.02,
                 ),
@@ -235,7 +269,7 @@ class _SignUpViewState extends State<SignUpView> {
                   height: size.height * 0.01,
                 ),
                 Text(
-                  'Creating an account means you\'re okay with our Terms of Services and our Privacy Policy',
+                  'Ao criar conta está a aceitar os nossos Termos de Serviços e as nossas Políticas de Privacidade.',
                   style: kLoginTermsAndPrivacyStyle(size),
                   textAlign: TextAlign.center,
                 ),
@@ -266,11 +300,11 @@ class _SignUpViewState extends State<SignUpView> {
 
                   child: RichText(
                     text: TextSpan(
-                      text: 'Already have an account?',
+                      text: 'Já tem conta?',
                       style: kHaveAnAccountStyle(size),
                       children: [
                         TextSpan(
-                            text: " Login",
+                            text: " Faça login aqui",
                             style: kLoginOrSignUpTextStyle(size)),
                       ],
                     ),
@@ -300,13 +334,18 @@ class _SignUpViewState extends State<SignUpView> {
           ),
         ),
         onPressed: () {
+          _submitForm();
           // Validate returns true if the form is valid, or false otherwise.
           if (_formKey.currentState!.validate()) {
             // ... Navigate To your Home Page
-          }
+            Navigator.push(context, MaterialPageRoute(
+                builder: (context) => const RegistoEmpresaPage())
+            );
+          }git config pull.rebase false
         },
-        child: const Text('Login'),
+        child: const Text('Registar'),
       ),
     );
   }
 }
+

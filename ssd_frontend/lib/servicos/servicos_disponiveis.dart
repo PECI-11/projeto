@@ -3,6 +3,7 @@ import 'package:ssd_frontend/servicos/criar_anuncio_alojamento.dart';
 import 'package:ssd_frontend/servicos/criar_anuncio_hotelaria.dart';
 import 'package:ssd_frontend/servicos/criar_anuncio_restaurante.dart';
 import '../features_empresa/features_empresa.dart';
+import '../formularios/forms_restauracao.dart';
 import '../main.dart';
 import '../noticias/feature_noticias.dart';
 
@@ -195,7 +196,7 @@ class ServicosDisponiveis extends StatelessWidget {
               ElevatedButton(
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => CriarAnuncioRestaurante())
+                        builder: (context) => FormRestaurante(title: 'Formulário - Criação de Serviço de Restauração',))
                     );
                   },
                   // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
