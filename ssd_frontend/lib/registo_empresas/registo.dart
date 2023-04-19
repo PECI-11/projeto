@@ -242,8 +242,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                 Text("Região da atividade", style: TextStyle(fontSize: 24)),
 
                 Container(
-                  child: Row(
-                    children: [
+                  child:
                 Column(
                   children: _concelhosPorDistrito.keys.map((distrito) {
                     return Column(
@@ -290,9 +289,6 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                     );
                   }).toList(),
                 ),
-                  ],
-                  )
-
             ),
 
                 Text("Serviços",
