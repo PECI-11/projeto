@@ -27,7 +27,7 @@ class _SignUpViewState extends State<SignUpView> {
 
   final _formKey = GlobalKey<FormState>();
 
-  Users _user = new Users(nome: '', email: '', password: '');
+  Users _user = new Users();
 
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
@@ -348,6 +348,7 @@ class _SignUpViewState extends State<SignUpView> {
   }
 }
 
+/*
 class Users {
   String nome;
   String email;
@@ -375,6 +376,42 @@ class Users {
   @override
   String toString() {
     return "Nome: $nome, Email: $email, Password: $password";
+  }
+}
+*/
+
+class Users {
+  late String nome;
+  late String email;
+  late String password;
+
+  Map<String, dynamic> toDict() {
+    return {
+      'nome': nome,
+      'email': email,
+    };
+  }
+
+  String toJson() => jsonEncode(toDict());
+
+  static Users fromJson(String source) => fromMap(json.decode(source));
+
+  static Users fromMap(Map<String, dynamic> map) {
+    return Users()
+      ..nome = map['nome']
+      ..email = map['email'];
+  }
+
+  Map<String, dynamic> get empresa {
+    return {
+      'nome': nome,
+      'morada': email,
+    };
+  }
+
+  @override
+  String toString() {
+    return 'Empresa(nome: $nome, email: $email)';
   }
 }
 
