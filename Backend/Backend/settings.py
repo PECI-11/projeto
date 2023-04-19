@@ -57,12 +57,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api',
-    'Contas',
     'djongo',
     'db_handling',
     'db_handling.management',
     'corsheaders',
-    # 'users',
+    #'users',
     # 'rest_framework',
     # 'rest_framework.authtoken',
     # 'rest_auth',
@@ -128,25 +127,23 @@ WSGI_APPLICATION = 'Backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'mydatabase',
-        'CLIENT': {
-            'host': 'localhost',
-        },
-        'OPTIONS': {
-            'ssl': False
-        }
-    },
-    'regions_db': {
-        'ENGINE': 'djongo',
-        'NAME': 'regions',
-        'CLIENT': {
-            'host': 'localhost',
-        },
-        'OPTIONS': {
-            'ssl': False
-        }
+    'ENGINE': 'djongo',
+    'NAME': 'PECI', # Name of your MongoDB database
+    'CLIENT': {
+        'host': 'mongodb://localhost:27017/', # Connection string for local MongoDB instance
     }
+}
+
+    # 'regions_db': {
+    #     'ENGINE': 'djongo',
+    #     'NAME': 'regions',
+    #     'CLIENT': {
+    #         'host': 'localhost',
+    #     },
+    #     'OPTIONS': {
+    #         'ssl': False
+    #     }
+    # }
 }
 
 
@@ -196,7 +193,6 @@ STATICFILES_DIRS= [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'Contas.Tourist'
 
 # REST_FRAMEWORK = {
 #     'DEFAULT_AUTHENTICATION_CLASSES': (
