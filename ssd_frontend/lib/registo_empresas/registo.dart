@@ -4,22 +4,6 @@ import 'dart:convert';
 
 // ...
 
-// // Define a function to get the concelhos for a given district
-// Future<List<String>> getConcelhos(String districtId) async {
-//  final response = await http.get(
-//     Uri.parse('http://localhost:8000/regions/$districtId/concelhos/'),
-//   );
-
-//   if (response.statusCode == 200) {
-// // If the call to the server was successful, parse the JSON
-//     return json.decode(response.body);
-//   } else {
-// // If that call was not successful, throw an error.
-//     throw Exception('Failed to load concelhos');
-//  }
-// }
-
-// SÓ VAI PARA O REGISTO DA EMPRESA SE O UTILIZADOR TIVER LOGIN FEITO
 
 class RegistoEmpresaPage extends StatefulWidget {
   const RegistoEmpresaPage({Key? key}) : super(key: key);
@@ -32,89 +16,38 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
   final _formKey = GlobalKey<FormState>();
 
 
-  String? _concelhoSelecionado = " ";
+  final List<String> _distritos = [
+    'Aveiro', 'Beja', 'Braga', 'Bragança', 'Castelo Branco', 'Coimbra', 'Évora', 'Faro',
+    'Guarda', 'Leiria', 'Lisboa', 'Portalegre', 'Porto', 'Santarém', 'Setúbal', 'Viana do Castelo',
+    'Vila Real', 'Viseu', 'Açores', 'Madeira'];
 
-  final List<String>_distritos = [
-    'Aveiro', 'Beja', 'Braga', 'Bragança', 'Castelo Branco', 'Coimbra', 'Évora', 'Faro', 'Guarda', 'Leiria', 'Lisboa', 'Portalegre', 'Porto', 'Santarém',
-    'Setúbal', 'Viana do Castelo', 'Vila Real', 'Viseu', 'Açores', 'Madeira'];
-
-  final Map<String, List<String>>_concelhosPorDistrito = {
-    'Aveiro': [ "Águeda", "Albergaria-a-Velha", "Anadia", "Arouca", "Aveiro", "Castelo de Paiva", "Espinho", "Estarreja", "Ílhavo", "Mealhada", "Murtosa",
-      "Oliveira de Azeméis", "Oliveira do Bairro", "Ovar", "Santa Maria da Feira", "São João da Madeira", "Sever do Vouga", "Vagos", "Vale de Cambra"],
-
-    'Beja': [   "Aljustrel", "Almodôvar", "Alvito", "Barrancos", "Beja", "Castro Verde", "Cuba", "Ferreira do Alentejo", "Mértola", "Moura", "Odemira",
-      "Ourique", "Serpa", "Vidigueira"],
-
-    'Braga': [  "Amares", "Barcelos", "Braga", "Cabeceiras de Basto", "Celorico de Basto", "Esposende", "Fafe", "Guimarães", "Póvoa de Lanhoso", "Terras de Bouro",
-      "Vieira do Minho", "Vila Nova de Famalicão", "Vila Verde", "Vizela"],
-
-    'Bragança':[  "Alfândega da Fé", "Bragança", "Carrazeda de Ansiães", "Freixo de Espada à Cinta", "Macedo de Cavaleiros", "Miranda do Douro", "Mirandela", "Mogadouro",
-      "Torre de Moncorvo", "Vila Flor", "Vimioso", "Vinhais"],
-
-    'Castelo Branco': [ "Belmonte", "Castelo Branco", "Covilhã", "Fundão", "Idanha-a-Nova","Oleiros", "Penamacor", "Proença-a-Nova", "Sertã", "Vila de Rei",
-      "Vila Velha de Ródão"],
-
-    'Coimbra':[ "Arganil", "Cantanhede", "Coimbra", "Condeixa-a-Nova", "Figueira da Foz", "Góis", "Lousã", "Mealhada", "Mira", "Miranda do Corvo",
-      "Montemor-o-Velho", "Oliveira do Hospital", "Pampilhosa da Serra", "Penacova", "Penela", "Soure", "Tábua", "Visla Nova de Poiares"],
-
-    'Évora': [  "Alandroal", "Arraiolos", "Borba", "Estremoz", "Évora", "Montemor-o-Novo", "Mora", "Mourão", "Portel", "Redondo", "Reguengos de Monsaraz",
-      "Vendas Novas", "Viana do Alentejo", "Vila Viçosa"],
-
-    'Faro': [ "Albufeira", "Alcoutim", "Aljezur", "Castro Marim", "Faro", "Lagoa", "Lagos", "Loulé", "Monchique", "Olhão", "Portimão", "São Brás de Alportel",
-      "Silves", "Tavira", "Vila do Bispo", "Vila Real de Santo António"],
-
-    'Guarda': [ "Aguiar da Beira", "Almeida", "Celorico da Beira", "Figueira de Castelo Rodrigo", "Fornos de Algodres", "Gouveia", "Guarda", "Manteigas",
-      "Mêda", "Pinhel","Sabugal", "Seia", "Trancoso", "Vila Nova de Foz Côa"],
-
-    'Leiria': [ "Alcobaça", "Alvaiázere", "Ansião", "Batalha", "Bombarral", "Caldas da Rainha", "Castanheira de Pera", "Figueiró dos Vinhos", "Leiria",
-      "Marinha Grande", "Nazaré", "Óbidos", "Pedrógão Grande", "Peniche", "Pombal", "Porto de Mós"],
-
-    'Lisboa': [ "Alenquer", "Amadora", "Arruda dos Vinhos", "Azambuja", "Cadaval", "Cascais", "Lisboa", "Loures", "Lourinhã", "Mafra", "Odivelas",
-      "Oeiras", "Sintra", "Sobral de Monte Agraço", "Torres Vedras", "Vila Franca de Xira"],
-
-    'Portalegre': [ "Alter do Chão", "Arronches", "Avis", "Campo Maior", "Castelo de Vide", "Crato", "Elvas", "Fronteira", "Gavião", "Marvão", "Monforte",
-      "Nisa", "Ponte de Sor", "Portalegre", "Sousel" ],
-
-    'Porto': [  "Amarante", "Baião", "Felgueiras", "Gondomar", "Lousada", "Maia", "Marco de Canaveses", "Matosinhos", "Paços de Ferreira", "Paredes",
-      "Penafiel", "Porto", "Póvoa de Varzim", "Santo Tirso", "Valongo", "Vila do Conde", "Vila Nova de Gaia"],
-
-    'Santarém': [ "Abrantes", "Alcanena", "Almeirim", "Alpiarça", "Benavente", "Cartaxo", "Chamusca", "Constância", "Coruche", "Entroncamento", "Ferreira do Zêzere",
-      "Golegã", "Mação", "Rio Maior", "Salvaterra de Magos", "Santarém", "Sardoal", "Tomar", "Torres Novas", "Vila Nova da Barquinha" ],
-
-    'Setúbal': [  "Alcácer do Sal", "Alcochete", "Almada", "Barreiro", "Grândola", "Moita", "Montijo", "Palmela", "Santiago do Cacém", "Seixal", "Sesimbra", "Setúbal", "Sines" ],
-
-    'Viana do Castelo': [ "Arcos de Valdevez", "Caminha", "Melgaço", "Monção", "Paredes de Coura", "Ponte da Barca", "Ponte de Lima", "Valença", "Viana do Castelo",
-      "Vila Nova de Cerveira" ],
-
-    'Vila Real': [  "Alijó", "Boticas", "Chaves", "Mesão Frio", "Mondim de Basto", "Montalegre", "Murça", "Peso da Régua", "Ribeira de Pena",
-      "Sabrosa", "Santa Marta de Penaguião", "Valpaços", "Vila Pouca de Aguiar", "Vila Real"],
-
-    'Viseu': ["Armamar", "Carregal do Sal", "Castro Daire", "Cinfães", "Lamego", "Mangualde", "Moimenta da Beira", "Mortágua", "Nelas", "Oliveira de Frades",
-      "Penalva do Castelo", "Penedono", "Resende", "Santa Comba Dão", "São João da Pesqueira", "São Pedro do Sul", "Sátão", "Sernancelhe", "Tabuaço",
-      "Tarouca", "Tondela", "Vila Nova de Paiva", "Viseu", "Vouzela"],
-
-    'Açores': [ "Angra do Heroísmo", "Calheta (São Jorge)", "Corvo", "Horta", "Lagoa (São Miguel)", "Lajes das Flores", "Lajes do Pico", "Madalena", "Nordeste",
-      "Ponta Delgada", "Povoação", "Praia da Vitória", "Ribeira Grande", "Santa Cruz da Graciosa", "Santa Cruz das Flores", "São Roque do Pico",
-      "Velas", "Vila do Corvo", "Vila Franca do Campo", "Vila do Porto" ],
-
-    'Madeira': ["Calheta (Madeira)", "Câmara de Lobos", "Funchal", "Machico", "Ponta do Sol", "Porto Moniz", "Porto Santo", "Ribeira Brava", "Santa Cruz",
-      "Santana", "São Vicente" ]
-  };
-
-  // TRANSPORTE? não nos devemos focar nisso
   final List<String> _servicos = ['Alojamento', 'Hotelaria', 'Restauração', 'Edifícios Culturais'];
 
 
-  Empresa _empresa = Empresa();
+  final Empresa _empresa = Empresa();
 
   List<String> selectedDistritos= [];
-  List<String> selectedConcelhos =[];
+
   List<String> selectedServico =[];
 
-  String? _distritoSelecionado;
-  String? _ultimoDistritoSelecionado;
 
-  //Future<List<String>> concelhos = getConcelhos("Aveiro");
+  // FUNCTION TO GET THE CONCELHOS OF A DISTRICT
+  Future<List<String>> getConcelhos(String distrito) async {
+    final apiUrl = "https://json.geoapi.pt/distritos/" + distrito + "/municipios";
+    final response = await http.get(Uri.parse(apiUrl));
+    // print(response.statusCode);
+
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+     // print(jsonData);
+      final municipios = List<String>.from((jsonData['municipios'] as List).map((municipio) => municipio['nome']));
+
+     // print(municipios);
+      return municipios;
+    } else {
+      throw Exception('Failed to load data from API');
+    }
+  }
 
 
   @override
@@ -234,108 +167,140 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                   onSaved: (value) {
                     _empresa.website = value!;
                   },
+
                 ),
 
-                SizedBox(height: 16),
+                SizedBox(height: 30),
 
-                // FALTA POR AS OPÇÕES COMO OBRIGATORIAS (OU SEJA, PARA REGISTAR TEM QUE SER OBRIGADO A ESCOLHER  UMA REGIAO)
-                Text("Região da atividade", style: TextStyle(fontSize: 24)),
+
+                Text("Região da atividade",
+                    style: TextStyle(fontSize: 24)),
+
+                SizedBox(height: 30),
 
                 Container(
-                  child:
-                Column(
-                  children: _concelhosPorDistrito.keys.map((distrito) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        CheckboxListTile(
-                          title: Text(distrito),
-                          value: _distritoSelecionado == distrito,
-                          onChanged: (value) {
-                            setState(() {
-                              if (value == null) {
-                                _distritoSelecionado = _ultimoDistritoSelecionado;
-                              } else {
-                                _ultimoDistritoSelecionado = _distritoSelecionado;
-                                _distritoSelecionado = value ? distrito : null;
-                                // selectedConcelhos = [];
-                              }
-                            });
-                          },
-                        ),
-                        if (_distritoSelecionado == distrito)
-                          Container(
-                            color: Colors.blueGrey[100],
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: _concelhosPorDistrito[distrito]!.map((concelho) {
-                                return CheckboxListTile(
-                                  title: Text(concelho, textAlign: TextAlign.center),
-                                  value: selectedConcelhos.contains(concelho),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      if (value!) {
-                                        selectedConcelhos.add(concelho);
-                                      } else {
-                                        selectedConcelhos.remove(concelho);
-                                      }
-                                    });
-                                  },
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                      ],
-                    );
-                  }).toList(),
-                ),
-            ),
-
-                Text("Serviços",
-                    style: TextStyle(fontSize: 24) ),
-                Column(
-                  children: _servicos
-                      .map(
-                        (servico) => Row(
-                      children: <Widget>[
-                        Checkbox(
-                          value: _empresa.servicos.contains(servico),
-                          onChanged: (value) {
-                            setState(() {
-                              if (value!) {
-                                _empresa.servicos.add(servico);
-                              } else {
-                                _empresa.servicos.remove(servico);
-                              }
-                            });
-                          },
-                        ),
-                        Text(servico),
-                      ],
-                    ),
-                  )
+                  child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                  Text("Distritos"),
+                  Wrap(
+                    children: _distritos
+                        .map((distrito) => Padding(
+                    padding: EdgeInsets.all(4.0),
+                    child: FilterChip(
+                    label: Text(distrito),
+                    selected: selectedDistritos.contains(distrito),
+                    onSelected: (bool selected) {
+                    setState(() {
+                      if (selected) {
+                        selectedDistritos.add(distrito);
+                        _empresa.distritos.add(distrito);
+                      } else {
+                        selectedDistritos.remove(distrito);
+                        _empresa.distritos.remove(distrito);
+                      }
+                  });
+                  },
+                  ),
+                  ))
                       .toList(),
-                ),
 
-                SizedBox(height: 16),
+                  ),
 
-                ElevatedButton(
-                  onPressed: _submitForm,
-                  child: Text('Registar Empresa'),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
+                  SizedBox(height: 30),
+
+                  Text("Concelhos de"),
+                  Wrap(
+                    children: selectedDistritos
+                        .map((distrito) => FutureBuilder(
+                    future: getConcelhos(distrito),
+                    builder: (context, AsyncSnapshot<List<String>> snapshot) {
+                    if (snapshot.hasData) {
+                      return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(distrito),
+                  Wrap(
+                    children: snapshot.data!
+                        .map((concelho) => Padding(
+                    padding: EdgeInsets.all(4.0),
+                    child: FilterChip(
+                    label: Text(concelho),
+                    selected: _empresa.concelhos.contains(concelho),
+                    onSelected: (bool selected) {
+                    setState(() {
+                    if (selected) {
+                      _empresa.concelhos.add(concelho);
+                    } else {
+                      _empresa.concelhos.remove(concelho);
+                    }
+                  });
+                  },
+                  ),
+                  ))
+                      .toList(),
+                  ),
+                  ],
+                  );
+                  } else if (snapshot.hasError) {
+                      return Text('Ocorreu um erro a carregar os concelhos.');
+                  } else {
+                      return Center(
+                      child: CircularProgressIndicator(),
+                  );
+                  }
+                  },
+                  ))
+                      .toList(),
+                  ),
+
+                    SizedBox(height: 30),
+
+                    Text("Serviços",
+                        style: TextStyle(fontSize: 24) ),
+                    Column(
+                      children: _servicos
+                          .map(
+                            (servico) => Row(
+                          children: <Widget>[
+                            Checkbox(
+                              value: _empresa.servicos.contains(servico),
+                              onChanged: (value) {
+                                setState(() {
+                                  if (value!) {
+                                    _empresa.servicos.add(servico);
+                                  } else {
+                                    _empresa.servicos.remove(servico);
+                                  }
+                                });
+                              },
+                            ),
+                            Text(servico),
+                          ],
+                        ),
+                      )
+                          .toList(),
+                    ),
+
+                    SizedBox(height: 16),
+
+                  ElevatedButton(onPressed: _submitForm, child: Text("Registar empresa"))
+                  ],
+                  ),
+                  ),
+    ]),
+    ),
+    ),
+    ),
     );
-  }
+}
 
   void _submitForm() async {
   if (_formKey.currentState!.validate()) {
     _formKey.currentState!.save();
 
-    // print(_empresa);
+
+    print(_empresa);
 
     // Convert the _empresa object to a JSON string
     String empresaJson = jsonEncode(_empresa);
@@ -348,6 +313,10 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
     
     // Handle the response from the Django back-end
     if (response.statusCode == 200) {
+      // Show a confirmation message
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Empresa registada com sucesso!')));
+
       print('Empresa object sent successfully');
     } else {
       print('Failed to send Empresa object');
@@ -364,10 +333,9 @@ class Empresa {
   late String contacto;
   late String email;
   List<String> distritos = [];
-  Map<String, String> concelhos = {};
+  List<String> concelhos = [];
   late String website;
   List<String> servicos = [];
-  Map<String, String> servicoconcreto = {};
 
   Map<String, dynamic> toDict() {
     return {
@@ -381,7 +349,6 @@ class Empresa {
       'concelhos': concelhos,
       'website': website,
       'servicos': servicos,
-      'servicoconcreto': servicoconcreto,
     };
   }
 
@@ -397,11 +364,11 @@ class Empresa {
       ..cae = map['cae']
       ..contacto = map['contacto']
       ..email = map['email']
-      ..distritos = List<String>.from(map['distritos'])
-      ..concelhos = Map<String, String>.from(map['concelhos'])
+      ..distritos = List<String>.from(map['distrito'])
+      ..concelhos = List<String>.from(map['concelhos'])
       ..website = map['website']
-      ..servicos = List<String>.from(map['servicos'])
-      ..servicoconcreto = Map<String, String>.from(map['servicoconcreto']);
+      ..servicos = List<String>.from(map['servicos']);
+
   }
 
   Map<String, dynamic> get empresa {
@@ -416,7 +383,7 @@ class Empresa {
       'concelhos': concelhos,
       'website': website,
       'servicos': servicos,
-      'servicoconcreto': servicoconcreto,
+
     };
   }
 
@@ -424,7 +391,8 @@ class Empresa {
   String toString() {
     return 'Empresa(nome: $nome, morada: $morada, nif: $nif, cae: $cae, '
         'contacto: $contacto, email: $email, distritos: $distritos, '
-        'concelhos: $concelhos, website: $website servicos: $servicos, '
-        'servicoconcreto: $servicoconcreto)';
+        'concelhos: $concelhos, website: $website servicos: $servicos, ';
   }
 }
+
+
