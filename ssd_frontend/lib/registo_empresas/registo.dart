@@ -19,6 +19,7 @@ import 'dart:convert';
 //  }
 // }
 
+// SÓ VAI PARA O REGISTO DA EMPRESA SE O UTILIZADOR TIVER LOGIN FEITO
 
 class RegistoEmpresaPage extends StatefulWidget {
   const RegistoEmpresaPage({Key? key}) : super(key: key);
@@ -30,6 +31,8 @@ class RegistoEmpresaPage extends StatefulWidget {
 class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
   final _formKey = GlobalKey<FormState>();
 
+
+  String? _concelhoSelecionado = " ";
 
   final List<String>_distritos = [
     'Aveiro', 'Beja', 'Braga', 'Bragança', 'Castelo Branco', 'Coimbra', 'Évora', 'Faro', 'Guarda', 'Leiria', 'Lisboa', 'Portalegre', 'Porto', 'Santarém',
@@ -52,7 +55,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
       "Vila Velha de Ródão"],
 
     'Coimbra':[ "Arganil", "Cantanhede", "Coimbra", "Condeixa-a-Nova", "Figueira da Foz", "Góis", "Lousã", "Mealhada", "Mira", "Miranda do Corvo",
-      "Montemor-o-Velho", "Oliveira do Hospital", "Pampilhosa da Serra", "Penacova", "Penela", "Soure", "Tábua", "Vila Nova de Poiares"],
+      "Montemor-o-Velho", "Oliveira do Hospital", "Pampilhosa da Serra", "Penacova", "Penela", "Soure", "Tábua", "Visla Nova de Poiares"],
 
     'Évora': [  "Alandroal", "Arraiolos", "Borba", "Estremoz", "Évora", "Montemor-o-Novo", "Mora", "Mourão", "Portel", "Redondo", "Reguengos de Monsaraz",
       "Vendas Novas", "Viana do Alentejo", "Vila Viçosa"],
@@ -98,27 +101,31 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
       "Santana", "São Vicente" ]
   };
 
-  final List<String> _servicos = ['Alojamento', 'Transporte', 'Hotelaria', 'Restauração'];
+  // TRANSPORTE? não nos devemos focar nisso
+  final List<String> _servicos = ['Alojamento', 'Hotelaria', 'Restauração', 'Edifícios Culturais'];
 
-  final Map<String, List<String>> _servicosdisponveis = {'Alojamento': ['AirBnB', 'Alojamento Local'],
-    'Transporte': ['Bicicleta', 'Moliceiro', 'Trotinete'],
-    'Hotelaria': ['Hotel', 'Hostal'],
-    'Restauração': ['Café', 'Restaurante', 'Tasca', 'Snack-Bar']};
 
   Empresa _empresa = Empresa();
+
+  List<String> selectedDistritos= [];
   List<String> selectedConcelhos =[];
   List<String> selectedServico =[];
+
+  String? _distritoSelecionado;
+  String? _ultimoDistritoSelecionado;
 
   //Future<List<String>> concelhos = getConcelhos("Aveiro");
 
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Registo de Empresa'),
       ),
       body: SingleChildScrollView(
+
         child: Padding(
           padding: EdgeInsets.all(16),
           child: Form(
@@ -126,7 +133,8 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-
+                Text("Dados da Empresa",
+                    style: TextStyle(fontSize: 24) ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Nome da Empresa'),
                   validator: (String? value) {
@@ -153,11 +161,15 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                   },
                 ),
 
+                //NIF
                 TextFormField(
                   decoration: InputDecoration(labelText: 'NIF'),
                   validator: (String? value) {
                     if (value!.isEmpty) {
                       return 'Por favor, insira o NIF da empresa.';
+                    }
+                    else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                      return 'O NIF deve conter apenas números.';
                     }
                     return null;
                   },
@@ -172,6 +184,9 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                     if (value!.isEmpty) {
                       return 'Por favor, insira o CAE da empresa.';
                     }
+                    else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                      return 'O CAE deve conter apenas números.';
+                    }
                     return null;
                   },
                   onSaved: (value) {
@@ -185,19 +200,26 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                   validator: (String? value) {
                     if (value!.isEmpty) {
                       return 'Por favor, insira o contacto telefónico da empresa.';
-                    }
+                  }
+                    else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                      return 'O contacto telefónico deve conter apenas números.';
+                  }
                     return null;
                   },
                   onSaved: (value) {
                     _empresa.contacto = value!;
-                  },
+                  }
                 ),
 
+                  // EMAIL
                 TextFormField(
                   decoration: InputDecoration(labelText: 'E-mail'),
+                  // The validator receives the text that the user has entered.
                   validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Por favor, insira o e-mail da empresa.';
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter Gmail account';
+                    } else if (!value.endsWith('@gmail.com')) {
+                      return 'Please enter valid Gmail account';
                     }
                     return null;
                   },
@@ -205,105 +227,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                     _empresa.email = value!;
                   },
                 ),
-                SizedBox(height: 16),
 
-                /* Text('Região da Atividade'),
-
-                Column(
-                  children: _distritos
-                      .map(
-                        (distrito) => Row(
-                      children: <Widget>[
-                        Checkbox(
-                          value: _empresa.distritos.contains(distrito),
-                          onChanged: (value) {
-                            setState(() {
-                              if (value!) {
-                                _empresa.distritos.add(distrito);
-                              } else {
-                                _empresa.distritos.remove(distrito);
-                              }
-                            });
-                          },
-                        ),
-                        Text(distrito),
-                        if (_empresa.distritos.contains(distrito))
-                          Expanded(
-                            child: DropdownButton<String>(
-                              value: _empresa.concelhos[distrito],
-                              onChanged: (String? value) {
-                                setState(() {
-                                  _empresa.concelhos[distrito] = value!;
-                                });
-                              },
-                              items: _concelhosPorDistrito[distrito]
-                                  ?.map(
-                                    (cidade) => DropdownMenuItem<String>(
-                                  value: cidade,
-                                  child: Text(cidade),
-                                ),
-                              )
-                                  .toList(),
-                            ),
-                          ),
-                      ],
-                    ),
-                  )
-                      .toList(),
-                ), */
-
-
-                Text('Região da Atividade'),
-
-                Column(
-                  children: _distritos
-                      .map(
-                        (distrito) => Row(
-                      children: <Widget>[
-                        Checkbox(
-                          value: _empresa.distritos.contains(distrito),
-                          onChanged: (value) {
-                            setState(() {
-
-                              if (value!) {
-                                _empresa.distritos.add(distrito);
-                              } else {
-                                _empresa.distritos.remove(distrito);
-                              }
-                            });
-                          },
-                        ),
-                        Text(distrito),
-                        if (_empresa.distritos.contains(distrito))
-                          Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text("Concelhos:"),
-                            Column(
-                              children: _distritos.map((_concelhosPorDistrito) {
-                                return Checkbox(
-                                  value: selectedConcelhos.contains(_concelhosPorDistrito),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      Text(_concelhosPorDistrito);
-                                      if (value!) {
-                                        selectedConcelhos.add(_concelhosPorDistrito);
-                                      } else {
-                                        selectedConcelhos.remove(_concelhosPorDistrito);
-                                      }
-                                      //Text(_concelhosPorDistrito);
-                                    });
-                                  },
-                                );
-                              }).toList(),
-                            ),
-                          ],
-                        ),
-                    ],
-                    ),
-                  )
-                      .toList(),
-                ),
 
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Website da empresa'),
@@ -312,6 +236,67 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                   },
                 ),
 
+                SizedBox(height: 16),
+
+                // FALTA POR AS OPÇÕES COMO OBRIGATORIAS (OU SEJA, PARA REGISTAR TEM QUE SER OBRIGADO A ESCOLHER  UMA REGIAO)
+                Text("Região da atividade", style: TextStyle(fontSize: 24)),
+
+                Container(
+                  child: Row(
+                    children: [
+                Column(
+                  children: _concelhosPorDistrito.keys.map((distrito) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        CheckboxListTile(
+                          title: Text(distrito),
+                          value: _distritoSelecionado == distrito,
+                          onChanged: (value) {
+                            setState(() {
+                              if (value == null) {
+                                _distritoSelecionado = _ultimoDistritoSelecionado;
+                              } else {
+                                _ultimoDistritoSelecionado = _distritoSelecionado;
+                                _distritoSelecionado = value ? distrito : null;
+                                // selectedConcelhos = [];
+                              }
+                            });
+                          },
+                        ),
+                        if (_distritoSelecionado == distrito)
+                          Container(
+                            color: Colors.blueGrey[100],
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: _concelhosPorDistrito[distrito]!.map((concelho) {
+                                return CheckboxListTile(
+                                  title: Text(concelho, textAlign: TextAlign.center),
+                                  value: selectedConcelhos.contains(concelho),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (value!) {
+                                        selectedConcelhos.add(concelho);
+                                      } else {
+                                        selectedConcelhos.remove(concelho);
+                                      }
+                                    });
+                                  },
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                      ],
+                    );
+                  }).toList(),
+                ),
+                  ],
+                  )
+
+            ),
+
+                Text("Serviços",
+                    style: TextStyle(fontSize: 24) ),
                 Column(
                   children: _servicos
                       .map(
@@ -330,25 +315,6 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                           },
                         ),
                         Text(servico),
-                        if (_empresa.servicos.contains(servico))
-                          Expanded(
-                            child: DropdownButton<String>(
-                              value: _empresa.servicoconcreto[servico],
-                              onChanged: (String? value) {
-                                setState(() {
-                                  _empresa.servicoconcreto[servico] = value!;
-                                });
-                              },
-                              items: _servicosdisponveis[servico]
-                                  ?.map(
-                                    (service) => DropdownMenuItem<String>(
-                                  value: service,
-                                  child: Text(service),
-                                ),
-                              )
-                                  .toList(),
-                            ),
-                          ),
                       ],
                     ),
                   )
@@ -372,7 +338,8 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
   void _submitForm() async {
   if (_formKey.currentState!.validate()) {
     _formKey.currentState!.save();
-    print(_empresa);
+
+    // print(_empresa);
 
     // Convert the _empresa object to a JSON string
     String empresaJson = jsonEncode(_empresa);
