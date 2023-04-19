@@ -57,6 +57,7 @@ dependencies:
 
   lottie: ^2.3.2
   get: ^4.6.5
+  flutter_survey: ^0.1.4
 
 dev_dependencies:
   flutter_test:

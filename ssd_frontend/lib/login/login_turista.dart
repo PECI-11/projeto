@@ -253,13 +253,13 @@ class _LoginTuristaState extends State<LoginTurista> {
                 ),
 
 
-                /// Gmail
+                /// Email
                 TextFormField(
                   style: kTextFormFieldStyle(),
                   controller: emailController,
                   decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.email_rounded),
-                    hintText: 'gmail',
+                    hintText: 'e-mail',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
@@ -267,11 +267,10 @@ class _LoginTuristaState extends State<LoginTurista> {
                   // The validator receives the text that the user has entered.
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter gmail';
-                    }
-                    /*else if ((!value.endsWith('@gmail.com')) || (!value.endsWith('@outlook.pt'))) {
-                      return 'please enter valid gmail';
-                    }*/
+                    return 'Please enter your e-mail';
+                    } //else if ((!value.endsWith('@gmail.com')) || (!value.endsWith('@outlook.pt'))) {
+                    //return 'please enter valid e-mail';
+                    //}
                     return null;
                   },
                 ),
@@ -282,37 +281,37 @@ class _LoginTuristaState extends State<LoginTurista> {
                 /// password
                 Obx(
                       () => TextFormField(
-                    style: kTextFormFieldStyle(),
-                    controller: passwordController,
-                    obscureText: simpleUIController.isObscure.value,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.lock_open),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          simpleUIController.isObscure.value
-                              ? Icons.visibility
-                              : Icons.visibility_off,
+                      style: kTextFormFieldStyle(),
+                      controller: passwordController,
+                      obscureText: simpleUIController.isObscure.value,
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.lock_open),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            simpleUIController.isObscure.value
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            simpleUIController.isObscureActive();
+                          },
                         ),
-                        onPressed: () {
-                          simpleUIController.isObscureActive();
-                        },
+                        hintText: 'Password',
+                        border: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                        ),
                       ),
-                      hintText: 'Password',
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                      ),
-                    ),
-                    // The validator receives the text that the user has entered.
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter some text';
-                      } else if (value.length < 7) {
-                        return 'at least enter 6 characters';
-                      } else if (value.length > 13) {
-                        return 'maximum character is 13';
-                      }
-                      return null;
-                    },
+                      // The validator receives the text that the user has entered.
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some text';
+                        } else if (value.length < 7) {
+                          return 'at least enter 6 characters';
+                        } else if (value.length > 13) {
+                          return 'maximum character is 13';
+                        }
+                        return null;
+                      },
                   ),
                 ),
                 SizedBox(
@@ -338,16 +337,16 @@ class _LoginTuristaState extends State<LoginTurista> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text('Does not have account?'),
+                    const Text('Ainda não tem conta?'),
                     TextButton(
                       child: const Text(
-                        'Sign up',
+                        'Registe-se aqui',
                         style: TextStyle(fontSize: 20),
                       ),
                       onPressed: () {
                         //signup screen
                         Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => SignUpView())
+                            builder: (context) => const SignUpView())
                         );
                       },
                     )

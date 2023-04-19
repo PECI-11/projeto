@@ -20,10 +20,12 @@ from django.urls import path, include, re_path
 from . import views
 from regions.views import *
 from empresa.views import *
+from users.views import *
 
 urlpatterns = [
     re_path('admin/', admin.site.urls),
     re_path('api/', include('api.urls')),
+    re_path('users/register', register_user, name='user_register'),
     path('regions/<int:district_id>/concelhos/', get_concelhos_by_district, name='get_concelhos_by_district'),
     path('regions/<int:concelhos_id>/freguesias/', get_freguesias_by_concelho, name='get_freguesias_by_concelho'),
     re_path('empresa', empresa_view, name='empresa'),
