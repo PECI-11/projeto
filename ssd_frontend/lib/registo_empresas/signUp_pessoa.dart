@@ -341,7 +341,7 @@ class _SignUpViewState extends State<SignUpView> {
             Navigator.push(context, MaterialPageRoute(
                 builder: (context) => const RegistoEmpresaPage())
             );
-          }git config pull.rebase false
+          }
         },
         child: const Text('Registar'),
       ),
