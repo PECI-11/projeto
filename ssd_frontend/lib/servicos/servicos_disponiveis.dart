@@ -196,7 +196,7 @@ class ServicosDisponiveis extends StatelessWidget {
               ElevatedButton(
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => FormRestaurante(title: 'Formulário - Criação de Serviço de Restauração',))
+                        builder: (context) => RestaurantForm())
                     );
                   },
                   // style: ButtonStyle(elevation: MaterialStateProperty(12.0 )),
