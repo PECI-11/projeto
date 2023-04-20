@@ -2,8 +2,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/flutter_survey.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
-import 'package:http/http.dart' as http;
+//import 'package:path/path.dart';
+//import 'package:http/http.dart' as http;
+
+import 'SurveyPage.dart';
+import 'SurveyQuestionType.dart';
+
 
 // Define a custom Form widget.
 class FormRestaurante extends StatefulWidget {
@@ -35,18 +39,66 @@ class _FormRestauranteState extends State<FormRestaurante> {
      body: SafeArea(
          child: Survey(
            key: _surveyKey,
-            //onSubmit: _submitSurvey,
-            initialData: [
-              /*
-              SurveyPage(
-                title: 'Page1',
-                questions: [
-                  SurveyQuestion(
-                    title:
-                  ),
-                ]
-              ),*/
-            ],
+           /*onSubmit: (answers) {
+             // Handle the survey submission
+             SurveyPage(
+               title: 'Page 1',
+               questions: [
+               SurveyQuestion(
+               title: 'Question 1',
+               type: SurveyQuestionType.shortText,
+             ),
+             SurveyQuestion(
+             title: 'Question 2',
+             type: SurveyQuestionType.longText,
+             ),
+             SurveyQuestion(
+             title: 'Question 3',
+             type: SurveyQuestionType.multipleChoice,
+             choices: [
+             'Choice 1',
+             'Choice 2',
+             'Choice 3',
+             ],
+             ),
+           },*/
+           initialData: [
+             /*SurveyPage(
+               title: 'Page 1',
+               questions: [
+                 SurveyQuestion(
+                   title: 'Question 1',
+                   type: SurveyQuestionType.shortText,
+                 ),
+                 SurveyQuestion(
+                   title: 'Question 2',
+                   type: SurveyQuestionType.longText,
+                 ),
+                 SurveyQuestion(
+                   title: 'Question 3',
+                   type: SurveyQuestionType.multipleChoice,
+                   choices: [
+                     'Choice 1',
+                     'Choice 2',
+                     'Choice 3',
+                   ],
+                 ),
+                 /*
+                 SurveyQuestion(
+                   title: 'Upload an Image',
+                   type: SurveyQuestionType.file,
+                   fileType: SurveyFileType.image,
+                 ),
+                 SurveyQuestion(
+                   title: 'Upload a PDF',
+                   description: 'Upload a PDF file',
+                   type: SurveyQuestionType.file,
+                   fileType: SurveyFileType.pdf,
+                 ),
+                  */
+               ],
+             ),*/
+           ],
          ),
      ),
 

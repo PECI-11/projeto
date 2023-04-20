@@ -12,6 +12,9 @@ import '../login/login_turista.dart';
 import 'package:ssd_frontend/componentes/constants.dart';
 import 'package:ssd_frontend/componentes/simple_ui_controller.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class SignUpView extends StatefulWidget {
   const SignUpView({Key? key}) : super(key: key);
@@ -29,16 +32,27 @@ class _SignUpViewState extends State<SignUpView> {
 
   Users _user = new Users();
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   void _submitForm() async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
+    try {
 
-      _user.name = nameController.text;
-      _user.email = emailController.text;
-      _user.password = passwordController.text;
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
 
-      print(_user);
+      if (userCredential.user != null) {
+        // User created successfully, now add user details to Firestore
+        await _firestore.collection('users').doc(userCredential.user!.uid).set({
+          'name': nameController.text.trim(),
+          'email': emailController.text.trim(),
+          'password': passwordController.text.trim(),
+        });
+      }
 
+      // -------------------PARTE DE BACKEND -------------------------------------
       // Convert the _user object to a JSON string
       String userJson = jsonEncode(_user);
 
@@ -55,7 +69,38 @@ class _SignUpViewState extends State<SignUpView> {
       } else {
         print('Failed to send User object');
       }
+
+    } catch (e) {
+      print('Error creating user: $e');
     }
+      /*
+      if (_formKey.currentState!.validate()) {
+        _formKey.currentState!.save();
+
+        _user.name = nameController.text;
+        _user.email = emailController.text;
+        _user.password = passwordController.text;
+
+        print(_user);
+
+        // Convert the _user object to a JSON string
+        String userJson = jsonEncode(_user);
+
+        // Send the JSON string to the Django back-end
+        final response = await http.post(
+          Uri.parse('http://127.0.0.1:8000/users/register'),
+          headers: {'Content-Type': 'application/json'},
+          body: userJson,
+        );
+
+        // Handle the response from the Django back-end
+        if (response.statusCode == 200) {
+          print('User object sent successfully');
+        } else {
+          print('Failed to send User object');
+        }
+      }
+    }*/
   }
 
 
@@ -339,10 +384,16 @@ class _SignUpViewState extends State<SignUpView> {
           ),
         ),
         onPressed: () {
-          _submitForm();
+          /*
+          if (_formKey.currentState!.validate()) {
+            _submitForm();
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const RegistoEmpresaPage()));
+          }
+          */
           // Validate returns true if the form is valid, or false otherwise.
           if (_formKey.currentState!.validate()) {
-            // ... Navigate To your Home Page
+            // ... Navigate To RegistoEmpresaPage()
+            _submitForm();
             Navigator.push(context, MaterialPageRoute(
                 builder: (context) => const RegistoEmpresaPage())
             );
