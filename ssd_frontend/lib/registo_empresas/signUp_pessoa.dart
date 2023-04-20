@@ -33,25 +33,31 @@ class _SignUpViewState extends State<SignUpView> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
+      _user.name = nameController.text;
+      _user.email = emailController.text;
+      _user.password = passwordController.text;
+
       print(_user);
 
-      // Convert the _empresa object to a JSON string
+      // Convert the _user object to a JSON string
       String userJson = jsonEncode(_user);
 
       // Send the JSON string to the Django back-end
-      final response = await http.post(Uri.parse('http://127.0.0.1:8000/users/register'),
-          body: jsonEncode(_user.toDict())
+      final response = await http.post(
+        Uri.parse('http://127.0.0.1:8000/users/register'),
+        headers: {'Content-Type': 'application/json'},
+        body: userJson,
       );
-      //headers: {'Content-Type': 'application/json'});
 
       // Handle the response from the Django back-end
       if (response.statusCode == 200) {
-        print('Empresa object sent successfully');
+        print('User object sent successfully');
       } else {
-        print('Failed to send Empresa object');
+        print('Failed to send User object');
       }
     }
   }
+
 
 
   @override
@@ -381,37 +387,40 @@ class Users {
 */
 
 class Users {
-  late String nome;
-  late String email;
-  late String password;
+  String name = '';
+  String email = '';
+  String password = '';
 
-  Map<String, dynamic> toDict() {
+  Map<String, dynamic> toMap() {
     return {
-      'nome': nome,
+      'name': name,
       'email': email,
+      'password': password,
     };
   }
 
-  String toJson() => jsonEncode(toDict());
+  Map<String, dynamic> toJson() => toMap();
 
   static Users fromJson(String source) => fromMap(json.decode(source));
 
   static Users fromMap(Map<String, dynamic> map) {
     return Users()
-      ..nome = map['nome']
-      ..email = map['email'];
+      ..name = map['name']
+      ..email = map['email']
+      ..password = map['password'];
   }
 
   Map<String, dynamic> get empresa {
     return {
-      'nome': nome,
+      'nome': name,
       'morada': email,
     };
   }
 
   @override
   String toString() {
-    return 'Empresa(nome: $nome, email: $email)';
+    return 'Users(name: $name, email: $email)';
   }
 }
+
 

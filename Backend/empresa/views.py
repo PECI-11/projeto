@@ -1,6 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
+from pymongo import MongoClient
 #from myapp.models import Empresa  # Import the Empresa model from your app models.py file
 
 #@csrf_exempt
@@ -18,6 +19,16 @@ def empresa_view(request):
             #     f.write('\n')
 
             print(data)
+            
+            client = MongoClient('mongodb://localhost:27017/')
+            db = client['mydatabase']
+            
+            # Insert the user data into the 'users' collection
+            users = db['Empresas']
+            users.insert_one(data)
+            
+
+
                 
             return JsonResponse({'status': 'success'})
         except Exception as e:

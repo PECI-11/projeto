@@ -14,7 +14,7 @@ def register_user(request):
 
         print(data)
 
-        '''
+        
         # Connect to the MongoDB database
         client = MongoClient('mongodb://localhost:27017/')
         db = client['mydatabase']
@@ -26,7 +26,7 @@ def register_user(request):
         # Return a JSON response with the user ID
         response_data = {'user_id': str(user_id)}
         return JsonResponse(response_data)
-        '''
+        
     
     # If the request is not a POST, return a 405 Method Not Allowed response
     return JsonResponse({'error': 'Method Not Allowed'}, status=405)
