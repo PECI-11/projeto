@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'ConfirmationPage.dart';
 
 class RestaurantForm extends StatefulWidget {
   @override
@@ -18,6 +22,9 @@ class _RestaurantFormState extends State<RestaurantForm> {
   TextEditingController _promoController = TextEditingController();
   List<File> _imageList = [];
   List<String> _imageDescriptionList = [];
+
+  // NÃO SEI QUE NOME É SUPOSTO DAR!
+  final String url = 'https://meuendpoint.com/api/restaurants';
 
   Future _getImage(ImageSource source) async {
     final pickedFile = await ImagePicker().getImage(source: source);
@@ -265,6 +272,58 @@ class _RestaurantFormState extends State<RestaurantForm> {
     ),
     ),
         ),
+    );
+  }
+
+  void _submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      // Enviar solicitação HTTP POST com os dados do formulário
+      final response = await http.post(
+        Uri.parse(url),
+        body: {
+          'menu': _menuController.text,
+          'hours': _hoursController.text,
+          'description': _descriptionController.text,
+          'location': _locationController.text,
+          'promo': _promoController.text,
+          'images': json.encode(_imageList.map((e) => e.path).toList()),
+          'imageDescriptions': json.encode(_imageDescriptionList),
+        },
+      );
+      if (response.statusCode == 200) {
+        // Dados enviados com sucesso
+        // Redirecionar para a página de confirmação
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ConfirmationPage(confirmationText: '',)),
+        );
+      } else {
+        // Erro ao enviar dados
+        // Exibir mensagem de erro
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Erro'),
+              content: Text('Não foi possível enviar os dados do formulário.'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Fechar'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    }
+  }
+  Widget _buildSubmitButton() {
+    return ElevatedButton(
+      child: Text('Enviar'),
+      onPressed: _submitForm,
     );
   }
 }
