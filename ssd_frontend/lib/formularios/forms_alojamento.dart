@@ -153,40 +153,17 @@ class _AlojamentoFormState extends State<AlojamentoForm> {
           controller: _imagesController,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
-            hintText: "Insira um arquivo PDF ou uma imagem do alojamento",
+            hintText: "Insira uma imagem do alojamento",
           ),
           validator: (value) {
             if (_imageList.isEmpty && value == "") {
-              return "Insira um arquivo PDF ou uma imagem do alojamento";
+              return "Insira uma imagem do alojamento";
             }
             return null;
           },
           readOnly: true,
           onTap: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return SimpleDialog(
-                  title: Text("Escolha uma opção"),
-                  children: <Widget>[
-                    SimpleDialogOption(
-                      child: Text("Imagem"),
-                      onPressed: () {
-                        _getImage(ImageSource.gallery);
-                        Navigator.pop(context);
-                      },
-                    ),
-                    SimpleDialogOption(
-                      child: Text("PDF"),
-                      onPressed: () {
-                        _getPDF();
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
+            _getImage(ImageSource.gallery);
           },
         ),
         SizedBox(height: 10.0),
@@ -195,19 +172,30 @@ class _AlojamentoFormState extends State<AlojamentoForm> {
             children: List.generate(_imageList.length, (index) {
               return Column(
                 children: [
-                  Image.file(_imageList[index]),
                   SizedBox(height: 10.0),
-                  TextFormField(
-                    initialValue: _imageDescriptionList[index],
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Descrição da imagem",
-                    ),
-                    onChanged: (value) {
-                      _imageDescriptionList[index] = value;
-                    },
+                  Row(
+                    children: [
+                      Image.network(
+                        _imageList[index].path,
+                        height: 100.0,
+                        width: 100.0,
+                      ),
+                      SizedBox(width: 10.0),
+                      Expanded(
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: "Descrição da imagem",
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              _imageDescriptionList[index] = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 10.0),
                 ],
               );
             }),
@@ -215,6 +203,7 @@ class _AlojamentoFormState extends State<AlojamentoForm> {
       ],
     );
   }
+
 
 
 
