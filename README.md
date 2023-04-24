@@ -4,16 +4,15 @@
 Backend e API de serviços de suporte a múltiplos sistemas de gestão de destinos
 
 
-## Install Django
-  #### `pip install django`
-  ### Verify installation
-  #### `django-admin --version`
+## First, install dependencies/requirements
+  #### `pip install -r requirements.txt`
+  ### Now we, need flutter to run oour frontend
+  #### [Install flutter from their offical website](https://docs.flutter.dev/get-started/install)
+  
 
-## Install dependencies
-  #### `pip install djangorestframework`
 
 ## How to run
-1. Create a virtual environment:
+1. Create a virtual environment(only once):
 
     #### `python3 -m venv venv`
 
@@ -23,6 +22,9 @@ Backend e API de serviços de suporte a múltiplos sistemas de gestão de destin
     #### in linux: `source venv/bin/activate`
 
     #### in Windows:  `.\venv\Scripts\Activate`
-3. Run the server
+3. Run the backend application
 
     #### `python3 manage.py runserver`
+
+4. Open a new terminal on the ssd_frontend folder 
+    ### `flutter run -d chrome`

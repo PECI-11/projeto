@@ -17,12 +17,12 @@ def insert_restaurant(request):
 
             print(data)
             
-            client = MongoClient('mongodb://localhost:27017/')
-            db = client['mydatabase']
+            # client = MongoClient('mongodb://localhost:27017/')
+            # db = client['mydatabase']
             
-            # Insert the user data into the 'users' collection
-            users = db['Servicos']
-            users.insert_one(data)
+            # # Insert the user data into the 'users' collection
+            # users = db['Servicos']
+            # users.insert_one(data)
             
 
 
