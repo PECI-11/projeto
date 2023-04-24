@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:http/http.dart' as http;
+
 
 
 class AlojamentoForm extends StatefulWidget {
@@ -31,19 +34,6 @@ class _AlojamentoFormState extends State<AlojamentoForm> {
     setState(() {
       if (pickedFile != null) {
         _imageList.add(File(pickedFile.path));
-        _imageDescriptionList.add("");
-      }
-    });
-  }
-
-  Future _getPDF() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf'],
-    );
-    setState(() {
-      if (result != null) {
-        _imageList.add(File(result.files.single.path!));
         _imageDescriptionList.add("");
       }
     });
@@ -271,6 +261,51 @@ class _AlojamentoFormState extends State<AlojamentoForm> {
     );
   }
 
+  void _saveAlojamento() async {
+    if (_formKey.currentState!.validate()) {
+      Map<String, dynamic> alojamentoData = {
+        'description': _descriptionController.text,
+        'bedroom_type': _bedroomTypeController.text,
+        'bedroom_prices': _bedroomPricesController.text,
+        'services': _servicesController.text,
+        'location': _locationController.text,
+        'images': _imageList.map((image) => image.path).toList(),
+        'image_descriptions': _imageDescriptionList,
+      };
+
+      String jsonBody = json.encode(alojamentoData);
+
+      Uri url = Uri.parse('http://127.0.0.1:8000/services/alojamento');
+      http.Response response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonBody,
+      );
+
+      if (response.statusCode == 200) {
+        // Se a solicitação for bem-sucedida, exiba uma mensagem de sucesso
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Alojamento criado com sucesso!'),
+        ));
+
+        // Limpe o formulário e a lista de imagens
+        _formKey.currentState!.reset();
+        setState(() {
+          _imageList.clear();
+          _imageDescriptionList.clear();
+        });
+      } else {
+        // Se a solicitação falhar, exiba uma mensagem de erro
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Ocorreu um erro ao criar o alojamento.'),
+        ));
+      }
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -298,21 +333,7 @@ class _AlojamentoFormState extends State<AlojamentoForm> {
               _buildLocationInput(),
               SizedBox(height: 20.0),
               ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-// Do something with the form data
-                    print("Descriçãp: ${_descriptionController.text}");
-                    print("Tipo de quartos: ${_bedroomTypeController.text}");
-                    print("Preço dos quartos: ${_bedroomPricesController.text}");
-                    print("Serviços: ${_servicesController.text}");
-                    print("Imagens: ");
-                    for (var i = 0; i < _imageList.length; i++) {
-                      print("${_imageList[i].path}: ${_imageDescriptionList[i]}");
-                    }
-                    print("Promoções: ${_promosController.text}");
-                    print("Localização: ${_locationController.text}");
-                  }
-                },
+                onPressed: _saveAlojamento,
                 child: Text("Enviar"),
               ),
             ],

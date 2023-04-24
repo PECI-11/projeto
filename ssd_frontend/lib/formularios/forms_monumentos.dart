@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 
 class MonumentoForm extends StatefulWidget {
   @override
@@ -16,105 +19,6 @@ class _MonumentoFormState extends State<MonumentoForm> {
   TextEditingController _activityController = TextEditingController();
   TextEditingController _guideVisitController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
-
-  // List<File> _imageList = [];
-  // List<String> _imageDescriptionList = [];
-
-  // Future _getImage(ImageSource source) async {
-  //   final pickedFile = await ImagePicker().getImage(source: source);
-  //   setState(() {
-  //     if (pickedFile != null) {
-  //       _imageList.add(File(pickedFile.path));
-  //       _imageDescriptionList.add("");
-  //     }
-  //   });
-  // }
-
-  // Future _getPDF() async {
-  //   final result = await FilePicker.platform.pickFiles(
-  //     type: FileType.custom,
-  //     allowedExtensions: ['pdf'],
-  //   );
-  //   setState(() {
-  //     if (result != null) {
-  //       _imageList.add(File(result.files.single.path!));
-  //       _imageDescriptionList.add("");
-  //     }
-  //   });
-  // }
-
-  // Widget _buildStoryInput() {
-  //   return Column(
-  //     crossAxisAlignment: CrossAxisAlignment.start,
-  //     children: <Widget>[
-  //       Text("Ementa"),
-  //       SizedBox(height: 10.0),
-  //       TextFormField(
-  //         controller: _storyController,
-  //         decoration: InputDecoration(
-  //           border: OutlineInputBorder(),
-  //           hintText: "História do m",
-  //         ),
-  //         validator: (value) {
-  //           if (_imageList.isEmpty && value == "") {
-  //             return "Insira um arquivo PDF ou uma imagem da ementa";
-  //           }
-  //           return null;
-  //         },
-  //         readOnly: true,
-  //         onTap: () {
-  //           showDialog(
-  //             context: context,
-  //             builder: (BuildContext context) {
-  //               return SimpleDialog(
-  //                 title: Text("Escolha uma opção"),
-  //                 children: <Widget>[
-  //                   SimpleDialogOption(
-  //                     child: Text("Imagem"),
-  //                     onPressed: () {
-  //                       _getImage(ImageSource.gallery);
-  //                       Navigator.pop(context);
-  //                     },
-  //                   ),
-  //                   SimpleDialogOption(
-  //                     child: Text("PDF"),
-  //                     onPressed: () {
-  //                       _getPDF();
-  //                       Navigator.pop(context);
-  //                     },
-  //                   ),
-  //                 ],
-  //               );
-  //             },
-  //           );
-  //         },
-  //       ),
-  //       SizedBox(height: 10.0),
-  //       if (_imageList.isNotEmpty)
-  //         Column(
-  //           children: List.generate(_imageList.length, (index) {
-  //             return Column(
-  //               children: [
-  //                 Image.file(_imageList[index]),
-  //                 SizedBox(height: 10.0),
-  //                 TextFormField(
-  //                   initialValue: _imageDescriptionList[index],
-  //                   decoration: InputDecoration(
-  //                     border: OutlineInputBorder(),
-  //                     labelText: "Descrição da imagem",
-  //                   ),
-  //                   onChanged: (value) {
-  //                     _imageDescriptionList[index] = value;
-  //                   },
-  //                 ),
-  //                 SizedBox(height: 10.0),
-  //               ],
-  //             );
-  //           }),
-  //         ),
-  //     ],
-  //   );
-  // }
 
   Widget _buildStoryInput() {
     return Column(
@@ -337,6 +241,47 @@ class _MonumentoFormState extends State<MonumentoForm> {
     );
   }
 
+  void _saveMonumento() async {
+    if (_formKey.currentState!.validate()) {
+      Map<String, dynamic> monumentoData = {
+        'story': _storyController.text,
+        'style': _styleController.text,
+        'accessability': _accessabilityController.text,
+        'schedule': _scheduleController.text,
+        'price': _priceController.text,
+        'activity': _activityController.text,
+        'guide_visit': _guideVisitController.text,
+        'location': _locationController.text,
+      };
+
+      String jsonBody = json.encode(monumentoData);
+
+      Uri url = Uri.parse('http://127.0.0.1:8000/services/monumento');
+      http.Response response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonBody,
+      );
+
+      if (response.statusCode == 200) {
+        // Se a solicitação for bem-sucedida, exiba uma mensagem de sucesso
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Monumento criado com sucesso!'),
+        ));
+
+        // Limpe o formulário
+        _formKey.currentState!.reset();
+      } else {
+        // Se a solicitação falhar, exiba uma mensagem de erro
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Ocorreu um erro ao criar o monumento.'),
+        ));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -366,19 +311,7 @@ class _MonumentoFormState extends State<MonumentoForm> {
               _buildLocationInput(),
               SizedBox(height: 20.0),
               ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-// Do something with the form data
-                    print("História: ${_storyController.text}");
-                    print("Estilo: ${_styleController.text}");
-                    print("Acessibilidade: ${_accessabilityController.text}");
-                    print("Horário: ${_scheduleController.text}");
-                    print("Preços: ${_priceController.text}");
-                    print("Atividade: ${_activityController.text}");
-                    print("Visitas guiadas: ${_guideVisitController.text}");
-                    print("Localização: ${_locationController.text}");
-                  }
-                },
+                onPressed: _saveMonumento,
                 child: Text("Enviar"),
               ),
             ],
