@@ -7,6 +7,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 import 'ConfirmationPage.dart';
 
@@ -26,7 +28,7 @@ class _RestaurantFormState extends State<RestaurantForm> {
   List<String> _imageDescriptionList = [];
 
   // NÃO SEI QUE NOME É SUPOSTO DAR!
-  final String url = 'https://127.0.0.1:8000/services/restaurants';
+  final String url = 'http://127.0.0.1:8000/services/restaurants';
 
   Future _getImage(ImageSource source) async {
     final pickedFile = await ImagePicker().getImage(source: source);
@@ -220,98 +222,103 @@ class _RestaurantFormState extends State<RestaurantForm> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Formulário do restaurante"),
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Text("Formulário do restaurante"),
+    ),
+    body: Padding(
+      padding: EdgeInsets.all(20.0),
+      child: Form(
+        key: _formKey,
+        child: ListView(
+          children: <Widget>[
+            _buildMenuInput(),
+            SizedBox(height: 20.0),
+            _buildHoursInput(),
+            SizedBox(height: 20.0),
+            _buildDescriptionInput(),
+            SizedBox(height: 20.0),
+            _buildLocationInput(),
+            SizedBox(height: 20.0),
+            _buildPromoInput(),
+            SizedBox(height: 20.0),
+            ElevatedButton(
+              onPressed: _submitForm, // Updated here
+              child: Text("Enviar"),
+            ),
+          ],
         ),
-        body: Padding(
-        padding: EdgeInsets.all(20.0),
-    child: Form(
-    key: _formKey,
-    child: ListView(
-    children: <Widget>[
-    _buildMenuInput(),
-    SizedBox(height: 20.0),
-    _buildHoursInput(),
-    SizedBox(height: 20.0),
-    _buildDescriptionInput(),
-    SizedBox(height: 20.0),
-    _buildLocationInput(),
-    SizedBox(height: 20.0),
-    _buildPromoInput(),
-    SizedBox(height: 20.0),
-    ElevatedButton(
-    onPressed: () {
-    if (_formKey.currentState!.validate()) {
-// Do something with the form data
-    print("Menu: ${_menuController.text}");
-    print("Horário: ${_hoursController.text}");
-    print("Descrição do ambiente: ${_descriptionController.text}");
-    print("Localização: ${_locationController.text}");
-    print("Promoções_controller.text}");
-    }
-    },
-      child: Text("Enviar"),
+      ),
     ),
-    ],
-    ),
-    ),
-        ),
-    );
-  }
+  );
+}
 
-  void _submitForm() async {
-    if (_formKey.currentState!.validate()) {
-      // Enviar solicitação HTTP POST com os dados do formulário
-      final response = await http.post(
-        Uri.parse(url),
-        body: {
-          'menu': _menuController.text,
-          'hours': _hoursController.text,
-          'description': _descriptionController.text,
-          'location': _locationController.text,
-          'promo': _promoController.text,
-          'images': json.encode(_imageList.map((e) => e.path).toList()),
-          'imageDescriptions': json.encode(_imageDescriptionList),
+void _submitForm() async {
+  if (_formKey.currentState!.validate()) {
+    // Get the currently logged-in user's email
+    final user = FirebaseAuth.instance.currentUser;
+    final email = user!.email;
+
+    // Encode the form data and user email as a JSON object
+    final data = json.encode({
+      'menu': _menuController.text,
+      'hours': _hoursController.text,
+      'description': _descriptionController.text,
+      'location': _locationController.text,
+      'promo': _promoController.text,
+      'images': _imageList.map((e) => e.path).toList(),
+      'imageDescriptions': _imageDescriptionList,
+      'email': email,
+    });
+
+    // Send the form data to the server
+    final response = await http.post(
+      Uri.parse(url),
+      body: data,
+    );
+
+    if (response.statusCode == 200) {
+      // Success: navigate to the confirmation page
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ConfirmationPage(
+            confirmationText: '',
+          ),
+        ),
+      );
+    } else {
+      // Error: display an error dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Erro'),
+            content: Text('Não foi possível enviar os dados do formulário.'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Fechar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
         },
       );
-      if (response.statusCode == 200) {
-        // Dados enviados com sucesso
-        // Redirecionar para a página de confirmação
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ConfirmationPage(confirmationText: '',)),
-        );
-      } else {
-        // Erro ao enviar dados
-        // Exibir mensagem de erro
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Erro'),
-              content: Text('Não foi possível enviar os dados do formulário.'),
-              actions: <Widget>[
-                TextButton(
-                  child: Text('Fechar'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      }
     }
   }
+}
+
+
   Widget _buildSubmitButton() {
     return ElevatedButton(
-      child: Text('Enviar'),
-      onPressed: _submitForm,
-    );
+  onPressed: _submitForm,
+  child: Text("Enviar"),
+);
+
   }
 }
 

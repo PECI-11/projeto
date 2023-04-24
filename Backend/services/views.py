@@ -9,6 +9,7 @@ from pymongo import MongoClient
 @csrf_exempt
 def insert_restaurant(request):
     if request.method == 'POST':
+        
     	
         try:
             data = json.loads(request.body)
