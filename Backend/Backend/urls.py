@@ -21,9 +21,11 @@ from . import views
 from regions.views import *
 from empresa.views import *
 from users.views import *
+from services.views import *
 
 urlpatterns = [
     re_path('admin/', admin.site.urls),
+    re_path('services/restaurants', insert_restaurant, name='service_restaurant'),
     re_path('api/', include('api.urls')),
     re_path('users/register', register_user, name='user_register'),
     path('regions/<int:district_id>/concelhos/', get_concelhos_by_district, name='get_concelhos_by_district'),

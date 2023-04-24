@@ -1,13 +1,13 @@
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
 from pymongo import MongoClient
-#from myapp.models import Empresa  # Import the Empresa model from your app models.py file
 
-#@csrf_exempt
-def empresa_view(request):
-    print("ola")
-    print(request)
+# Create your views here.
+
+@csrf_exempt
+def insert_restaurant(request):
     if request.method == 'POST':
     	
         try:
@@ -21,7 +21,7 @@ def empresa_view(request):
             db = client['mydatabase']
             
             # Insert the user data into the 'users' collection
-            users = db['Empresas']
+            users = db['Servicos']
             users.insert_one(data)
             
 
@@ -32,3 +32,4 @@ def empresa_view(request):
             return JsonResponse({'status': 'error', 'message': str(e)})
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
