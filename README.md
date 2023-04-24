@@ -6,7 +6,7 @@ Backend e API de serviços de suporte a múltiplos sistemas de gestão de destin
 
 ## First, install dependencies/requirements
   #### `pip install -r requirements.txt`
-  ### Now we, need flutter to run oour frontend
+  ### Now we, need flutter to run our frontend
   #### [Install flutter from their offical website](https://docs.flutter.dev/get-started/install)
   
 
