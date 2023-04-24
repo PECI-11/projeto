@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
+//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+//import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -24,7 +26,7 @@ class _RestaurantFormState extends State<RestaurantForm> {
   List<String> _imageDescriptionList = [];
 
   // NÃO SEI QUE NOME É SUPOSTO DAR!
-  final String url = 'https://meuendpoint.com/api/restaurants';
+  final String url = 'https://127.0.0.1:8000/services/restaurants';
 
   Future _getImage(ImageSource source) async {
     final pickedFile = await ImagePicker().getImage(source: source);
@@ -45,6 +47,7 @@ class _RestaurantFormState extends State<RestaurantForm> {
       if (result != null) {
         _imageList.add(File(result.files.single.path!));
         _imageDescriptionList.add("");
+        print('PDF done');
       }
     });
   }
@@ -53,7 +56,7 @@ class _RestaurantFormState extends State<RestaurantForm> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text("Ementa"),
+        /*Text("Ementa"),
         SizedBox(height: 10.0),
         TextFormField(
           controller: _menuController,
@@ -117,7 +120,7 @@ class _RestaurantFormState extends State<RestaurantForm> {
                 ],
               );
             }),
-          ),
+          ), */
       ],
     );
   }
@@ -190,22 +193,6 @@ class _RestaurantFormState extends State<RestaurantForm> {
           },
         ),
         SizedBox(height: 10.0),
-        Container(
-          height: 200.0,
-          child: GoogleMap(
-            initialCameraPosition: CameraPosition(
-              target: _restaurantLocation,
-              zoom: 15.0,
-            ),
-            onMapCreated: (GoogleMapController controller) {},
-            markers: {
-              Marker(
-                markerId: MarkerId("restaurant_location"),
-                position: _restaurantLocation,
-              ),
-            },
-          ),
-        ),
       ],
     );
   }
