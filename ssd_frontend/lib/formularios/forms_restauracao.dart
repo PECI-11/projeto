@@ -19,7 +19,8 @@ class RestaurantForm extends StatefulWidget {
 
 class _RestaurantFormState extends State<RestaurantForm> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _menuController = TextEditingController();
+  TextEditingController _tipoEstabelecimentoController = TextEditingController();
+  TextEditingController _imagesController = TextEditingController();
   TextEditingController _hoursController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
@@ -27,8 +28,20 @@ class _RestaurantFormState extends State<RestaurantForm> {
   List<File> _imageList = [];
   List<String> _imageDescriptionList = [];
 
-  // NÃO SEI QUE NOME É SUPOSTO DAR!
   final String url = 'http://127.0.0.1:8000/services/restaurants';
+  final List<String> _restaurantTypes = ["Restaurante", "Café", "Bar", "Snack-Bar", "Salão de chá", "Food Truck", "Self-service"];
+
+  List<String> _selectedTypes = [];
+
+  void _toggleType(String type) {
+    setState(() {
+      if (_selectedTypes.contains(type)) {
+        _selectedTypes.remove(type);
+      } else {
+        _selectedTypes.add(type);
+      }
+    });
+  }
 
   Future _getImage(ImageSource source) async {
     final pickedFile = await ImagePicker().getImage(source: source);
@@ -40,7 +53,7 @@ class _RestaurantFormState extends State<RestaurantForm> {
     });
   }
 
-  Future _getPDF() async {
+  /*Future _getPDF() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf'],
@@ -52,53 +65,52 @@ class _RestaurantFormState extends State<RestaurantForm> {
         print('PDF done');
       }
     });
-  }
-
-  Widget _buildMenuInput() {
+  }*/
+  Widget _buildRestaurantTypeInput() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        /*Text("Ementa"),
+        Text("Tipo de estabelecimento"),
         SizedBox(height: 10.0),
-        TextFormField(
-          controller: _menuController,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: "Insira um arquivo PDF ou uma imagem da ementa",
-          ),
-          validator: (value) {
-            if (_imageList.isEmpty && value == "") {
-              return "Insira um arquivo PDF ou uma imagem da ementa";
-            }
-            return null;
+        Column(
+          children: _restaurantTypes
+              .map(
+                (type) => Row(
+                  children: <Widget> [
+                    Checkbox(
+                      value: _selectedTypes.contains(type),
+                      onChanged: (value){
+                        setState(() {
+                          if(value!){
+                            _selectedTypes.add(type);
+                          }
+                          else{
+                            _selectedTypes.remove(type);
+                          }
+                        });
+                      }
+                  ),
+                  Text(type),
+                ],
+              ),
+            )
+            .toList(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildImagesInput() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("Ementa"),
+        SizedBox(height: 10.0),
+        ElevatedButton(
+          onPressed: () {
+            _getImage(ImageSource.gallery);
           },
-          readOnly: true,
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return SimpleDialog(
-                  title: Text("Escolha uma opção"),
-                  children: <Widget>[
-                    SimpleDialogOption(
-                      child: Text("Imagem"),
-                      onPressed: () {
-                        _getImage(ImageSource.gallery);
-                        Navigator.pop(context);
-                      },
-                    ),
-                    SimpleDialogOption(
-                      child: Text("PDF"),
-                      onPressed: () {
-                        _getPDF();
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          },
+          child: Text("Inserir imagem da ementa"),
         ),
         SizedBox(height: 10.0),
         if (_imageList.isNotEmpty)
@@ -106,26 +118,24 @@ class _RestaurantFormState extends State<RestaurantForm> {
             children: List.generate(_imageList.length, (index) {
               return Column(
                 children: [
-                  Image.file(_imageList[index]),
                   SizedBox(height: 10.0),
-                  TextFormField(
-                    initialValue: _imageDescriptionList[index],
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Descrição da imagem",
-                    ),
-                    onChanged: (value) {
-                      _imageDescriptionList[index] = value;
-                    },
+                  Row(
+                    children: [
+                      Image.network(
+                        _imageList[index].path,
+                        height: 100.0,
+                        width: 100.0,
+                      )
+                    ],
                   ),
-                  SizedBox(height: 10.0),
                 ],
               );
             }),
-          ), */
+          ),
       ],
     );
   }
+
 
   Widget _buildHoursInput() {
     return Column(
@@ -234,7 +244,9 @@ Widget build(BuildContext context) {
         key: _formKey,
         child: ListView(
           children: <Widget>[
-            _buildMenuInput(),
+            _buildRestaurantTypeInput(),
+            SizedBox(height: 16.0),
+            _buildImagesInput(),
             SizedBox(height: 20.0),
             _buildHoursInput(),
             SizedBox(height: 20.0),
@@ -263,7 +275,8 @@ void _submitForm() async {
 
     // Encode the form data and user email as a JSON object
     final data = json.encode({
-      'menu': _menuController.text,
+      'tipoEstabelecimento': _tipoEstabelecimentoController.text,
+      'ementa': _imagesController.text,
       'hours': _hoursController.text,
       'description': _descriptionController.text,
       'location': _locationController.text,
