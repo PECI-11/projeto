@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ssd_frontend/registo_empresas/regioes.dart';
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:ssd_frontend/servicos/servicos.dart';
 
 // ...
 
@@ -18,38 +20,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
   final _formKey = GlobalKey<FormState>();
 
 
-  final List<String> _distritos = [
-    'Aveiro', 'Beja', 'Braga', 'Bragança', 'Castelo Branco', 'Coimbra', 'Évora', 'Faro',
-    'Guarda', 'Leiria', 'Lisboa', 'Portalegre', 'Porto', 'Santarém', 'Setúbal', 'Viana do Castelo',
-    'Vila Real', 'Viseu', 'Açores', 'Madeira'];
-
-  final List<String> _servicos = ['Alojamento', 'Hotelaria', 'Restauração', 'Edifícios Culturais'];
-
-
   final Empresa _empresa = Empresa();
-
-  List<String> selectedDistritos= [];
-
-  List<String> selectedServico =[];
-
-
-  // FUNCTION TO GET THE CONCELHOS OF A DISTRICT
-  Future<List<String>> getConcelhos(String distrito) async {
-    final apiUrl = "https://json.geoapi.pt/distritos/" + distrito + "/municipios";
-    final response = await http.get(Uri.parse(apiUrl));
-    // print(response.statusCode);
-
-    if (response.statusCode == 200) {
-      final jsonData = jsonDecode(response.body);
-     // print(jsonData);
-      final municipios = List<String>.from((jsonData['municipios'] as List).map((municipio) => municipio['nome']));
-
-     // print(municipios);
-      return municipios;
-    } else {
-      throw Exception('Failed to load data from API');
-    }
-  }
 
 
   @override
@@ -130,23 +101,23 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                 ),
 
                 TextFormField(
-                  decoration:
-                  InputDecoration(labelText: 'Contacto telefónico'),
-                  validator: (String? value) {
-                    if (value!.isEmpty) {
-                      return 'Por favor, insira o contacto telefónico da empresa.';
-                  }
-                    else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
-                      return 'O contacto telefónico deve conter apenas números.';
-                  }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _empresa.contacto = value!;
-                  }
+                    decoration:
+                    InputDecoration(labelText: 'Contacto telefónico'),
+                    validator: (String? value) {
+                      if (value!.isEmpty) {
+                        return 'Por favor, insira o contacto telefónico da empresa.';
+                      }
+                      else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                        return 'O contacto telefónico deve conter apenas números.';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _empresa.contacto = value!;
+                    }
                 ),
 
-                  // EMAIL
+                // EMAIL
                 TextFormField(
                   decoration: InputDecoration(labelText: 'E-mail'),
                   // The validator receives the text that the user has entered.
@@ -169,166 +140,73 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                   onSaved: (value) {
                     _empresa.website = value!;
                   },
-
                 ),
 
                 SizedBox(height: 30),
 
+                ElevatedButton(
+                  onPressed: () async {
 
-                Text("Região da atividade",
-                    style: TextStyle(fontSize: 24)),
-
-                SizedBox(height: 30),
-
-                Container(
-                  child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                  Text("Distritos"),
-                  Wrap(
-                    children: _distritos
-                        .map((distrito) => Padding(
-                    padding: EdgeInsets.all(4.0),
-                    child: FilterChip(
-                    label: Text(distrito),
-                    selected: selectedDistritos.contains(distrito),
-                    onSelected: (bool selected) {
-                    setState(() {
-                      if (selected) {
-                        selectedDistritos.add(distrito);
-                        _empresa.distritos.add(distrito);
-                      } else {
-                        selectedDistritos.remove(distrito);
-                        _empresa.distritos.remove(distrito);
-                      }
-                  });
-                  },
-                  ),
-                  ))
-                      .toList(),
-
-                  ),
-
-                  SizedBox(height: 30),
-
-                  Text("Concelhos de"),
-                  Wrap(
-                    children: selectedDistritos
-                        .map((distrito) => FutureBuilder(
-                    future: getConcelhos(distrito),
-                    builder: (context, AsyncSnapshot<List<String>> snapshot) {
-                    if (snapshot.hasData) {
-                      return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(distrito),
-                  Wrap(
-                    children: snapshot.data!
-                        .map((concelho) => Padding(
-                    padding: EdgeInsets.all(4.0),
-                    child: FilterChip(
-                    label: Text(concelho),
-                    selected: _empresa.concelhos.contains(concelho),
-                    onSelected: (bool selected) {
-                    setState(() {
-                    if (selected) {
-                      _empresa.concelhos.add(concelho);
-                    } else {
-                      _empresa.concelhos.remove(concelho);
+                    // Esperar a conclusão da execução de `_submitForm`
+                    bool success = await _submitForm();
+                    if(success) {
+                      // Navegar para a próxima tela
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) =>
+                            RegistoRegiao()),
+                      );
+                    } else{
+                      // Tratar o erro
+                      print('Erro ao enviar dados do formulário');
                     }
-                  });
                   },
-                  ),
-                  ))
-                      .toList(),
-                  ),
-                  ],
-                  );
-                  } else if (snapshot.hasError) {
-                      return Text('Ocorreu um erro a carregar os concelhos.');
-                  } else {
-                      return Center(
-                      child: CircularProgressIndicator(),
-                  );
-                  }
-                  },
-                  ))
-                      .toList(),
-                  ),
-
-                    SizedBox(height: 30),
-
-                    Text("Serviços",
-                        style: TextStyle(fontSize: 24) ),
-                    Column(
-                      children: _servicos
-                          .map(
-                            (servico) => Row(
-                          children: <Widget>[
-                            Checkbox(
-                              value: _empresa.servicos.contains(servico),
-                              onChanged: (value) {
-                                setState(() {
-                                  if (value!) {
-                                    _empresa.servicos.add(servico);
-                                  } else {
-                                    _empresa.servicos.remove(servico);
-                                  }
-                                });
-                              },
-                            ),
-                            Text(servico),
-                          ],
-                        ),
-                      )
-                          .toList(),
-                    ),
-
-                    SizedBox(height: 16),
-
-                  ElevatedButton(onPressed: _submitForm, child: Text("Registar empresa"))
-                  ],
-                  ),
-                  ),
-    ]),
-    ),
-    ),
-    ),
+                  child: Text("Continuar registo"),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
-}
-
- void _submitForm() async {
-  if (_formKey.currentState!.validate()) {
-    _formKey.currentState!.save();
-
-    // Get the currently authenticated user's email
-    String email = FirebaseAuth.instance.currentUser?.email ?? "";
-    
-    // Add the email to the _empresa object
-    _empresa.user_email = email;
-
-    print(_empresa);
-
-    // Convert the _empresa object to a JSON string
-    String empresaJson = jsonEncode(_empresa);
-
-    // Send the JSON string to the Django back-end
-    final response = await http.post(Uri.parse('http://127.0.0.1:8000/empresa'),
-      body: jsonEncode(_empresa.toDict())
-    );
-
-    // Handle the response from the Django back-end
-    if (response.statusCode == 200) {
-      // Show a confirmation message
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Empresa registada com sucesso!')));
-
-      print('Empresa object sent successfully');
-    } else {
-      print('Failed to send Empresa object');
-    }
   }
-}
+
+  Future<bool> _submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      // Get the currently authenticated user's email
+      String email = FirebaseAuth.instance.currentUser?.email ?? "";
+
+      // Add the email to the _empresa object
+      _empresa.user_email = email;
+
+      print(_empresa);
+
+      // Convert the _empresa object to a JSON string
+      String empresaJson = jsonEncode(_empresa);
+
+      // Send the JSON string to the Django back-end
+      final response = await http.post(Uri.parse('http://127.0.0.1:8000/empresa'),
+          body: jsonEncode(_empresa.toDict())
+      );
+      //headers: {'Content-Type': 'application/json'});
+
+      // Handle the response from the Django back-end
+      if (response.statusCode == 200) {
+        /* Show a confirmation message
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Empresa registada com sucesso!')));
+          */
+        print('Empresa object sent successfully');
+        return true;
+      } else {
+        print('Failed to send Empresa object');
+        return false;
+      }
+    }
+    return false;
+  }
 }
 
 class Empresa {
@@ -339,10 +217,7 @@ class Empresa {
   late String contacto;
   late String email;
   late String user_email;
-  List<String> distritos = [];
-  List<String> concelhos = [];
   late String website;
-  List<String> servicos = [];
 
   Map<String, dynamic> toDict() {
     return {
@@ -353,10 +228,7 @@ class Empresa {
       'contacto': contacto,
       'email': email,
       'user_email': user_email,
-      'distritos': distritos,
-      'concelhos': concelhos,
       'website': website,
-      'servicos': servicos,
     };
   }
 
@@ -373,11 +245,7 @@ class Empresa {
       ..contacto = map['contacto']
       ..email = map['email']
       ..user_email = map['user_email']
-      ..distritos = List<String>.from(map['distrito'])
-      ..concelhos = List<String>.from(map['concelhos'])
-      ..website = map['website']
-      ..servicos = List<String>.from(map['servicos']);
-
+      ..website = map['website'];
   }
 
   Map<String, dynamic> get empresa {
@@ -389,20 +257,14 @@ class Empresa {
       'contacto': contacto,
       'email': email,
       'user_email': user_email,
-      'distritos': distritos,
-      'concelhos': concelhos,
       'website': website,
-      'servicos': servicos,
-
     };
   }
 
   @override
   String toString() {
     return 'Empresa(nome: $nome, morada: $morada, nif: $nif, cae: $cae, '
-        'contacto: $contacto, email: $email, distritos: $distritos, '
-        'concelhos: $concelhos, website: $website servicos: $servicos, ';
+        'contacto: $contacto, email: $email,  '
+        ' user_email: $user_email,  website: $website  ';
   }
 }
-
-

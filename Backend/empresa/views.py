@@ -2,7 +2,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
 from pymongo import MongoClient
-#from myapp.models import Empresa  # Import the Empresa model from your app models.py file
+
 
 #@csrf_exempt
 def empresa_view(request):
@@ -30,9 +30,6 @@ def empresa_view(request):
             # for c in doc:
             #     print(c['user_info'])
             users.update_one({'user_info.email': user_email}, {'$set': {'empresa_details': data}})
-            
-
-
                 
             return JsonResponse({'status': 'success'})
         except Exception as e:
