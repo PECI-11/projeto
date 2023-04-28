@@ -271,7 +271,7 @@ void _submitForm() async {
   if (_formKey.currentState!.validate()) {
     // Get the currently logged-in user's email
     final user = FirebaseAuth.instance.currentUser;
-    final email = user!.email;
+    final email = user?.email ?? "";
 
     // Encode the form data and user email as a JSON object
     final data = json.encode({
@@ -334,8 +334,3 @@ void _submitForm() async {
 
   }
 }
-
-
-
-
-

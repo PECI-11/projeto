@@ -21,7 +21,7 @@ def register_user(request):
         
         # Insert the user data into the 'users' collection
         users = db['users']
-        user_id = users.insert_one(data).inserted_id
+        user_id = users.insert_one({'user_info':data}).inserted_id
         
         # Return a JSON response with the user ID
         response_data = {'user_id': str(user_id)}

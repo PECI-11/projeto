@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 // ...
 
@@ -295,22 +297,26 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
     );
 }
 
-  void _submitForm() async {
+ void _submitForm() async {
   if (_formKey.currentState!.validate()) {
     _formKey.currentState!.save();
 
+    // Get the currently authenticated user's email
+    String email = FirebaseAuth.instance.currentUser?.email ?? "";
+    
+    // Add the email to the _empresa object
+    _empresa.user_email = email;
 
     print(_empresa);
 
     // Convert the _empresa object to a JSON string
     String empresaJson = jsonEncode(_empresa);
-    
+
     // Send the JSON string to the Django back-end
     final response = await http.post(Uri.parse('http://127.0.0.1:8000/empresa'),
       body: jsonEncode(_empresa.toDict())
     );
-    //headers: {'Content-Type': 'application/json'});
-    
+
     // Handle the response from the Django back-end
     if (response.statusCode == 200) {
       // Show a confirmation message
@@ -332,6 +338,7 @@ class Empresa {
   late String cae;
   late String contacto;
   late String email;
+  late String user_email;
   List<String> distritos = [];
   List<String> concelhos = [];
   late String website;
@@ -345,6 +352,7 @@ class Empresa {
       'cae': cae,
       'contacto': contacto,
       'email': email,
+      'user_email': user_email,
       'distritos': distritos,
       'concelhos': concelhos,
       'website': website,
@@ -364,6 +372,7 @@ class Empresa {
       ..cae = map['cae']
       ..contacto = map['contacto']
       ..email = map['email']
+      ..user_email = map['user_email']
       ..distritos = List<String>.from(map['distrito'])
       ..concelhos = List<String>.from(map['concelhos'])
       ..website = map['website']
@@ -379,6 +388,7 @@ class Empresa {
       'cae': cae,
       'contacto': contacto,
       'email': email,
+      'user_email': user_email,
       'distritos': distritos,
       'concelhos': concelhos,
       'website': website,

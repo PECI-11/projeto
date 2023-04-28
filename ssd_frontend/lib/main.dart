@@ -8,6 +8,7 @@ import 'package:ssd_frontend/login/login_turista.dart';
 import 'package:ssd_frontend/registo_empresas/registo.dart';
 import 'package:image_card/image_card.dart';
 
+
 import 'home_screen.dart';
 
 import 'package:firebase_core/firebase_core.dart';

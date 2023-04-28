@@ -36,25 +36,23 @@ class _SignUpViewState extends State<SignUpView> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   void _submitForm() async {
-    try {
+  try {
+    UserCredential userCredential =
+        await _auth.createUserWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
 
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim(),
-      );
+    if (userCredential.user != null) {
+      // Create a new map to store user details
+      Map<String, dynamic> userData = {
+        'name': nameController.text.trim(),
+        'email': emailController.text.trim(),
+        'password': passwordController.text.trim(),
+      };
 
-      if (userCredential.user != null) {
-        // User created successfully, now add user details to Firestore
-        await _firestore.collection('users').doc(userCredential.user!.uid).set({
-          'name': nameController.text.trim(),
-          'email': emailController.text.trim(),
-          'password': passwordController.text.trim(),
-        });
-      }
-
-      // -------------------PARTE DE BACKEND -------------------------------------
-      // Convert the _user object to a JSON string
-      String userJson = jsonEncode(_user);
+      // Convert the userData map to a JSON string
+      String userJson = jsonEncode(userData);
 
       // Send the JSON string to the Django back-end
       final response = await http.post(
@@ -69,39 +67,12 @@ class _SignUpViewState extends State<SignUpView> {
       } else {
         print('Failed to send User object');
       }
-
-    } catch (e) {
-      print('Error creating user: $e');
     }
-      /*
-      if (_formKey.currentState!.validate()) {
-        _formKey.currentState!.save();
-
-        _user.name = nameController.text;
-        _user.email = emailController.text;
-        _user.password = passwordController.text;
-
-        print(_user);
-
-        // Convert the _user object to a JSON string
-        String userJson = jsonEncode(_user);
-
-        // Send the JSON string to the Django back-end
-        final response = await http.post(
-          Uri.parse('http://127.0.0.1:8000/users/register'),
-          headers: {'Content-Type': 'application/json'},
-          body: userJson,
-        );
-
-        // Handle the response from the Django back-end
-        if (response.statusCode == 200) {
-          print('User object sent successfully');
-        } else {
-          print('Failed to send User object');
-        }
-      }
-    }*/
+  } catch (e) {
+    print('Error creating user: $e');
   }
+}
+
 
 
 
@@ -384,20 +355,20 @@ class _SignUpViewState extends State<SignUpView> {
           ),
         ),
         onPressed: () {
-          /*
+          
           if (_formKey.currentState!.validate()) {
             _submitForm();
             Navigator.push(context, MaterialPageRoute(builder: (context) => const RegistoEmpresaPage()));
           }
-          */
+          
           // Validate returns true if the form is valid, or false otherwise.
-          if (_formKey.currentState!.validate()) {
-            // ... Navigate To RegistoEmpresaPage()
-            _submitForm();
-            Navigator.push(context, MaterialPageRoute(
-                builder: (context) => const RegistoEmpresaPage())
-            );
-          }
+          // if (_formKey.currentState!.validate()) {
+          //   // ... Navigate To RegistoEmpresaPage()
+          //   _submitForm();
+          //   Navigator.push(context, MaterialPageRoute(
+          //       builder: (context) => const RegistoEmpresaPage())
+          //   );
+          // }
         },
         child: const Text('Registar'),
       ),
