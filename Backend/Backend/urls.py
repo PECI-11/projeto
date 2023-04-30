@@ -30,6 +30,7 @@ urlpatterns = [
     re_path('services/monumentos', insert_monumentos, name='service_restaurant'),
     re_path('api/', include('api.urls')),
     re_path('users/register', register_user, name='user_register'),
+    re_path(r'^user_info/$', request_user_information),
   #  path('regions/<int:district_id>/concelhos/', get_concelhos_by_district, name='get_concelhos_by_district'),
     #  path('regions/<int:concelhos_id>/freguesias/', get_freguesias_by_concelho, name='get_freguesias_by_concelho'),
     re_path('empresa', empresa_view, name='empresa'),
