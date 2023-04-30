@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 
 
 class MonumentoForm extends StatefulWidget {
@@ -242,6 +243,8 @@ class _MonumentoFormState extends State<MonumentoForm> {
   }
 
   void _saveMonumento() async {
+      final user = FirebaseAuth.instance.currentUser;
+    final email = user?.email ?? "";
     if (_formKey.currentState!.validate()) {
       Map<String, dynamic> monumentoData = {
         'story': _storyController.text,
@@ -252,11 +255,12 @@ class _MonumentoFormState extends State<MonumentoForm> {
         'activity': _activityController.text,
         'guide_visit': _guideVisitController.text,
         'location': _locationController.text,
+        'user_email': email,
       };
 
       String jsonBody = json.encode(monumentoData);
 
-      Uri url = Uri.parse('http://127.0.0.1:8000/services/monumento');
+      Uri url = Uri.parse('http://127.0.0.1:8000/services/monumentos');
       http.Response response = await http.post(
         url,
         headers: {

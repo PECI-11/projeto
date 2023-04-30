@@ -13,7 +13,7 @@ def insert_restaurant(request):
     	
         try:
             data = json.loads(request.body)
-            
+            data['tipo_servico'] = 'Restauracao'
             
 
             print(data)
@@ -48,17 +48,25 @@ def insert_alojamento(request):
     	
         try:
             data = json.loads(request.body)
-            
+            data['tipo_servico'] = 'Alojamento'
             
 
             print(data)
             
-            # client = MongoClient('mongodb://localhost:27017/')
-            # db = client['mydatabase']
+
+            user_email = data['user_email'] # user's email, this way I know which user to
+
+
+            client = MongoClient('mongodb://localhost:27017/')
+            db = client['mydatabase']
+
+
             
-            # # Insert the user data into the 'users' collection
-            # users = db['Servicos']
-            # users.insert_one(data)
+            # Insert the user data into the 'users' collection
+            services = db['Servicos']
+            users = db['users']
+            services.insert_one(data)
+            users.update_one({'user_info.email': user_email}, {'$push': {'services': {'$each': [data]}}})
             
 
 
@@ -76,17 +84,25 @@ def insert_monumentos(request):
     	
         try:
             data = json.loads(request.body)
-            
+            data['tipo_servico'] = 'Monumento'
             
 
             print(data)
             
-            # client = MongoClient('mongodb://localhost:27017/')
-            # db = client['mydatabase']
+
+            user_email = data['user_email'] # user's email, this way I know which user to
+
+
+            client = MongoClient('mongodb://localhost:27017/')
+            db = client['mydatabase']
+
+
             
-            # # Insert the user data into the 'users' collection
-            # users = db['Servicos'] #tenho que organizar esta base de dados, assim que tiver dados posso tratar disso
-            # users.insert_one(data)
+            # Insert the user data into the 'users' collection
+            services = db['Servicos']
+            users = db['users']
+            services.insert_one(data)
+            users.update_one({'user_info.email': user_email}, {'$push': {'services': {'$each': [data]}}})
             
 
 

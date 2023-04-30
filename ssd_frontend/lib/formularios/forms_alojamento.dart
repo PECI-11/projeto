@@ -6,6 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:firebase_auth/firebase_auth.dart';
 
 
 
@@ -262,6 +263,10 @@ class _AlojamentoFormState extends State<AlojamentoForm> {
   }
 
   void _saveAlojamento() async {
+    //retriece user's email, this we can know to who the service belongs
+    final user = FirebaseAuth.instance.currentUser;
+    final email = user?.email ?? "";
+
     if (_formKey.currentState!.validate()) {
       Map<String, dynamic> alojamentoData = {
         'description': _descriptionController.text,
@@ -271,6 +276,7 @@ class _AlojamentoFormState extends State<AlojamentoForm> {
         'location': _locationController.text,
         'images': _imageList.map((image) => image.path).toList(),
         'image_descriptions': _imageDescriptionList,
+        'user_email': email,
       };
 
       String jsonBody = json.encode(alojamentoData);
