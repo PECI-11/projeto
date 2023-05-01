@@ -268,6 +268,17 @@ class _AlojamentoFormState extends State<AlojamentoForm> {
     final email = user?.email ?? "";
 
     if (_formKey.currentState!.validate()) {
+      List<List<int>> imageBytesList = [];
+      for (File image in _imageList) {
+        final bytes = await image.readAsBytes();
+        imageBytesList.add(bytes);
+      }
+
+      List<Map<String, dynamic>> imageDescriptionList = [];
+      for (String description in _imageDescriptionList) {
+        imageDescriptionList.add({'description': description});
+      }
+      
       Map<String, dynamic> alojamentoData = {
         'description': _descriptionController.text,
         'bedroom_type': _bedroomTypeController.text,
