@@ -278,15 +278,15 @@ class _AlojamentoFormState extends State<AlojamentoForm> {
       for (String description in _imageDescriptionList) {
         imageDescriptionList.add({'description': description});
       }
-      
+
       Map<String, dynamic> alojamentoData = {
         'description': _descriptionController.text,
         'bedroom_type': _bedroomTypeController.text,
         'bedroom_prices': _bedroomPricesController.text,
         'services': _servicesController.text,
         'location': _locationController.text,
-        'images': _imageList.map((image) => image.path).toList(),
-        'image_descriptions': _imageDescriptionList,
+        'images': imageBytesList,
+        'image_descriptions': imageDescriptionList,
         'user_email': email,
       };
 
