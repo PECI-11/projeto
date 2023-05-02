@@ -7,6 +7,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:typed_data';
+
 
 
 
@@ -25,20 +27,28 @@ class _AlojamentoFormState extends State<AlojamentoForm> {
   TextEditingController _promosController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
 
-  List<File> _imageList = [];
+ 
+
   List<String> _imageDescriptionList = [];
   final _picker = ImagePicker();
 
 
-  Future _getImage(ImageSource source) async {
-    final pickedFile = await ImagePicker().getImage(source: source);
+  
+List<Uint8List> _imageBytesList = [];
+List<String> _imageStringList = [];
+List<File> _imageList = [];
+
+Future<void> _getImage(ImageSource source) async {
+  final pickedFile = await ImagePicker().getImage(source: source);
+  if (pickedFile != null) {
+    final bytes = await pickedFile.readAsBytes();
+    final encodedImage = base64Encode(bytes); // Convert bytes to base64 encoded string
     setState(() {
-      if (pickedFile != null) {
-        _imageList.add(File(pickedFile.path));
-        _imageDescriptionList.add("");
-      }
+      _imageList.add(File(pickedFile.path));
+      _imageStringList.add(encodedImage); // Add encoded image string to the list
     });
   }
+}
 
 
   Widget _buildDescriptionInput() {
@@ -268,11 +278,11 @@ class _AlojamentoFormState extends State<AlojamentoForm> {
     final email = user?.email ?? "";
 
     if (_formKey.currentState!.validate()) {
-      List<List<int>> imageBytesList = [];
-      for (File image in _imageList) {
-        final bytes = await image.readAsBytes();
-        imageBytesList.add(bytes);
-      }
+      // List<List<int>> imageBytesList = [];
+      // for (File image in _imageList) {
+      //   final bytes = await image.readAsBytes();
+      //   imageBytesList.add(bytes);
+      // }
 
       List<Map<String, dynamic>> imageDescriptionList = [];
       for (String description in _imageDescriptionList) {
@@ -285,7 +295,7 @@ class _AlojamentoFormState extends State<AlojamentoForm> {
         'bedroom_prices': _bedroomPricesController.text,
         'services': _servicesController.text,
         'location': _locationController.text,
-        'images': imageBytesList,
+        'images': _imageStringList,
         'image_descriptions': imageDescriptionList,
         'user_email': email,
       };
@@ -360,8 +370,3 @@ class _AlojamentoFormState extends State<AlojamentoForm> {
     );
   }
 }
-
-
-
-
-
