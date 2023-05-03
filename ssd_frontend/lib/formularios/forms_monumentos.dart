@@ -4,7 +4,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'ConfirmationPage.dart';
-
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:typed_data';
 
 class MonumentoForm extends StatefulWidget {
   @override
@@ -21,6 +24,24 @@ class _MonumentoFormState extends State<MonumentoForm> {
   TextEditingController _activityController = TextEditingController();
   TextEditingController _guideVisitController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
+  List<String> _imageDescriptionList = [];
+  List<Uint8List> _imageBytesList = [];
+  List<String> _imageStringList = [];
+  List<File> _imageList = [];
+
+
+  Future<void> _getImage(ImageSource source) async {
+    final pickedFile = await ImagePicker().getImage(source: source);
+    if (pickedFile != null) {
+      final bytes = await pickedFile.readAsBytes();
+      final encodedImage = base64Encode(bytes); // Convert bytes to base64 encoded string
+      setState(() {
+        _imageList.add(File(pickedFile.path));
+        _imageStringList.add(encodedImage); // Add encoded image string to the list
+        _imageDescriptionList.add(''); // Add an empty string to the list
+      });
+    }
+  }
 
   Widget _buildStoryInput() {
     return Column(
@@ -199,6 +220,56 @@ class _MonumentoFormState extends State<MonumentoForm> {
   );
 }
 
+  Widget _buildImagesInput() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("Imagens"),
+        SizedBox(height: 10.0),
+        ElevatedButton(
+          onPressed: () {
+            _getImage(ImageSource.gallery);
+          },
+          child: Text("Inserir imagem do monumento"),
+        ),
+        SizedBox(height: 10.0),
+        if (_imageList.isNotEmpty)
+          Column(
+            children: List.generate(_imageList.length, (index) {
+              return Column(
+                children: [
+                  SizedBox(height: 10.0),
+                  Row(
+                    children: [
+                      Image.network(
+                        _imageList[index].path,
+                        height: 100.0,
+                        width: 100.0,
+                      ),
+                      SizedBox(width: 10.0),
+                      Expanded(
+                        child: TextFormField(
+                          onChanged: (value) {
+                            setState(() {
+                              _imageDescriptionList[index] = value;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            hintText: "Insira uma descrição para esta imagem",
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              );
+            }),
+          ),
+      ],
+    );
+  }
+
 
 
 
@@ -255,6 +326,8 @@ class _MonumentoFormState extends State<MonumentoForm> {
         'price': _priceController.text,
         'activity': _activityController.text,
         'guide_visit': _guideVisitController.text,
+        'images': _imageStringList,
+        'imageDescriptions': _imageDescriptionList,
         'location': _locationController.text,
         'user_email': email,
       };
@@ -296,7 +369,7 @@ class _MonumentoFormState extends State<MonumentoForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Formulário do restaurante"),
+        title: Text("Formulário de monumento"),
       ),
       body: Padding(
         padding: EdgeInsets.all(20.0),
@@ -317,6 +390,8 @@ class _MonumentoFormState extends State<MonumentoForm> {
               _buildActivityInput(),
               SizedBox(height: 20.0),
               _buildGuideVisitInput(),
+              SizedBox(height: 20.0),
+               _buildImagesInput(),
               SizedBox(height: 20.0),
               _buildLocationInput(),
               SizedBox(height: 20.0),

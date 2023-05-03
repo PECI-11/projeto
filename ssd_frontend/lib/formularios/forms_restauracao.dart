@@ -260,7 +260,7 @@ class _RestaurantFormState extends State<RestaurantForm> {
 Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
-      title: Text("Formulário do restaurante"),
+      title: Text("Formulário de restaurante"),
     ),
     body: Padding(
       padding: EdgeInsets.all(20.0),
