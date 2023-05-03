@@ -3,6 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'ConfirmationPage.dart';
 
 
 class MonumentoForm extends StatefulWidget {
@@ -161,44 +162,44 @@ class _MonumentoFormState extends State<MonumentoForm> {
   }
 
   Widget _buildGuideVisitInput() {
-    String? _guideVisit;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text("É possível marcar visitas guiadas?"),
-        SizedBox(height: 10.0),
-        DropdownButtonFormField(
-          value: _guideVisit,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: "É possível marcar visitas guiadas?",
-          ),
-          items: [
-            DropdownMenuItem(
-              child: Text("Sim"),
-              value: "Sim",
-            ),
-            DropdownMenuItem(
-              child: Text("Não"),
-              value: "Não",
-            ),
-          ],
-          onChanged: (value) {
-            setState(() {
-              _guideVisit = value;
-            });
-          },
-          validator: (value) {
-            if (value == null) {
-              return "Selecione uma opção";
-            }
-            return null;
-          },
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      Text("É possível marcar visitas guiadas?"),
+      SizedBox(height: 10.0),
+      DropdownButtonFormField(
+        value: _guideVisitController.text.isNotEmpty ? _guideVisitController.text : null,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          hintText: "É possível marcar visitas guiadas?",
         ),
-      ],
-    );
-  }
+        items: [
+          DropdownMenuItem(
+            child: Text("Sim"),
+            value: "Sim",
+          ),
+          DropdownMenuItem(
+            child: Text("Não"),
+            value: "Não",
+          ),
+        ],
+        onChanged: (value) {
+          setState(() {
+            _guideVisitController.text = value!;
+          });
+        },
+        validator: (value) {
+          if (value == null) {
+            return "Selecione uma opção";
+          }
+          return null;
+        },
+      ),
+    ],
+  );
+}
+
+
 
 
   Widget _buildLocationInput() {
@@ -271,9 +272,14 @@ class _MonumentoFormState extends State<MonumentoForm> {
 
       if (response.statusCode == 200) {
         // Se a solicitação for bem-sucedida, exiba uma mensagem de sucesso
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Monumento criado com sucesso!'),
-        ));
+          Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ConfirmationPage(
+              confirmationText: '',
+            ),
+          ),
+        );
 
         // Limpe o formulário
         _formKey.currentState!.reset();

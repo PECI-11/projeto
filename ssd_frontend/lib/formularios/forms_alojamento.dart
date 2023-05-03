@@ -8,7 +8,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:typed_data';
-
+import 'ConfirmationPage.dart';
 
 
 
@@ -46,6 +46,7 @@ Future<void> _getImage(ImageSource source) async {
     setState(() {
       _imageList.add(File(pickedFile.path));
       _imageStringList.add(encodedImage); // Add encoded image string to the list
+      _imageDescriptionList.add(''); // Add an empty string to the list
     });
   }
 }
@@ -145,65 +146,54 @@ Future<void> _getImage(ImageSource source) async {
   }
 
   Widget _buildImagesInput() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text("Imagens"),
-        SizedBox(height: 10.0),
-        TextFormField(
-          controller: _imagesController,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: "Insira uma imagem do alojamento",
-          ),
-          validator: (value) {
-            if (_imageList.isEmpty && value == "") {
-              return "Insira uma imagem do alojamento";
-            }
-            return null;
-          },
-          readOnly: true,
-          onTap: () {
-            _getImage(ImageSource.gallery);
-          },
-        ),
-        SizedBox(height: 10.0),
-        if (_imageList.isNotEmpty)
-          Column(
-            children: List.generate(_imageList.length, (index) {
-              return Column(
-                children: [
-                  SizedBox(height: 10.0),
-                  Row(
-                    children: [
-                      Image.network(
-                        _imageList[index].path,
-                        height: 100.0,
-                        width: 100.0,
-                      ),
-                      SizedBox(width: 10.0),
-                      Expanded(
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: "Descrição da imagem",
-                          ),
-                          onChanged: (value) {
-                            setState(() {
-                              _imageDescriptionList[index] = value;
-                            });
-                          },
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      Text("Imagens"),
+      SizedBox(height: 10.0),
+      ElevatedButton(
+        onPressed: () {
+          _getImage(ImageSource.gallery);
+        },
+        child: Text("Inserir imagem do alojamento"),
+      ),
+      SizedBox(height: 10.0),
+      if (_imageList.isNotEmpty)
+        Column(
+          children: List.generate(_imageList.length, (index) {
+            return Column(
+              children: [
+                SizedBox(height: 10.0),
+                Row(
+                  children: [
+                    Image.network(
+                      _imageList[index].path,
+                      height: 100.0,
+                      width: 100.0,
+                    ),
+                    SizedBox(width: 10.0),
+                    Expanded(
+                      child: TextFormField(
+                        onChanged: (value) {
+                          setState(() {
+                            _imageDescriptionList[index] = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Insira uma descrição para esta imagem",
+                          border: OutlineInputBorder(),
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              );
-            }),
-          ),
-      ],
-    );
-  }
+                    ),
+                  ],
+                ),
+              ],
+            );
+          }),
+        ),
+    ],
+  );
+}
 
 
 
@@ -313,9 +303,14 @@ Future<void> _getImage(ImageSource source) async {
 
       if (response.statusCode == 200) {
         // Se a solicitação for bem-sucedida, exiba uma mensagem de sucesso
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('Alojamento criado com sucesso!'),
-        ));
+            Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ConfirmationPage(
+                confirmationText: '',
+              ),
+            ),
+          );
 
         // Limpe o formulário e a lista de imagens
         _formKey.currentState!.reset();

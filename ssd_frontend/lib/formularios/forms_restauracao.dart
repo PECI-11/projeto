@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:typed_data';
 
 
 import 'ConfirmationPage.dart';
@@ -25,8 +26,11 @@ class _RestaurantFormState extends State<RestaurantForm> {
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
   TextEditingController _promoController = TextEditingController();
-  List<File> _imageList = [];
+  // List<File> _imageList = [];
   List<String> _imageDescriptionList = [];
+  List<Uint8List> _imageBytesList = [];
+  List<String> _imageStringList = [];
+  List<File> _imageList = [];
 
   final String url = 'http://127.0.0.1:8000/services/restaurants';
   final List<String> _restaurantTypes = ["Restaurante", "Café", "Bar", "Snack-Bar", "Salão de chá", "Food Truck", "Self-service"];
@@ -43,14 +47,17 @@ class _RestaurantFormState extends State<RestaurantForm> {
     });
   }
 
-  Future _getImage(ImageSource source) async {
+  Future<void> _getImage(ImageSource source) async {
     final pickedFile = await ImagePicker().getImage(source: source);
-    setState(() {
-      if (pickedFile != null) {
+    if (pickedFile != null) {
+      final bytes = await pickedFile.readAsBytes();
+      final encodedImage = base64Encode(bytes); // Convert bytes to base64 encoded string
+      setState(() {
         _imageList.add(File(pickedFile.path));
-        _imageDescriptionList.add("");
-      }
-    });
+        _imageStringList.add(encodedImage); // Add encoded image string to the list
+        _imageDescriptionList.add(''); // Add an empty string to the list
+      });
+    }
   }
 
   /*Future _getPDF() async {
@@ -101,40 +108,57 @@ class _RestaurantFormState extends State<RestaurantForm> {
   }
 
   Widget _buildImagesInput() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text("Ementa"),
-        SizedBox(height: 10.0),
-        ElevatedButton(
-          onPressed: () {
-            _getImage(ImageSource.gallery);
-          },
-          child: Text("Inserir imagem da ementa"),
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      Text("Ementa"),
+      SizedBox(height: 10.0),
+      ElevatedButton(
+        onPressed: () {
+          _getImage(ImageSource.gallery);
+        },
+        child: Text("Inserir imagem da ementa"),
+      ),
+      SizedBox(height: 10.0),
+      if (_imageList.isNotEmpty)
+        Column(
+          children: List.generate(_imageList.length, (index) {
+            return Column(
+              children: [
+                SizedBox(height: 10.0),
+                Row(
+                  children: [
+                    Image.network(
+                      _imageList[index].path,
+                      height: 100.0,
+                      width: 100.0,
+                    ),
+                    SizedBox(width: 10.0),
+                    Expanded(
+                      child: TextFormField(
+                        onChanged: (value) {
+                          setState(() {
+                            _imageDescriptionList[index] = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Insira uma descrição para esta imagem",
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          }),
         ),
-        SizedBox(height: 10.0),
-        if (_imageList.isNotEmpty)
-          Column(
-            children: List.generate(_imageList.length, (index) {
-              return Column(
-                children: [
-                  SizedBox(height: 10.0),
-                  Row(
-                    children: [
-                      Image.network(
-                        _imageList[index].path,
-                        height: 100.0,
-                        width: 100.0,
-                      )
-                    ],
-                  ),
-                ],
-              );
-            }),
-          ),
-      ],
-    );
-  }
+    ],
+  );
+}
+
+
+
 
 
   Widget _buildHoursInput() {
@@ -272,6 +296,7 @@ void _submitForm() async {
     // Get the currently logged-in user's email
     final user = FirebaseAuth.instance.currentUser;
     final email = user?.email ?? "";
+    print(_imageDescriptionList);
 
     // Encode the form data and user email as a JSON object
     final data = json.encode({
@@ -281,7 +306,7 @@ void _submitForm() async {
       'description': _descriptionController.text,
       'location': _locationController.text,
       'promo': _promoController.text,
-      'images': _imageList.map((e) => e.path).toList(),
+      'images': _imageStringList,
       'imageDescriptions': _imageDescriptionList,
       'email': email,
     });
