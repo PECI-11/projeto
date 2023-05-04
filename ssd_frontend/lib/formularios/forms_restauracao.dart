@@ -27,6 +27,7 @@ class _RestaurantFormState extends State<RestaurantForm> {
   TextEditingController _locationController = TextEditingController();
   TextEditingController _promoController = TextEditingController();
   // List<File> _imageList = [];
+  List<String> _images_ementas_string_list = [];  
   List<String> _imageDescriptionList = [];
   List<Uint8List> _imageBytesList = [];
   List<String> _imageStringList = [];
@@ -60,6 +61,19 @@ class _RestaurantFormState extends State<RestaurantForm> {
     }
   }
 
+
+  Future<void> _getImage_ementa(ImageSource source) async {
+    final pickedFile = await ImagePicker().getImage(source: source);
+    if (pickedFile != null) {
+      final bytes = await pickedFile.readAsBytes();
+      final encodedImage = base64Encode(bytes); // Convert bytes to base64 encoded string
+      setState(() {
+        _imageList.add(File(pickedFile.path));
+        _images_ementas_string_list.add(encodedImage); // Add encoded image string to the list
+        //_imageDescriptionList.add(''); // Add an empty string to the list
+      });
+    }
+  }
   /*Future _getPDF() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -115,7 +129,7 @@ class _RestaurantFormState extends State<RestaurantForm> {
       SizedBox(height: 10.0),
       ElevatedButton(
         onPressed: () {
-          _getImage(ImageSource.gallery);
+          _getImage_ementa(ImageSource.gallery);
         },
         child: Text("Inserir imagem da ementa"),
       ),
@@ -300,8 +314,8 @@ void _submitForm() async {
 
     // Encode the form data and user email as a JSON object
     final data = json.encode({
-      'tipoEstabelecimento': _tipoEstabelecimentoController.text,
-      'ementa': _imagesController.text,
+      'tipoEstabelecimento': _selectedTypes,
+      'ementa': _images_ementas_string_list,
       'hours': _hoursController.text,
       'description': _descriptionController.text,
       'location': _locationController.text,
