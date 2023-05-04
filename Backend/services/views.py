@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
+import requests
 from pymongo import MongoClient
 
 # Create your views here.
@@ -17,6 +18,17 @@ def insert_restaurant(request):
             
 
             print(data)
+            latitude = float(data['latitude'])
+            longitude = float(data['longitude'])
+            #print('https://json.geoapi.pt/gps/'+str(latitude)+', '+str(longitude)+'/base')
+            response = requests.get('https://json.geoapi.pt/gps/'+str(latitude)+', '+str(longitude))
+            
+            resposta = json.loads(response.text)
+            
+            data['distrito'] = resposta['distrito']
+            data['concelho'] = resposta['concelho']
+            data['freguesia'] = resposta['freguesia']
+            data['rua'] = resposta['rua']
             
 
             user_email = data['email'] # user's email, this way I know which user to
@@ -49,6 +61,17 @@ def insert_alojamento(request):
             
 
             print(data)
+            latitude = float(data['latitude'])
+            longitude = float(data['longitude'])
+            #print('https://json.geoapi.pt/gps/'+str(latitude)+', '+str(longitude)+'/base')
+            response = requests.get('https://json.geoapi.pt/gps/'+str(latitude)+', '+str(longitude))
+            
+            resposta = json.loads(response.text)
+            
+            data['distrito'] = resposta['distrito']
+            data['concelho'] = resposta['concelho']
+            data['freguesia'] = resposta['freguesia']
+            data['rua'] = resposta['rua']
             
 
             user_email = data['user_email'] # user's email, this way I know which user to
@@ -85,7 +108,19 @@ def insert_monumentos(request):
             
 
             print(data)
+            latitude = float(data['latitude'])
+            longitude = float(data['longitude'])
+            #print('https://json.geoapi.pt/gps/'+str(latitude)+', '+str(longitude)+'/base')
+            response = requests.get('https://json.geoapi.pt/gps/'+str(latitude)+', '+str(longitude))
             
+            resposta = json.loads(response.text)
+            
+            data['distrito'] = resposta['distrito']
+            data['concelho'] = resposta['concelho']
+            data['freguesia'] = resposta['freguesia']
+            data['rua'] = resposta['rua']
+            
+            #print(data)
 
             user_email = data['user_email'] # user's email, this way I know which user to
 
