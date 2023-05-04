@@ -25,8 +25,9 @@ class _AlojamentoFormState extends State<AlojamentoForm> {
   TextEditingController _servicesController = TextEditingController();
   TextEditingController _imagesController = TextEditingController();
   TextEditingController _promosController = TextEditingController();
-  TextEditingController _locationController = TextEditingController();
-
+  // TextEditingController _locationController = TextEditingController();
+  TextEditingController _latitudeController = TextEditingController();
+  TextEditingController _longitudeController = TextEditingController();
  
 
   List<String> _imageDescriptionList = [];
@@ -198,42 +199,46 @@ Future<void> _getImage(ImageSource source) async {
 
 
 
-  Widget _buildLocationInput() {
-    LatLng _alojamentoLocation = LatLng(0.0, 0.0);
+ Widget _buildLocationInput() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text("Localização exata"),
         SizedBox(height: 10.0),
-        TextFormField(
-          controller: _locationController,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: "Insira a localização do alojamento",
-          ),
-          validator: (value) {
-            if (value == "") {
-              return "Insira a localização do alojamento";
-            }
-            return null;
-          },
-        ),
-        SizedBox(height: 10.0),
-        Container(
-          height: 200.0,
-          child: GoogleMap(
-            initialCameraPosition: CameraPosition(
-              target: _alojamentoLocation,
-              zoom: 15.0,
-            ),
-            onMapCreated: (GoogleMapController controller) {},
-            markers: {
-              Marker(
-                markerId: MarkerId("alojamento_location"),
-                position: _alojamentoLocation,
+        Row(
+          children: [
+            Expanded(
+              child: TextFormField(
+                controller: _latitudeController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Insira a latitude",
+                ),
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return "Insira a latitude";
+                  }
+                  return null;
+                },
               ),
-            },
-          ),
+            ),
+            SizedBox(width: 10.0),
+            Expanded(
+              child: TextFormField(
+                controller: _longitudeController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Insira a longitude",
+                ),
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return "Insira a longitude";
+                  }
+                  return null;
+                },
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -284,7 +289,9 @@ Future<void> _getImage(ImageSource source) async {
         'bedroom_type': _bedroomTypeController.text,
         'bedroom_prices': _bedroomPricesController.text,
         'services': _servicesController.text,
-        'location': _locationController.text,
+        // 'location': _locationController.text,
+        'latitude': _latitudeController.text,
+        'longitude': _longitudeController.text,
         'images': _imageStringList,
         'image_descriptions': imageDescriptionList,
         'user_email': email,

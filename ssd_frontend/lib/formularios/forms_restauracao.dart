@@ -24,7 +24,9 @@ class _RestaurantFormState extends State<RestaurantForm> {
   TextEditingController _imagesController = TextEditingController();
   TextEditingController _hoursController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
-  TextEditingController _locationController = TextEditingController();
+  // TextEditingController _locationController = TextEditingController();
+  TextEditingController _latitudeController = TextEditingController();
+  TextEditingController _longitudeController = TextEditingController();
   TextEditingController _promoController = TextEditingController();
   // List<File> _imageList = [];
   List<String> _images_ementas_string_list = [];  
@@ -223,26 +225,46 @@ class _RestaurantFormState extends State<RestaurantForm> {
   }
 
   Widget _buildLocationInput() {
-    LatLng _restaurantLocation = LatLng(0.0, 0.0);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text("Localização exata"),
         SizedBox(height: 10.0),
-        TextFormField(
-          controller: _locationController,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: "Insira a localização do restaurante",
-          ),
-          validator: (value) {
-            if (value == "") {
-              return "Insira a localização do restaurante";
-            }
-            return null;
-          },
+        Row(
+          children: [
+            Expanded(
+              child: TextFormField(
+                controller: _latitudeController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Insira a latitude",
+                ),
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return "Insira a latitude";
+                  }
+                  return null;
+                },
+              ),
+            ),
+            SizedBox(width: 10.0),
+            Expanded(
+              child: TextFormField(
+                controller: _longitudeController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Insira a longitude",
+                ),
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return "Insira a longitude";
+                  }
+                  return null;
+                },
+              ),
+            ),
+          ],
         ),
-        SizedBox(height: 10.0),
       ],
     );
   }
@@ -274,7 +296,7 @@ class _RestaurantFormState extends State<RestaurantForm> {
 Widget build(BuildContext context) {
   return Scaffold(
     appBar: AppBar(
-      title: Text("Formulário do restaurante"),
+      title: Text("Formulário de restaurante"),
     ),
     body: Padding(
       padding: EdgeInsets.all(20.0),
@@ -318,7 +340,9 @@ void _submitForm() async {
       'ementa': _images_ementas_string_list,
       'hours': _hoursController.text,
       'description': _descriptionController.text,
-      'location': _locationController.text,
+      // 'location': _locationController.text,
+      'latitude': _latitudeController.text,
+      'longitude': _longitudeController.text,
       'promo': _promoController.text,
       'images': _imageStringList,
       'imageDescriptions': _imageDescriptionList,
