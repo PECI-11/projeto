@@ -54,6 +54,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                   },
                 ),
 
+
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Morada'),
                   validator: (String? value) {
@@ -67,7 +68,25 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                   },
                 ),
 
+                //CODIGO POSTAL
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'Código Postal'),
+                  validator: (String? value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, insira o código postal da empresa.';
+                    }
+                    else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                      return 'O NIF deve conter apenas números.';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _empresa.codigo = value!;
+                  },
+                ),
+
                 //NIF
+                // DEVO VALIDAR O NIF (O TER 9 NUMEROS ETC ETC)
                 TextFormField(
                   decoration: InputDecoration(labelText: 'NIF'),
                   validator: (String? value) {
@@ -76,6 +95,9 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                     }
                     else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
                       return 'O NIF deve conter apenas números.';
+                    }
+                    else if(value.length != 9 ){
+                      return 'NIF incorreto (9 números..)';
                     }
                     return null;
                   },
@@ -93,6 +115,10 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                     else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
                       return 'O CAE deve conter apenas números.';
                     }
+                    else if (value.length != 5) {
+                      return 'O CAE tem sempre 5 números...';
+                    }
+
                     return null;
                   },
                   onSaved: (value) {
@@ -123,9 +149,7 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                   // The validator receives the text that the user has entered.
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter Gmail account';
-                    } else if (!value.endsWith('@gmail.com')) {
-                      return 'Please enter valid Gmail account';
+                      return 'Please enter an account';
                     }
                     return null;
                   },
@@ -218,6 +242,7 @@ class Empresa {
   late String email;
   late String user_email;
   late String website;
+  late String codigo;
 
   Map<String, dynamic> toDict() {
     return {
@@ -229,6 +254,7 @@ class Empresa {
       'email': email,
       'user_email': user_email,
       'website': website,
+      'codigo': codigo,
     };
   }
 
@@ -245,7 +271,8 @@ class Empresa {
       ..contacto = map['contacto']
       ..email = map['email']
       ..user_email = map['user_email']
-      ..website = map['website'];
+      ..website = map['website']
+      ..codigo = map['codigo'];
   }
 
   Map<String, dynamic> get empresa {
@@ -258,6 +285,7 @@ class Empresa {
       'email': email,
       'user_email': user_email,
       'website': website,
+      'codigo': codigo,
     };
   }
 
@@ -265,6 +293,6 @@ class Empresa {
   String toString() {
     return 'Empresa(nome: $nome, morada: $morada, nif: $nif, cae: $cae, '
         'contacto: $contacto, email: $email,  '
-        ' user_email: $user_email,  website: $website  ';
+        ' user_email: $user_email,  website: $website , codigo:$codigo , ';
   }
 }
