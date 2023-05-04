@@ -23,7 +23,9 @@ class _MonumentoFormState extends State<MonumentoForm> {
   TextEditingController _priceController = TextEditingController();
   TextEditingController _activityController = TextEditingController();
   TextEditingController _guideVisitController = TextEditingController();
-  TextEditingController _locationController = TextEditingController();
+  // TextEditingController _locationController = TextEditingController();
+  TextEditingController _latitudeController = TextEditingController();
+  TextEditingController _longitudeController = TextEditingController();
   List<String> _imageDescriptionList = [];
   List<Uint8List> _imageBytesList = [];
   List<String> _imageStringList = [];
@@ -274,45 +276,52 @@ class _MonumentoFormState extends State<MonumentoForm> {
 
 
   Widget _buildLocationInput() {
-    LatLng _monumentLocation = LatLng(0.0, 0.0);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text("Localização exata"),
         SizedBox(height: 10.0),
-        TextFormField(
-          controller: _locationController,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: "Insira a localização do monumento",
-          ),
-          validator: (value) {
-            if (value == "") {
-              return "Insira a localização do monumento";
-            }
-            return null;
-          },
-        ),
-        SizedBox(height: 10.0),
-        Container(
-          height: 200.0,
-          child: GoogleMap(
-            initialCameraPosition: CameraPosition(
-              target: _monumentLocation,
-              zoom: 15.0,
-            ),
-            onMapCreated: (GoogleMapController controller) {},
-            markers: {
-              Marker(
-                markerId: MarkerId("monument_location"),
-                position: _monumentLocation,
+        Row(
+          children: [
+            Expanded(
+              child: TextFormField(
+                controller: _latitudeController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Insira a latitude",
+                ),
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return "Insira a latitude";
+                  }
+                  return null;
+                },
               ),
-            },
-          ),
+            ),
+            SizedBox(width: 10.0),
+            Expanded(
+              child: TextFormField(
+                controller: _longitudeController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: "Insira a longitude",
+                ),
+                validator: (value) {
+                  if (value?.isEmpty ?? true) {
+                    return "Insira a longitude";
+                  }
+                  return null;
+                },
+              ),
+            ),
+          ],
         ),
       ],
     );
   }
+
+
+
 
   void _saveMonumento() async {
       final user = FirebaseAuth.instance.currentUser;
@@ -328,7 +337,9 @@ class _MonumentoFormState extends State<MonumentoForm> {
         'guide_visit': _guideVisitController.text,
         'images': _imageStringList,
         'imageDescriptions': _imageDescriptionList,
-        'location': _locationController.text,
+        // 'location': _locationController.text,
+        'latitude': _latitudeController.text,
+        'longitude': _longitudeController.text,
         'user_email': email,
       };
 
