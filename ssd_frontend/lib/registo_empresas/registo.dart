@@ -72,11 +72,12 @@ class _RegistoEmpresaPageState extends State<RegistoEmpresaPage> {
                 TextFormField(
                   decoration: InputDecoration(labelText: 'Código Postal'),
                   validator: (String? value) {
+                    final pattern = RegExp(r'^\d{4}-\d{3}$');
                     if (value!.isEmpty) {
                       return 'Por favor, insira o código postal da empresa.';
                     }
-                    else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
-                      return 'O NIF deve conter apenas números.';
+                    else if (!pattern.hasMatch(value)) {
+                      return 'Digite um código postal no formato válido (Exemplo: 1234-123)';
                     }
                     return null;
                   },
