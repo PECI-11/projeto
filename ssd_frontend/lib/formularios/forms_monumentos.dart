@@ -16,6 +16,7 @@ class MonumentoForm extends StatefulWidget {
 
 class _MonumentoFormState extends State<MonumentoForm> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController _nameController = TextEditingController();
   TextEditingController _storyController = TextEditingController();
   TextEditingController _styleController = TextEditingController();
   TextEditingController _accessabilityController = TextEditingController();
@@ -43,6 +44,30 @@ class _MonumentoFormState extends State<MonumentoForm> {
         _imageDescriptionList.add(''); // Add an empty string to the list
       });
     }
+  }
+
+  Widget _buildNameInput() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("Nome do monumento"),
+        SizedBox(height: 10.0),
+        TextFormField(
+          controller: _descriptionController,
+          decoration: InputDecoration
+            (
+            border: OutlineInputBorder(),
+            hintText: "Escreva o nome do monumento",
+          ),
+          validator: (value) {
+            if (value == "") {
+              return "Escreva o nome do monumento";
+            }
+            return null;
+          },
+        ),
+      ],
+    );
   }
 
   Widget _buildStoryInput() {
@@ -328,6 +353,7 @@ class _MonumentoFormState extends State<MonumentoForm> {
     final email = user?.email ?? "";
     if (_formKey.currentState!.validate()) {
       Map<String, dynamic> monumentoData = {
+        'name': _nameController.text,
         'story': _storyController.text,
         'style': _styleController.text,
         'accessability': _accessabilityController.text,
@@ -388,6 +414,8 @@ class _MonumentoFormState extends State<MonumentoForm> {
           key: _formKey,
           child: ListView(
             children: <Widget>[
+              _buildNameInput(),
+              SizedBox(height: 20.0),
               _buildStoryInput(),
               SizedBox(height: 20.0),
               _buildStyleInput(),

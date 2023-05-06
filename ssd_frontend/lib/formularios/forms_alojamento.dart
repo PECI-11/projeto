@@ -19,6 +19,7 @@ class AlojamentoForm extends StatefulWidget {
 
 class _AlojamentoFormState extends State<AlojamentoForm> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController _nameController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
   TextEditingController _bedroomTypeController = TextEditingController();
   TextEditingController _bedroomPricesController = TextEditingController();
@@ -51,6 +52,30 @@ Future<void> _getImage(ImageSource source) async {
     });
   }
 }
+
+  Widget _buildNameInput() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("Nome do alojamento"),
+        SizedBox(height: 10.0),
+        TextFormField(
+          controller: _descriptionController,
+          decoration: InputDecoration
+            (
+            border: OutlineInputBorder(),
+            hintText: "Escreva o nome do alojamento",
+          ),
+          validator: (value) {
+            if (value == "") {
+              return "Escreva o nome do alojamento";
+            }
+            return null;
+          },
+        ),
+      ],
+    );
+  }
 
 
   Widget _buildDescriptionInput() {
@@ -285,6 +310,7 @@ Future<void> _getImage(ImageSource source) async {
       }
 
       Map<String, dynamic> alojamentoData = {
+        'name': _nameController.text,
         'description': _descriptionController.text,
         'bedroom_type': _bedroomTypeController.text,
         'bedroom_prices': _bedroomPricesController.text,
@@ -347,6 +373,8 @@ Future<void> _getImage(ImageSource source) async {
           key: _formKey,
           child: ListView(
             children: <Widget>[
+              _buildNameInput(),
+              SizedBox(height: 20.0),
               _buildDescriptionInput(),
               SizedBox(height: 20.0),
               _buildBedroomTypeInput(),

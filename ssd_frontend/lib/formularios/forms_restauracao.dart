@@ -20,6 +20,7 @@ class RestaurantForm extends StatefulWidget {
 
 class _RestaurantFormState extends State<RestaurantForm> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController _nameController = TextEditingController();
   TextEditingController _tipoEstabelecimentoController = TextEditingController();
   TextEditingController _imagesController = TextEditingController();
   TextEditingController _hoursController = TextEditingController();
@@ -89,6 +90,31 @@ class _RestaurantFormState extends State<RestaurantForm> {
       }
     });
   }*/
+
+  Widget _buildNameInput() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text("Nome do restaurante"),
+        SizedBox(height: 10.0),
+        TextFormField(
+          controller: _descriptionController,
+          decoration: InputDecoration
+            (
+            border: OutlineInputBorder(),
+            hintText: "Escreva o nome do restaurante",
+          ),
+          validator: (value) {
+            if (value == "") {
+              return "Escreva o nome do restaurante";
+            }
+            return null;
+          },
+        ),
+      ],
+    );
+  }
+
   Widget _buildRestaurantTypeInput() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -304,6 +330,8 @@ Widget build(BuildContext context) {
         key: _formKey,
         child: ListView(
           children: <Widget>[
+            _buildNameInput(),
+            SizedBox(height 20.0),
             _buildRestaurantTypeInput(),
             SizedBox(height: 16.0),
             _buildImagesInput(),
@@ -336,6 +364,7 @@ void _submitForm() async {
 
     // Encode the form data and user email as a JSON object
     final data = json.encode({
+      'name': _nameController.text,
       'tipoEstabelecimento': _selectedTypes,
       'ementa': _images_ementas_string_list,
       'hours': _hoursController.text,
