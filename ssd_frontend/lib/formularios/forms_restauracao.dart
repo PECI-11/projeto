@@ -98,7 +98,7 @@ class _RestaurantFormState extends State<RestaurantForm> {
         Text("Nome do restaurante"),
         SizedBox(height: 10.0),
         TextFormField(
-          controller: _descriptionController,
+          controller: _nameController,
           decoration: InputDecoration
             (
             border: OutlineInputBorder(),
@@ -331,7 +331,7 @@ Widget build(BuildContext context) {
         child: ListView(
           children: <Widget>[
             _buildNameInput(),
-            SizedBox(height 20.0),
+            SizedBox(height: 20.0),
             _buildRestaurantTypeInput(),
             SizedBox(height: 16.0),
             _buildImagesInput(),

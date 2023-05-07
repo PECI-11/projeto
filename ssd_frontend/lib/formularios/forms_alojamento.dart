@@ -60,7 +60,7 @@ Future<void> _getImage(ImageSource source) async {
         Text("Nome do alojamento"),
         SizedBox(height: 10.0),
         TextFormField(
-          controller: _descriptionController,
+          controller: _nameController,
           decoration: InputDecoration
             (
             border: OutlineInputBorder(),

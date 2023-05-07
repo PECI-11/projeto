@@ -53,7 +53,7 @@ class _MonumentoFormState extends State<MonumentoForm> {
         Text("Nome do monumento"),
         SizedBox(height: 10.0),
         TextFormField(
-          controller: _descriptionController,
+          controller: _nameController,
           decoration: InputDecoration
             (
             border: OutlineInputBorder(),
