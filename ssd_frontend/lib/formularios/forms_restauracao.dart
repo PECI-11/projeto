@@ -30,11 +30,13 @@ class _RestaurantFormState extends State<RestaurantForm> {
   TextEditingController _longitudeController = TextEditingController();
   TextEditingController _promoController = TextEditingController();
   // List<File> _imageList = [];
-  List<String> _images_ementas_string_list = [];  
-  List<String> _imageDescriptionList = [];
-  List<Uint8List> _imageBytesList = [];
-  List<String> _imageStringList = [];
+  List<String> _images_ementas_string_list = []; 
+  List<File> _imageEmentaList = [];
   List<File> _imageList = [];
+
+  List<String> _imageDescriptionList = [];
+  List<String> _imageStringList = [];
+  final _picker = ImagePicker();
 
   final String url = 'http://127.0.0.1:8000/services/restaurants';
   final List<String> _restaurantTypes = ["Restaurante", "Café", "Bar", "Snack-Bar", "Salão de chá", "Food Truck", "Self-service"];
@@ -71,7 +73,7 @@ class _RestaurantFormState extends State<RestaurantForm> {
       final bytes = await pickedFile.readAsBytes();
       final encodedImage = base64Encode(bytes); // Convert bytes to base64 encoded string
       setState(() {
-        _imageList.add(File(pickedFile.path));
+        _imageEmentaList.add(File(pickedFile.path));
         _images_ementas_string_list.add(encodedImage); // Add encoded image string to the list
         //_imageDescriptionList.add(''); // Add an empty string to the list
       });
@@ -115,41 +117,46 @@ class _RestaurantFormState extends State<RestaurantForm> {
     );
   }
 
-  Widget _buildRestaurantTypeInput() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text("Tipo de estabelecimento"),
-        SizedBox(height: 10.0),
-        Column(
-          children: _restaurantTypes
-              .map(
-                (type) => Row(
-                  children: <Widget> [
-                    Checkbox(
-                      value: _selectedTypes.contains(type),
-                      onChanged: (value){
-                        setState(() {
-                          if(value!){
-                            _selectedTypes.add(type);
-                          }
-                          else{
-                            _selectedTypes.remove(type);
-                          }
-                        });
-                      }
-                  ),
-                  Text(type),
-                ],
-              ),
-            )
-            .toList(),
-        ),
-      ],
-    );
-  }
+  bool _isSelectedTypesValid = true;
 
-  Widget _buildImagesInput() {
+Widget _buildRestaurantTypeInput() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      Text("Tipo de estabelecimento", style: TextStyle(color: _isSelectedTypesValid ? null : Colors.red)),
+      SizedBox(height: 10.0),
+      Column(
+        children: _restaurantTypes
+            .map(
+              (type) => Row(
+                children: <Widget> [
+                  Checkbox(
+                    value: _selectedTypes.contains(type),
+                    onChanged: (value){
+                      setState(() {
+                        if(value!){
+                          _selectedTypes.add(type);
+                        }
+                        else{
+                          _selectedTypes.remove(type);
+                        }
+                        _isSelectedTypesValid = true; // Reset the validation state
+                      });
+                    }
+                ),
+                Text(type),
+              ],
+            ),
+          )
+          .toList(),
+      ),
+      if (!_isSelectedTypesValid) Text("Selecione pelo menos uma opção", style: TextStyle(color: Colors.red)),
+    ],
+  );
+}
+
+
+  Widget _buildImagesEmentaInput() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -162,33 +169,33 @@ class _RestaurantFormState extends State<RestaurantForm> {
         child: Text("Inserir imagem da ementa"),
       ),
       SizedBox(height: 10.0),
-      if (_imageList.isNotEmpty)
+      if (_imageEmentaList.isNotEmpty)
         Column(
-          children: List.generate(_imageList.length, (index) {
+          children: List.generate(_imageEmentaList.length, (index) {
             return Column(
               children: [
                 SizedBox(height: 10.0),
                 Row(
                   children: [
                     Image.network(
-                      _imageList[index].path,
+                      _imageEmentaList[index].path,
                       height: 100.0,
                       width: 100.0,
                     ),
-                    SizedBox(width: 10.0),
-                    Expanded(
-                      child: TextFormField(
-                        onChanged: (value) {
-                          setState(() {
-                            _imageDescriptionList[index] = value;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          hintText: "Insira uma descrição para esta imagem",
-                          border: OutlineInputBorder(),
-                        ),
-                      ),
-                    ),
+                    // SizedBox(width: 10.0),
+                    // Expanded(
+                    //   child: TextFormField(
+                    //     onChanged: (value) {
+                    //       setState(() {
+                    //         _imageDescriptionList[index] = value;
+                    //       });
+                    //     },
+                    //     decoration: InputDecoration(
+                    //       hintText: "Insira uma descrição para esta imagem",
+                    //       border: OutlineInputBorder(),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ],
@@ -250,6 +257,56 @@ class _RestaurantFormState extends State<RestaurantForm> {
     );
   }
 
+  Widget _buildImagesInput() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      Text("Imagens"),
+      SizedBox(height: 10.0),
+      ElevatedButton(
+        onPressed: () {
+          _getImage(ImageSource.gallery);
+        },
+        child: Text("Inserir imagem do local"),
+      ),
+      SizedBox(height: 10.0),
+      if (_imageList.isNotEmpty)
+        Column(
+          children: List.generate(_imageList.length, (index) {
+            return Column(
+              children: [
+                SizedBox(height: 10.0),
+                Row(
+                  children: [
+                    Image.network(
+                      _imageList[index].path,
+                      height: 100.0,
+                      width: 100.0,
+                    ),
+                    SizedBox(width: 10.0),
+                    Expanded(
+                      child: TextFormField(
+                        onChanged: (value) {
+                          setState(() {
+                            _imageDescriptionList[index] = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Insira uma descrição para esta imagem",
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          }),
+        ),
+    ],
+  );
+}
+
   Widget _buildLocationInput() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -269,6 +326,9 @@ class _RestaurantFormState extends State<RestaurantForm> {
                   if (value?.isEmpty ?? true) {
                     return "Insira a latitude";
                   }
+                  if (double.tryParse(value!) == null) {
+                    return "A latitude deve ser um número válido(por exemplo: 12.345)";
+                  }
                   return null;
                 },
               ),
@@ -284,6 +344,9 @@ class _RestaurantFormState extends State<RestaurantForm> {
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
                     return "Insira a longitude";
+                  }
+                  if (double.tryParse(value!) == null) {
+                    return "A longitude deve ser um número válido(por exemplo: 12.345)";
                   }
                   return null;
                 },
@@ -334,11 +397,13 @@ Widget build(BuildContext context) {
             SizedBox(height: 20.0),
             _buildRestaurantTypeInput(),
             SizedBox(height: 16.0),
-            _buildImagesInput(),
+            _buildImagesEmentaInput(),
             SizedBox(height: 20.0),
             _buildHoursInput(),
             SizedBox(height: 20.0),
             _buildDescriptionInput(),
+            SizedBox(height: 20.0),
+            _buildImagesInput(),
             SizedBox(height: 20.0),
             _buildLocationInput(),
             SizedBox(height: 20.0),
@@ -369,12 +434,12 @@ void _submitForm() async {
       'ementa': _images_ementas_string_list,
       'hours': _hoursController.text,
       'description': _descriptionController.text,
+      'images': _imageStringList,
+      'imageDescriptions': _imageDescriptionList,
       // 'location': _locationController.text,
       'latitude': _latitudeController.text,
       'longitude': _longitudeController.text,
       'promo': _promoController.text,
-      'images': _imageStringList,
-      'imageDescriptions': _imageDescriptionList,
       'email': email,
     });
 
