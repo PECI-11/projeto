@@ -163,7 +163,7 @@ def request_user_services(request):
         # Convert each service's ObjectId to a string for serialization
         for service in services:
             service['_id'] = str(service['_id'])
-
+        
         response_data = {
             'user_services': services
         }

@@ -33,8 +33,11 @@ urlpatterns = [
     re_path('users/register', register_user, name='user_register'),
     re_path(r'^user_info/$', request_user_information),
     re_path(r'^user_services/$', request_user_services),
-    re_path(r'^services_district/$', services_by_distrito),
-    re_path(r'^services_concelho/$', services_by_concelho),
+    #by district and type
+    re_path(r'^services_distrito/(?P<distrito>[\w-]+)/(?P<tipo>[\w-]+)/?$', services_by_distrito_tipo),
+    #by district
+    re_path(r'^services_distrito/(?P<distrito>[\w-]+)/?$', services_by_distrito),
+    re_path(r'^services_concelho/(?P<concelho>[\w-]+)(?:/(?P<tipo>[\w-]+))?/$', services_by_concelho),
     re_path(r'^services_freguesia/$', services_by_freguesia),
   #  path('regions/<int:district_id>/concelhos/', get_concelhos_by_district, name='get_concelhos_by_district'),
     #  path('regions/<int:concelhos_id>/freguesias/', get_freguesias_by_concelho, name='get_freguesias_by_concelho'),
