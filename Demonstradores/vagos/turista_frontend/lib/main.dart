@@ -8,9 +8,9 @@ void main() {
     home: MainScreen(),
     debugShowCheckedModeBanner: false,
     routes: {
-      '/restauracao': (context) => RestauracaoService(),
-      '/alojamento': (context) => AlojamentoService(),
-      '/edificiosculturais': (context) => EdificiosCulturaisService(),
+      '/restauracao': (context) => RestauracaoService('Vagos' , 'Restauracao'),
+      '/alojamento': (context) => AlojamentoService('Vagos' , 'Alojamento'),
+      '/edificiosculturais': (context) => EdificiosService('Vagos' , 'Edificios Culturais'),
 
     },
   ));
@@ -23,77 +23,85 @@ class MainScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Vagos, Aveiro'),
       ),
-      body: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 500,
-              height: 250,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => RestauracaoService()));
-                },
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all(
-                    EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Descubra o que Vagos tem para lhe oferecer!',
+            style: TextStyle(fontSize: 24.0),
+          ),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 250,
+                height: 100,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => RestauracaoService('Vagos' , 'Restauracao')));
+                  },
+                  style: ButtonStyle(
+                    padding: MaterialStateProperty.all(
+                      EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.restaurant, size: 15),
+                      Text('RESTAURAÇÃO', style: TextStyle(fontSize: 15)),
+                    ],
                   ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.restaurant, size: 100),
-                    Text('RESTAURAÇÃO', style: TextStyle(fontSize: 30)),
-                  ],
-                ),
               ),
-            ),
-            SizedBox(width: 20),
-            SizedBox(
-              width: 500,
-              height: 250,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => AlojamentoService()));
-                },
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all(
-                    EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+              SizedBox(width: 20),
+              SizedBox(
+                width: 250,
+                height: 100,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => AlojamentoService('Vagos' , 'Alojamento')));
+                  },
+                  style: ButtonStyle(
+                    padding: MaterialStateProperty.all(
+                      EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.hotel, size: 15),
+                      Text('ALOJAMENTO', style: TextStyle(fontSize: 15)),
+                    ],
                   ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.hotel, size: 100),
-                    Text('ALOJAMENTO', style: TextStyle(fontSize: 30)),
-                  ],
-                ),
               ),
-            ),
-            SizedBox(width: 20),
-            SizedBox(
-              width: 500,
-              height: 250,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => EdificiosCulturaisService()));
-                },
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all(
-                    EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+              SizedBox(width: 20),
+              SizedBox(
+                width: 250,
+                height: 100,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => EdificiosService('Vagos' , 'Edificios Culturais')));
+                  },
+                  style: ButtonStyle(
+                    padding: MaterialStateProperty.all(
+                      EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.castle, size: 15),
+                      Text('EDIFÍCIOS CULTURAIS', style: TextStyle(fontSize: 15)),
+                    ],
                   ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.castle, size: 100),
-                    Text('EDIFÍCIOS CULTURAIS', style: TextStyle(fontSize: 30)),
-                  ],
-                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        ],
       ),
     );
   }
