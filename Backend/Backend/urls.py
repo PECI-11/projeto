@@ -34,6 +34,8 @@ urlpatterns = [
     re_path(r'^user_info/$', request_user_information),
     re_path(r'^user_services/$', request_user_services),
     re_path(r'^services_district/$', services_by_distrito),
+    re_path(r'^services_concelho/$', services_by_concelho),
+    re_path(r'^services_freguesia/$', services_by_freguesia),
   #  path('regions/<int:district_id>/concelhos/', get_concelhos_by_district, name='get_concelhos_by_district'),
     #  path('regions/<int:concelhos_id>/freguesias/', get_freguesias_by_concelho, name='get_freguesias_by_concelho'),
     re_path('empresa', empresa_view, name='empresa'),
