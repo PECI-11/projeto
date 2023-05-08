@@ -243,6 +243,9 @@ Future<void> _getImage(ImageSource source) async {
                   if (value?.isEmpty ?? true) {
                     return "Insira a latitude";
                   }
+                  if (double.tryParse(value!) == null) {
+                    return "A latitude deve ser um número válido(por exemplo: 12.345)";
+                  }
                   return null;
                 },
               ),
@@ -258,6 +261,9 @@ Future<void> _getImage(ImageSource source) async {
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
                     return "Insira a longitude";
+                  }
+                  if (double.tryParse(value!) == null) {
+                    return "A longitude deve ser um número válido(por exemplo: 12.345)";
                   }
                   return null;
                 },
