@@ -168,59 +168,60 @@ class _FeaturesEmpresaState extends State<FeaturesEmpresa> {
           ],
         ),
       ),
+
       body: Column(
         children: [
           const Expanded(flex: 2, child: _TopPortion()),
-Expanded(
-flex: 3,
-child: FutureBuilder<UserInformation>(
-future: fetchUserInformation(currentUser?.email ?? ''),
-builder: (context, snapshot) {
-if (snapshot.hasData) {
-return Padding(
-padding: const EdgeInsets.all(8.0),
-child: Column(
-children: [
-Text(
-snapshot.data?.companyName ?? "N/A",
-style: TextStyle(
-fontWeight: FontWeight.bold,
-fontSize: 25,
-),
-),
-SizedBox(height: 16,),
-Text(
-currentUser?.email ?? "",
-style: TextStyle(
-fontWeight: FontWeight.bold,
-fontSize: 18,
-),
-),
-SizedBox(height: 10,),
-Text(
-snapshot.data?.companyPhone ?? "N/A",
-style: TextStyle(
-fontWeight: FontWeight.bold,
-fontSize: 18,
-),
-),
-SizedBox(height: 16,),
-_ProfileInfoRow()
-],
-),
-);
-} else if (snapshot.hasError) {
-return Center(child: Text("Error: ${snapshot.error}"));
-} else {
-return Center(child: CircularProgressIndicator());
-}
-},
-),
-),
-],
-),
-);
-}
+          Expanded(
+            flex: 3,
+            child: FutureBuilder<UserInformation>(
+              future: fetchUserInformation(currentUser?.email ?? ''),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          snapshot.data?.companyName ?? "N/A",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25,
+                            ),
+                        ),
+                        SizedBox(height: 16,),
+                        Text(
+                          currentUser?.email ?? "",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                        SizedBox(height: 10,),
+                        Text(
+                          snapshot.data?.companyPhone ?? "N/A",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                        SizedBox(height: 16,),
+                        _ProfileInfoRow()
+                      ],
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(child: Text("Error: ${snapshot.error}"));
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _ProfileInfoRow extends StatelessWidget {
@@ -229,7 +230,7 @@ class _ProfileInfoRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<ProfileInfoItem> _items = [      ProfileInfoItem("Anúncios", utilizador?.services_count ?? 0),      ProfileInfoItem("Visitantes", 666),    ];
+    final List<ProfileInfoItem> _items = [ProfileInfoItem("Anúncios", utilizador?.services_count ?? 0),      ProfileInfoItem("Visitantes", 666),    ];
 
     return Container(
       height: 80,
