@@ -89,7 +89,7 @@ class DetalhesServicoWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              service['description'],
+              service['story'],
               style: TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
@@ -97,21 +97,42 @@ class DetalhesServicoWidget extends StatelessWidget {
             ),
             SizedBox(height: 16.0),
             Text(
-              'Tipo de quarto: ${service['bedroom_type']}',
+              'Estilo do monumento: ${service['style']}',
               style: TextStyle(
                 fontSize: 16.0,
               ),
             ),
             SizedBox(height: 8.0),
             Text(
-              'Preço do quarto: ${service['bedroom_prices']}',
+              'Acessibilidade:  ${service['accessability']}',
               style: TextStyle(
                 fontSize: 16.0,
               ),
             ),
             SizedBox(height: 8.0),
             Text(
-              'Serviços disponíveis: ${service['services']}',
+              'Horário: ${service['schedule']}',
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
+            ),
+            SizedBox(height: 8.0),
+            Text(
+              'Preço: ${service['price']}',
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
+            ),
+            SizedBox(height: 8.0),
+            Text(
+              'Atividade: ${service['activity']}',
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
+            ),
+            SizedBox(height: 8.0),
+            Text(
+              'Visita Guiada? ${service['guide_visit']}',
               style: TextStyle(
                 fontSize: 16.0,
               ),
@@ -119,6 +140,20 @@ class DetalhesServicoWidget extends StatelessWidget {
             SizedBox(height: 8.0),
             Text(
               'Localização: ${service['latitude']}, ${service['longitude']}',
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
+            ),
+            SizedBox(height: 8.0),
+            Text(
+              'Entre em contacto através do email: ${service['user_email']}',
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
+            ),
+            SizedBox(height: 8.0),
+            Text(
+              'Rua: ${service['rua']}',
               style: TextStyle(
                 fontSize: 16.0,
               ),
@@ -133,32 +168,27 @@ class DetalhesServicoWidget extends StatelessWidget {
             ),
             SizedBox(height: 8.0),
             GridView.builder(
+
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: service['images'].length,
+              itemCount: service['images'] != null ? service['images'].length : 0,
+
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 mainAxisSpacing: 8.0,
                 crossAxisSpacing: 8.0,
               ),
               itemBuilder: (context, index) {
-                final image = service['images'][index];
-                final description = service['image_descriptions'][index];
+                final imageData = service['images'][index];
                 return Card(
                   child: Column(
                     children: [
                       Expanded(
-                        child: Image.network(
-                          image,
+                        child: Image.memory(
+                          base64Decode(imageData),
                           fit: BoxFit.cover,
                         ),
                       ),
-                      SizedBox(height: 8.0),
-                      Text(
-                        description,
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 8.0),
                     ],
                   ),
                 );
@@ -179,7 +209,7 @@ Future<List<Map<String, dynamic>>> fetchData(String regiao , String tipo) async 
   final response = await http.get(Uri.parse('http://127.0.0.1:8000/services_concelho/$regiao/$tipo/'));
 
   if (response.statusCode == 200) {
-
+    print(response.body);
     final decodedData = json.decode(response.body);
     // print(decodedData);
     final List<Map<String, dynamic>> alojamentos = List<Map<String, dynamic>>.from(decodedData['district_services']);

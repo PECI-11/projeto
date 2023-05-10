@@ -75,6 +75,14 @@ class DetalhesServicoWidget extends StatelessWidget {
 
   const DetalhesServicoWidget({Key? key, required this.service}) : super(key: key);
 
+  Widget _buildImageFromBase64String(String base64String) {
+    return Image.memory(
+      base64Decode(base64String),
+      fit: BoxFit.cover,
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,6 +117,13 @@ class DetalhesServicoWidget extends StatelessWidget {
             ),
             SizedBox(height: 8.0),
             Text(
+              'Rua: ${service['rua']}',
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
+            ),
+            SizedBox(height: 8.0),
+            Text(
               'Serviços disponíveis: ${service['services']}',
               style: TextStyle(
                 fontSize: 16.0,
@@ -116,54 +131,41 @@ class DetalhesServicoWidget extends StatelessWidget {
             ),
             SizedBox(height: 8.0),
             Text(
-              'Localização: ${service['latitude']}, ${service['longitude']}',
+              'Coordenadas: ${service['latitude']}, ${service['longitude']}',
               style: TextStyle(
                 fontSize: 16.0,
               ),
             ),
             SizedBox(height: 8.0),
             Text(
-              'Entre em contacto: ${service['user_email']}',
+              'Entre em contacto através do email: ${service['user_email']}',
               style: TextStyle(
                 fontSize: 16.0,
-              ),
-            ),
-            SizedBox(height: 16.0),
-            Text(
-              'Imagens:',
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
               ),
             ),
             SizedBox(height: 8.0),
             GridView.builder(
+
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: service['images'].length,
+              itemCount: service['images'] != null ? service['images'].length : 0,
+
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 mainAxisSpacing: 8.0,
                 crossAxisSpacing: 8.0,
               ),
               itemBuilder: (context, index) {
-                final image = service['images'][index];
-                final description = service['image_descriptions'][index];
+                final imageData = service['images'][index];
                 return Card(
                   child: Column(
                     children: [
                       Expanded(
-                        child: Image.network(
-                          image,
+                        child: Image.memory(
+                          base64Decode(imageData),
                           fit: BoxFit.cover,
                         ),
                       ),
-                      SizedBox(height: 8.0),
-                      Text(
-                        description,
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 8.0),
                     ],
                   ),
                 );

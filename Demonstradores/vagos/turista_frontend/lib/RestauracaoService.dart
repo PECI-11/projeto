@@ -36,20 +36,20 @@ class _RestauracaoServiceState extends State<RestauracaoService>{
               future: _futureData,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  final List restaurantes = snapshot.data!;
+                  final List alojamentos = snapshot.data!;
                   return ListView.builder(
-                    itemCount: restaurantes.length,
+                    itemCount: alojamentos.length,
                     itemBuilder: (context, index) {
-                      final restaurante = restaurantes[index];
+                      final alojamento = alojamentos[index];
                       return ListTile(
-                        title: Text(restaurante['name']),
-                        subtitle: Text(restaurante['tipoEstabelecimento']),
+                        title: Text(alojamento['name']),
+                        subtitle: Text(alojamento['description']),
                         trailing: Icon(Icons.arrow_forward),
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => DetalhesServicoWidget(service: restaurante),
+                              builder: (context) => DetalhesServicoWidget(service: alojamento),
                             ),
                           );
                         },
@@ -69,8 +69,7 @@ class _RestauracaoServiceState extends State<RestauracaoService>{
   }
 }
 
-// VAI REPRESENTAR OS DETALHES TODOS DO SERVIÇO, OU SEJA OS DADOS
-// FALTA ACABAR PARA OS DADOS DA RESTAURAÇAO
+// VAI REPRESENTAR OS DETALHES TODOS DO SERVIÇO, OU SEJA OS DADOS TODOS
 class DetalhesServicoWidget extends StatelessWidget {
   final Map<String, dynamic> service;
 
@@ -96,36 +95,36 @@ class DetalhesServicoWidget extends StatelessWidget {
             ),
             SizedBox(height: 16.0),
             Text(
-              'Tipo de Estabelecimento: ${service['tipoEstabelecimento']}',
-              style: TextStyle(
-                fontSize: 16.0,
-              ),
-            ),
-            // FALTA CONTINUAR AQUI COM O TIPO DE DADOS DA RESTAURAÇÃO
-            SizedBox(height: 8.0),
-            Text(
-              'Preço do quarto: ${service['bedroom_prices']}',
+              'Horário: ${service['hours']}',
               style: TextStyle(
                 fontSize: 16.0,
               ),
             ),
             SizedBox(height: 8.0),
             Text(
-              'Serviços disponíveis: ${service['services']}',
+              'Promoções: ${service['promo']}',
               style: TextStyle(
                 fontSize: 16.0,
               ),
             ),
             SizedBox(height: 8.0),
             Text(
-              'Localização: ${service['latitude']}, ${service['longitude']}',
+              'Rua: ${service['rua']}',
+              style: TextStyle(
+                fontSize: 16.0,
+              ),
+            ),
+
+            SizedBox(height: 8.0),
+            Text(
+              'Coordenadas: ${service['latitude']}, ${service['longitude']}',
               style: TextStyle(
                 fontSize: 16.0,
               ),
             ),
             SizedBox(height: 8.0),
             Text(
-              'Entre em contacto : ${service['latitude']}, ${service['longitude']}',
+              'Entre em contacto através do email: ${service['email']}',
               style: TextStyle(
                 fontSize: 16.0,
               ),
@@ -139,33 +138,57 @@ class DetalhesServicoWidget extends StatelessWidget {
               ),
             ),
             SizedBox(height: 8.0),
+            SizedBox(height: 8.0),
             GridView.builder(
+
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemCount: service['images'].length,
+              itemCount: service['images'] != null ? service['images'].length : 0,
+
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 mainAxisSpacing: 8.0,
                 crossAxisSpacing: 8.0,
               ),
               itemBuilder: (context, index) {
-                final image = service['images'][index];
-                final description = service['image_descriptions'][index];
+                final imageData = service['images'][index];
                 return Card(
                   child: Column(
                     children: [
                       Expanded(
-                        child: Image.network(
-                          image,
+                        child: Image.memory(
+                          base64Decode(imageData),
                           fit: BoxFit.cover,
                         ),
                       ),
-                      SizedBox(height: 8.0),
-                      Text(
-                        description,
-                        textAlign: TextAlign.center,
+                    ],
+                  ),
+                );
+              },
+            ),
+            SizedBox(height: 8.0),
+            GridView.builder(
+
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: service['ementa'] != null ? service['ementa'].length : 0,
+
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: 8.0,
+                crossAxisSpacing: 8.0,
+              ),
+              itemBuilder: (context, index) {
+                final imageData = service['ementa'][index];
+                return Card(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Image.memory(
+                          base64Decode(imageData),
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                      SizedBox(height: 8.0),
                     ],
                   ),
                 );
@@ -194,5 +217,21 @@ Future<List<Map<String, dynamic>>> fetchData(String regiao , String tipo) async 
     return alojamentos;
   } else {
     throw Exception('Failed to load data');
+  }
+}
+
+
+
+class ImageFromBase64String extends StatelessWidget {
+  final String base64String;
+
+  ImageFromBase64String(this.base64String);
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.memory(
+      base64Decode(base64String),
+      fit: BoxFit.cover,
+    );
   }
 }

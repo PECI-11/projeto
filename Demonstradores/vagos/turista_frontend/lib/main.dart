@@ -10,7 +10,7 @@ void main() {
     routes: {
       '/restauracao': (context) => RestauracaoService('Vagos' , 'Restauracao'),
       '/alojamento': (context) => AlojamentoService('Vagos' , 'Alojamento'),
-      '/edificiosculturais': (context) => EdificiosService('Vagos' , 'Edificios Culturais'),
+      '/edificiosculturais': (context) => EdificiosService('Vagos' , 'Monumento'),
 
     },
   ));
@@ -83,7 +83,7 @@ class MainScreen extends StatelessWidget {
                 height: 100,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => EdificiosService('Vagos' , 'Edificios Culturais')));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => EdificiosService('Vagos' , 'Monumento')));
                   },
                   style: ButtonStyle(
                     padding: MaterialStateProperty.all(
