@@ -10,6 +10,16 @@ class CardAlojamentos extends StatefulWidget {
 
 class _CardAlojamentosState extends State<CardAlojamentos> {
 
+  /*
+  Future<bool> buscarDados() async {
+  final response = await.http.get(Uri.parse('http://127.0.0.1:8000/user_info/?email=$email'));
+  if (response.statusCode == 200) {
+    return
+    }
+}
+
+   */
+
 
   @override
   Widget build(BuildContext context) {
