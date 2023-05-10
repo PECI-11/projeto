@@ -139,9 +139,7 @@ class _LoginTuristaState extends State<LoginTurista> {
 
           Expanded(
             flex: 4,
-            child: RotatedBox(
-              quarterTurns: 3,
-              child:
+            child:
               /*Lottie.asset(
               'assets/images_servicos/restaurante1.jpg',
               height: size.height * 0.3,
@@ -149,13 +147,13 @@ class _LoginTuristaState extends State<LoginTurista> {
               fit: BoxFit.fill,
             ),*/
               Image(
-                image: AssetImage('assets/images_servicos/apartamentos.jpg'),
-                height: size.height * 0.3,
+                image: AssetImage('assets/images_servicos/turismo_portugal2.jpg'),
+                height: size.height,
                 width: double.infinity,
                 fit: BoxFit.fill,
               ),
             ),
-          ),
+
           SizedBox(width: size.width * 0.06),
           Expanded(
             flex: 5,
