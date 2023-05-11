@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ssd_frontend/features_empresa/restaurantes_details.dart';
+import 'package:http/http.dart' as http;
 
 class CardRestaurantes extends StatefulWidget {
   const CardRestaurantes({Key? key}) : super(key: key);
@@ -9,6 +12,15 @@ class CardRestaurantes extends StatefulWidget {
 }
 
 class _CardRestaurantesState extends State<CardRestaurantes> {
+
+  Future<RestaurantesDetails> buscarDados() async {
+    final response = await http.get(Uri.parse('http://127.0.0.1:8000/user_info/?email=$email'));
+    if (response.statusCode == 200) {
+      return RestaurantesDetails.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception("Falha ao buscar info de Alojamentos");
+    }
+  }
 
 
   @override

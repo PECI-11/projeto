@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'alojamentos_details.dart';
+import 'package:http/http.dart' as http;
 
 class CardAlojamentos extends StatefulWidget {
   const CardAlojamentos({Key? key}) : super(key: key);
@@ -10,15 +13,15 @@ class CardAlojamentos extends StatefulWidget {
 
 class _CardAlojamentosState extends State<CardAlojamentos> {
 
-  /*
-  Future<bool> buscarDados() async {
-  final response = await.http.get(Uri.parse('http://127.0.0.1:8000/user_info/?email=$email'));
-  if (response.statusCode == 200) {
-    return
+  Future<AlojamentosDetails> buscarDados() async {
+    final response = await http.get(Uri.parse('http://127.0.0.1:8000/empresa/?tipo_servico'));
+    if (response.statusCode == 200) {
+      return AlojamentosDetails.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception("Falha ao buscar info de Alojamentos");
     }
-}
+  }
 
-   */
 
 
   @override

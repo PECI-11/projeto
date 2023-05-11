@@ -52,6 +52,10 @@ class Servicos {
       'user_mail': user_mail,
       'latitude': latitude,
       'longitude': longitude,
+      'distrito': distrito,
+      'concelho': concelho,
+      'freguesia': freguesia,
+      'rua': rua,
     };
   }
 
@@ -63,7 +67,12 @@ class Servicos {
     return Servicos()
       ..user_mail = map['user_mail']
       ..latitude = map['latitude']
-      ..longitude = map['longitude'];
+      ..longitude = map['longitude']
+      ..distrito = map['distrito']
+      ..concelho = map['concelho']
+      ..freguesia = map['freguesia']
+      ..rua = map['rua'];
+
   }
 
   Map<String, dynamic> get servicos {
@@ -71,12 +80,17 @@ class Servicos {
       'user_mail': user_mail,
       'latitude': latitude,
       'longitude': longitude,
+      'distrito': distrito,
+      'concelho': concelho,
+      'freguesia': freguesia,
+      'rua': rua,
     };
   }
 
   @override
   String toString() {
-    return 'Servicos (user_mail: $user_mail, latitude: $latitude, longitude: $longitude)';
+    return 'Servicos (user_mail: $user_mail, latitude: $latitude, longitude: $longitude, distrito: $distrito, concelho: $concelho, '
+        'freguesia: $freguesia, rua: $rua)';
   }
 
 }
