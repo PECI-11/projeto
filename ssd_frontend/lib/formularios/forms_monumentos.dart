@@ -3,6 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../features_empresa/features_empresa.dart';
 import 'ConfirmationPage.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
@@ -388,13 +389,23 @@ class _MonumentoFormState extends State<MonumentoForm> {
 
       if (response.statusCode == 200) {
         // Se a solicitação for bem-sucedida, exiba uma mensagem de sucesso
-          Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ConfirmationPage(
-              confirmationText: '',
-            ),
-          ),
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Formulário submetido!'),
+              content: Text('O serviço foi adicionado!'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    // Navigate to another page
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => FeaturesEmpresa()));
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
         );
 
         // Limpe o formulário

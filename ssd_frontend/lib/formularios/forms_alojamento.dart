@@ -8,6 +8,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:typed_data';
+import '../features_empresa/features_empresa.dart';
 import 'ConfirmationPage.dart';
 
 
@@ -342,14 +343,24 @@ Future<void> _getImage(ImageSource source) async {
 
       if (response.statusCode == 200) {
         // Se a solicitação for bem-sucedida, exiba uma mensagem de sucesso
-            Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ConfirmationPage(
-                confirmationText: '',
-              ),
-            ),
-          );
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Formulário submetido!'),
+              content: Text('O serviço foi adicionado!'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    // Navigate to another page
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => FeaturesEmpresa()));
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
 
         // Limpe o formulário e a lista de imagens
         _formKey.currentState!.reset();

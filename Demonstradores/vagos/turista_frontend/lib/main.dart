@@ -39,9 +39,16 @@ class MainScreen extends StatelessWidget {
                 children: [
                   Text(
                     'Venha conhecer Vagos!',
-                    style: TextStyle(fontSize: 24.0),
+                    style: TextStyle(
+                        fontSize: 30.0,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  SizedBox(height: 20),
+
+                  SizedBox(
+                      height: 20
+                  ),
+
                   CarouselSlider(
                     options: CarouselOptions(
                       autoPlay: true,
@@ -62,7 +69,11 @@ class MainScreen extends StatelessWidget {
                       );
                     }).toList(),
                   ),
-              SizedBox(height: 20),
+
+              SizedBox(
+                  height: 20
+              ),
+
               Container(
                 alignment: Alignment.topLeft,
                 child: RichText(
@@ -85,6 +96,7 @@ class MainScreen extends StatelessWidget {
               ),
             ),
           ),
+
           Expanded(
             flex: 1,
             child: Container(
@@ -92,6 +104,7 @@ class MainScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+
                   Flexible(
                     fit: FlexFit.tight,
                     child: FractionallySizedBox(
@@ -108,15 +121,21 @@ class MainScreen extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.restaurant, size: 30),
+                            Icon(Icons.restaurant, size: 60),
                             SizedBox(height: 10),
-                            Text('RESTAURAÇÃO', style: TextStyle(fontSize: 20)),
+                            Text('RESTAURAÇÃO',
+                                style: TextStyle(fontSize: 30)
+                            ),
                           ],
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+
+                  SizedBox(
+                      height: 20
+                  ),
+
                   Flexible(
                     fit: FlexFit.tight,
                     child: FractionallySizedBox(
@@ -133,15 +152,21 @@ class MainScreen extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.hotel, size: 30),
+                            Icon(Icons.hotel, size: 60),
                             SizedBox(height: 10),
-                            Text('ALOJAMENTO', style: TextStyle(fontSize: 20)),
+                            Text('ALOJAMENTO',
+                                style: TextStyle(fontSize: 30)
+                            ),
                           ],
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+
+                  SizedBox(
+                      height: 20
+                  ),
+
                   Flexible(
                     fit: FlexFit.tight, child: FractionallySizedBox(
                     widthFactor: 0.8,
@@ -157,14 +182,17 @@ class MainScreen extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.castle, size: 30),
+                          Icon(Icons.castle, size: 60),
                           SizedBox(height: 10),
-                          Text('EDIFÍCIOS CULTURAIS', style: TextStyle(fontSize: 20)),
+                          Text('EDIFÍCIOS CULTURAIS',
+                              style: TextStyle(fontSize: 30)
+                          ),
                         ],
                       ),
                     ),
                   ),
                   ),
+
                 ],
               ),
             ),

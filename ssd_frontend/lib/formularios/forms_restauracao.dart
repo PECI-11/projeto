@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ssd_frontend/features_empresa/empresa.dart';
 import 'dart:typed_data';
 
 
@@ -451,14 +452,25 @@ void _submitForm() async {
 
     if (response.statusCode == 200) {
       // Success: navigate to the confirmation page
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ConfirmationPage(
-            confirmationText: '',
-          ),
-        ),
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Formulário submetido!'),
+            content: Text('O serviço foi adicionado!'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  // Navigate to another page
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => FeaturesEmpresa()));
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
       );
+
     } else {
       // Error: display an error dialog
       showDialog(
