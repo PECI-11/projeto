@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'AppBar_Restauracao.dart';
+
 
 class RestauracaoService extends StatefulWidget{
   final String regiao;
@@ -26,11 +28,13 @@ class _RestauracaoServiceState extends State<RestauracaoService>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Restauração em Vagos'),
-      ),
+
       body: Column(
         children: [
+
+          CustomAppBarRestauracao(),
+
+
           Expanded(
             child: FutureBuilder<List<dynamic>>(
               future: _futureData,
@@ -41,9 +45,59 @@ class _RestauracaoServiceState extends State<RestauracaoService>{
                     itemCount: alojamentos.length,
                     itemBuilder: (context, index) {
                       final alojamento = alojamentos[index];
+
+                      return Card(
+                        margin: EdgeInsets.all(10),
+                        elevation: 5,
+                        shape: const RoundedRectangleBorder(
+                          side: BorderSide(
+                            color: Colors.blueAccent,
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                        ),
+                        shadowColor: Colors.blueGrey,
+                        child: Column(
+                          children: [
+                              ListTile(
+                              title: Text(alojamento['name'],
+                                style: TextStyle(
+                                    fontFamily: 'Romelio',
+                                    fontSize: 18
+                                ),
+                              ),
+                              subtitle: Text(alojamento['description'],
+                                style: TextStyle(
+                                  fontSize: 17,
+                                ),
+                              ),
+                              trailing: Icon(Icons.arrow_forward),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetalhesServicoWidget(service: alojamento),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+
+
+                      /*
                       return ListTile(
-                        title: Text(alojamento['name']),
-                        subtitle: Text(alojamento['description']),
+                        title: Text(alojamento['name'],
+                          style: TextStyle(
+                              fontFamily: 'Romelio',
+                              fontSize: 18
+                          ),
+                        ),
+                        subtitle: Text(alojamento['description'],
+                          style: TextStyle(
+                            fontSize: 17,
+                          ),
+                        ),
                         trailing: Icon(Icons.arrow_forward),
                         onTap: () {
                           Navigator.push(
@@ -54,6 +108,8 @@ class _RestauracaoServiceState extends State<RestauracaoService>{
                           );
                         },
                       );
+                      */
+
                     },
                   );
                 } else if (snapshot.hasError) {

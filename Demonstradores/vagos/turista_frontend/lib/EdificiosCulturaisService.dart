@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'AppBar_Monumentos.dart';
+
 
 class EdificiosService extends StatefulWidget{
   final String regiao;
@@ -26,11 +28,12 @@ class _EdificiosServiceState extends State<EdificiosService>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Edifícios Culturais em Vagos'),
-      ),
+
       body: Column(
         children: [
+
+          CustomAppBarMonumentos(),
+
           Expanded(
             child: FutureBuilder<List<dynamic>>(
               future: _futureData,
@@ -41,9 +44,60 @@ class _EdificiosServiceState extends State<EdificiosService>{
                     itemCount: monumentos.length,
                     itemBuilder: (context, index) {
                       final monumento = monumentos[index];
+
+                      return Card(
+                        margin: EdgeInsets.all(10),
+                        elevation: 5,
+                        shape: const RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: Colors.blueAccent,
+                            ),
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                        ),
+                        shadowColor: Colors.blueGrey,
+                        child: Column(
+                          children: [
+                                ListTile(
+                                title: Text(monumento['name'],
+                                  style: TextStyle(
+                                      fontFamily: 'Romelio',
+                                      fontSize: 18
+                                  ),
+                                ),
+                                subtitle: Text(monumento['story'],
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                  ),
+                                ),
+                                trailing: Icon(Icons.arrow_forward),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => DetalhesServicoWidget(service: monumento),
+                                    ),
+                                  );
+                                },
+                              ),
+
+                        ],
+                        ),
+                      );
+
+
+                      /*
                       return ListTile(
-                        title: Text(monumento['name']),
-                        subtitle: Text(monumento['story']),
+                        title: Text(monumento['name'],
+                          style: TextStyle(
+                              fontFamily: 'Romelio',
+                              fontSize: 18
+                          ),
+                        ),
+                        subtitle: Text(monumento['story'],
+                          style: TextStyle(
+                            fontSize: 17,
+                          ),
+                        ),
                         trailing: Icon(Icons.arrow_forward),
                         onTap: () {
                           Navigator.push(
@@ -54,8 +108,12 @@ class _EdificiosServiceState extends State<EdificiosService>{
                           );
                         },
                       );
+                      
+                       */
                     },
                   );
+
+
                 } else if (snapshot.hasError) {
                   return Text("${snapshot.error}");
                 }

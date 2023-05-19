@@ -128,3 +128,15 @@ flutter:
     - family: Montserrat
       fonts:
         - asset: assets/fonts/static/Montserrat-SemiBold.ttf
+
+    - family: Travel
+      fonts:
+        - asset: assets/fonts/Travel/Travel.ttf
+
+    - family: Hellishy
+      fonts:
+        - asset: assets/fonts/Hellishy/Hellishy.ttf
+
+    - family: Romelio
+      fonts:
+        - asset: assets/fonts/Romelio/Romelio.ttf
