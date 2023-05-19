@@ -31,6 +31,7 @@ class Body extends StatelessWidget {
             height: 20,
           ),
 
+          /*
           FittedBox(
             // Now it just take the required spaces
               child: ElevatedButton(
@@ -83,6 +84,7 @@ class Body extends StatelessWidget {
                 ],
               ),*/
             ),
+          */
 
         ],
       ),

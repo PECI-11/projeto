@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
         width: size.width,
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/main_images/alojamento_modified.jpeg"),
+            image: AssetImage("assets/main_images/Main_image1.png"),
             fit: BoxFit.fill,
           ),
         ),

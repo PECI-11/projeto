@@ -33,41 +33,42 @@ class _AlojamentoServiceState extends State<AlojamentoService>{
         children: [
           Expanded(
             child: FutureBuilder<List<dynamic>>(
-            future: _futureData,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                final List alojamentos = snapshot.data!;
-                return ListView.builder(
-                  itemCount: alojamentos.length,
-                  itemBuilder: (context, index) {
-                    final alojamento = alojamentos[index];
-                    return ListTile(
-                      title: Text(alojamento['name']),
-                      subtitle: Text(alojamento['description']),
-                      trailing: Icon(Icons.arrow_forward),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DetalhesServicoWidget(service: alojamento),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                );
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              }
-              return CircularProgressIndicator();
-            },
-          ),
+              future: _futureData,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final List alojamentos = snapshot.data!;
+                  return ListView.builder(
+                    itemCount: alojamentos.length,
+                    itemBuilder: (context, index) {
+                      final alojamento = alojamentos[index];
+                      return ListTile(
+                        title: Text(alojamento['name']),
+                        subtitle: Text(alojamento['description']),
+                        trailing: Icon(Icons.arrow_forward),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetalhesServicoWidget(service: alojamento),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                  );
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                }
+                return CircularProgressIndicator();
+              },
+            ),
           ),
         ],
       ),
     );
   }
 }
+
 
 // VAI REPRESENTAR OS DETALHES TODOS DO SERVIÇO, OU SEJA OS DADOS TODOS
 class DetalhesServicoWidget extends StatelessWidget {
