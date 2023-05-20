@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'AppBar_Restauracao.dart';
+import 'IconBack.dart';
 
 
 class RestauracaoService extends StatefulWidget{
@@ -134,14 +135,62 @@ class DetalhesServicoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      /*
       appBar: AppBar(
         title: Text(service['name']),
       ),
+       */
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+
+            // APP BAR
+            Container(
+              margin: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(46),
+                boxShadow: [
+                  BoxShadow(
+                    offset: const Offset(0, -2),
+                    blurRadius: 30,
+                    color: Colors.black.withOpacity(0.16),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+
+
+                  IconBack(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }
+                  ),
+
+                  SizedBox(
+                    width: 5,
+                  ),
+
+
+                  Text(
+                    service['name'].toUpperCase(),
+                    style: const TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Hellishy'
+                    ),
+                  ),
+
+                  const Spacer(),
+
+                ],
+              ),
+            ),
+
             Text(
               service['description'],
               style: TextStyle(
