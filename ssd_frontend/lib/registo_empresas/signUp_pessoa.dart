@@ -86,60 +86,68 @@ class _SignUpViewState extends State<SignUpView> {
 
   SimpleUIController simpleUIController = Get.put(SimpleUIController());
 
-  @override
-  Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var theme = Theme.of(context);
+ @override
+Widget build(BuildContext context) {
+  var size = MediaQuery.of(context).size;
+  var theme = Theme.of(context);
 
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-          backgroundColor: Colors.white,
-          resizeToAvoidBottomInset: false,
-          body: LayoutBuilder(
-            builder: (context, constraints) {
-              if (constraints.maxWidth > 600) {
-                return _buildLargeScreen(size, simpleUIController, theme);
-              } else {
-                return _buildSmallScreen(size, simpleUIController, theme);
-              }
-            },
-          )
+  return GestureDetector(
+    onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+    child: Scaffold(
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: false,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth > 600) {
+            return _buildLargeScreen(size, simpleUIController, theme);
+          } else {
+            return _buildSmallScreen(size, simpleUIController, theme);
+          }
+        },
       ),
-    );
-  }
+    ),
+  );
+}
 
   /// For large screens
   Widget _buildLargeScreen(
-      Size size, SimpleUIController simpleUIController, ThemeData theme) {
-    return Row(
-      children: [
-
-        Expanded(
-          flex: 4,
-          child:
-            /*Lottie.asset(
-              'assets/images_servicos/restaurante1.jpg',
-              height: size.height * 0.3,
-              width: double.infinity,
-              fit: BoxFit.fill,
-            ),*/
-            Image(
-              image: AssetImage('assets/images_servicos/turismo_portugal4.jpg'),
-              height: size.height,
-              width: double.infinity,
-              fit: BoxFit.fill,
-            ),
-          ),
-
-        SizedBox(width: size.width * 0.06),
-        Expanded(
-          flex: 5,
-          child: _buildMainBody(size, simpleUIController, theme),
+  Size size, SimpleUIController simpleUIController, ThemeData theme) {
+  return Row(
+    children: [
+      Expanded(
+        flex: 4,
+          child: Stack(
+            children: [
+              Image(
+                image: AssetImage('assets/images_servicos/turismo_portugal4.jpg'),
+                height: size.height,
+                width: double.infinity,
+                fit: BoxFit.fill,
+              ),
+              Positioned(
+                top: 10,
+                left: 10,
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ],
         ),
-      ],
-    );
-  }
+      ),
+      SizedBox(width: size.width * 0.06),
+      Expanded(
+        flex: 5,
+        child: _buildMainBody(size, simpleUIController, theme),
+      ),
+    ],
+  );
+}
+
+  
+
 
   /// For Small screens
   Widget _buildSmallScreen(

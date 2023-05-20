@@ -25,50 +25,54 @@ class _ServicosDisponiveisState extends State<ServicosDisponiveis> {
 
   @override
   Widget build(BuildContext context) {
-
-
     var size = MediaQuery.of(context).size;
     var theme = Theme.of(context);
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-          backgroundColor: Colors.white,
-          resizeToAvoidBottomInset: false,
-          body: LayoutBuilder(
-            builder: (context, constraints) {
-              if (constraints.maxWidth > 600) {
-                return _buildLargeScreen(size, theme);
-              } else {
-                return _buildSmallScreen(size, theme);
-              }
-            },
-          )
+        backgroundColor: Colors.white,
+        resizeToAvoidBottomInset: false,
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth > 600) {
+              return _buildLargeScreen(size, theme);
+            } else {
+              return _buildSmallScreen(size, theme);
+            }
+          },
+        ),
       ),
     );
   }
 
-  /// For large screens
   Widget _buildLargeScreen(Size size, ThemeData theme) {
     return Row(
       children: [
-
         Expanded(
           flex: 4,
-          child:
-            /*Lottie.asset(
-              'assets/images_servicos/restaurante1.jpg',
-              height: size.height * 0.3,
-              width: double.infinity,
-              fit: BoxFit.fill,
-            ),*/
-            Image(
-              image: AssetImage('assets/images_servicos/turismo_portugal1.jpg'),
-              height: size.height,
-              width: double.infinity,
-              fit: BoxFit.fill,
-            ),
+          child: Stack(
+            children: [
+              Image(
+                image: AssetImage('assets/images_servicos/turismo_portugal1.jpg'),
+                height: size.height,
+                width: double.infinity,
+                fit: BoxFit.fill,
+              ),
+              Positioned(
+                top: 16,
+                left: 16,
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  color: Colors.white,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ],
           ),
+        ),
         SizedBox(width: size.width * 0.06),
         Expanded(
           flex: 5,
@@ -78,7 +82,6 @@ class _ServicosDisponiveisState extends State<ServicosDisponiveis> {
     );
   }
 
-  /// For Small screens
   Widget _buildSmallScreen(Size size, ThemeData theme) {
     return Center(
       child: _buildMainBody(size, theme),

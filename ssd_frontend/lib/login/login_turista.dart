@@ -10,6 +10,7 @@ import '../componentes/constants.dart';
 import '../componentes/simple_ui_controller.dart';
 import '../features_empresa/features_empresa.dart';
 
+
 /*
 class LoginTurista extends StatefulWidget {
   const LoginTurista({Key? key}) : super(key: key);
@@ -116,61 +117,89 @@ class _LoginTuristaState extends State<LoginTurista> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-          backgroundColor: Colors.white,
-          resizeToAvoidBottomInset: false,
-          body: LayoutBuilder(
-            builder: (context, constraints) {
-              if (constraints.maxWidth > 600) {
-                return _buildLargeScreen(size, simpleUIController, theme);
-              } else {
-                return _buildSmallScreen(size, simpleUIController, theme);
-              }
-            },
-          )
+        backgroundColor: Colors.white,
+        resizeToAvoidBottomInset: false,
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth > 600) {
+              return _buildLargeScreen(size, simpleUIController, theme);
+            } else {
+              return _buildSmallScreen(size, simpleUIController, theme);
+            }
+          },
+        ),
       ),
     );
   }
 
-    /// For large screens
-    Widget _buildLargeScreen(
-        Size size, SimpleUIController simpleUIController, ThemeData theme) {
-      return Row(
-        children: [
-
-          Expanded(
-            flex: 4,
-            child:
-              /*Lottie.asset(
-              'assets/images_servicos/restaurante1.jpg',
-              height: size.height * 0.3,
-              width: double.infinity,
-              fit: BoxFit.fill,
-            ),*/
+  Widget _buildLargeScreen(
+    Size size,
+    SimpleUIController simpleUIController,
+    ThemeData theme,
+  ) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 4,
+          child: Stack(
+            children: [
               Image(
                 image: AssetImage('assets/images_servicos/turismo_portugal2.jpg'),
                 height: size.height,
                 width: double.infinity,
                 fit: BoxFit.fill,
               ),
-            ),
-
-          SizedBox(width: size.width * 0.06),
-          Expanded(
-            flex: 5,
-            child: _buildMainBody(size, simpleUIController, theme),
+              Positioned(
+                top: 10,
+                left: 10,
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ],
           ),
-        ],
-      );
-    }
-
-  /// For Small screens
-  Widget _buildSmallScreen(
-      Size size, SimpleUIController simpleUIController, ThemeData theme) {
-    return Center(
-      child: _buildMainBody(size, simpleUIController, theme),
+        ),
+        SizedBox(width: size.width * 0.06),
+        Expanded(
+          flex: 5,
+          child: _buildMainBody(size, simpleUIController, theme),
+        ),
+      ],
     );
   }
 
+  Widget _buildSmallScreen(
+    Size size,
+    SimpleUIController simpleUIController,
+    ThemeData theme,
+  ) {
+    return Center(
+      child: Stack(
+        children: [
+          Image(
+            image: AssetImage('assets/images_servicos/turismo_portugal2.jpg'),
+            height: size.height * 0.5,
+            width: double.infinity,
+            fit: BoxFit.fill,
+          ),
+          Positioned(
+            top: 10,
+            left: 10,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+          _buildMainBody(size, simpleUIController, theme),
+        ],
+      ),
+    );
+  }
   /// Main Body
   Widget _buildMainBody(
       Size size, SimpleUIController simpleUIController, ThemeData theme) {
