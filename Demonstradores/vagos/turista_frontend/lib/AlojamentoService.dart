@@ -41,6 +41,7 @@ class _AlojamentoServiceState extends State<AlojamentoService>{
               fit: BoxFit.cover
           ),
         ),
+
         child: Column(
           children: [
 
@@ -154,11 +155,7 @@ class DetalhesServicoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*
-      appBar: AppBar(
-        title: Text(service['name']),
-      ),
-      */
+
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
