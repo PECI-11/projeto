@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ssd_frontend/main.dart';
-import 'package:ssd_frontend/features_empresa/Ad.dart';
-import 'package:ssd_frontend/features_empresa/Servicos.dart';
 import 'package:ssd_frontend/noticias/feature_noticias.dart';
 import 'package:ssd_frontend/servicos/servicos.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,26 +23,14 @@ class UserInformation {
   String get companyNameValue => companyName;
 }
 
-class FeaturesEmpresa extends StatefulWidget {
-  const FeaturesEmpresa({Key? key}) : super(key: key);
+class FeaturesEmpresa_2 extends StatefulWidget {
+  const FeaturesEmpresa_2({Key? key}) : super(key: key);
 
   @override
-  _FeaturesEmpresaState createState() => _FeaturesEmpresaState();
+  _FeaturesEmpresaState_2 createState() => _FeaturesEmpresaState_2();
 }
 
-class _FeaturesEmpresaState extends State<FeaturesEmpresa> {
-  List<Ad> ads = [
-    Ad(
-      title: 'Ad 1',
-      description: 'Description for Ad 1',
-    ),
-    Ad(
-      title: 'Ad 2',
-      description: 'Description for Ad 2',
-    ),
-  ];
-
-
+class _FeaturesEmpresaState_2 extends State<FeaturesEmpresa_2> {
   FirebaseAuth auth = FirebaseAuth.instance;
   User? currentUser;
   late Future<UserInformation> userInformation;
@@ -55,7 +41,7 @@ class _FeaturesEmpresaState extends State<FeaturesEmpresa> {
     currentUser = auth.currentUser;
 
     // Call fetchUserInformation method to get user information
-    userInformation = fetchUserInformation(currentUser?.email ?? '');
+    userInformation = fetchUserInformation("test12@gmail.com");
   }
 
   Future<UserInformation> fetchUserInformation(String email) async {
@@ -72,98 +58,6 @@ class _FeaturesEmpresaState extends State<FeaturesEmpresa> {
       throw Exception('Failed to load user information');
     }
   }
-
-Future<List<Service>> fetchUserServices(String email) async {
-  var url = Uri.parse('http://127.0.0.1:8000/user_services/?email=$email');
-  var response = await http.get(url);
-  if (response.statusCode == 200) {
-    var data = jsonDecode(response.body);
-    //print(data);
-    List<Service> userServices = [];
-
-    for (var serviceData in data['user_services']) {
-      var serviceType = serviceData['tipo_servico'];
-      print(serviceData);
-      switch (serviceType) {
-        case 'Restauracao':
-        print("hey");
-        print(serviceData);
-          var restaurantAd = RestaurantAd(
-            name: serviceData['name'],
-            latitude: serviceData['latitude'],
-            longitude: serviceData['longitude'],
-            images: serviceData['images'].cast<String>(),
-            imageDescriptions: serviceData['imageDescriptions'].cast<String>(),
-            userEmail: serviceData['email'],
-            serviceType: serviceData['tipo_servico'],
-            district: serviceData['distrito'],
-            county: serviceData['concelho'],
-            parish: serviceData['freguesia'],
-            street: serviceData['rua'],
-            establishmentTypes: serviceData['tipoEstabelecimento'].cast<String>(),
-            menu: serviceData['ementa'].cast<String>(),
-            hours: serviceData['hours'],
-            description: serviceData['description'],
-            promo: serviceData['promo'],
-            email: serviceData['email'],
-          );
-          userServices.add(restaurantAd);
-          break;
-        case 'Alojamento':
-          var accommodationAd = AccommodationAd(
-            name: serviceData['name'],
-            latitude: serviceData['latitude'],
-            longitude: serviceData['longitude'],
-            images: List<String>.from(serviceData['images']),
-            imageDescriptions: List<String>.from(serviceData['image_descriptions']),
-            userEmail: serviceData['user_email'],
-            serviceType: serviceType,
-            district: serviceData['distrito'],
-            county: serviceData['concelho'],
-            parish: serviceData['freguesia'],
-            street: serviceData['rua'],
-            bedroomType: serviceData['bedroom_type'],
-            bedroomPrices: serviceData['bedroom_prices'],
-            services: serviceData['services'],
-          );
-
-
-          userServices.add(accommodationAd);
-          break;
-        case 'Monumento':
-          var monumentAd = MonumentAd(
-            name: serviceData['name'],
-            latitude: serviceData['latitude'],
-            longitude: serviceData['longitude'],
-            images: List<String>.from(serviceData['images']),
-            imageDescriptions: List<String>.from(serviceData['imageDescriptions']),
-            userEmail: serviceData['user_email'],
-            serviceType: serviceType,
-            district: serviceData['distrito'],
-            county: serviceData['concelho'],
-            parish: serviceData['freguesia'],
-            street: serviceData['rua'],
-            story: serviceData['story'],
-            style: serviceData['style'],
-            accessibility: serviceData['accessability'],
-            schedule: serviceData['schedule'],
-            price: serviceData['price'],
-            activity: serviceData['activity'],
-            guideVisit: serviceData['guide_visit'],
-          );
-
-          userServices.add(monumentAd);
-          break;
-      }
-    }
-    print(userServices.length);
-    return userServices;
-  } else {
-    throw Exception('Failed to load user services');
-  }
-}
-
-
 
   String userEmail = "";
   String userPhoneNumber = "";
@@ -322,67 +216,6 @@ Future<List<Service>> fetchUserServices(String email) async {
               },
             ),
           ),
-          //const SizedBox(height: 2), // Add some spacing between the user's profile and ads
-           Expanded(
-          flex: 3,
-          child: FutureBuilder<List<Service>>(
-            future: fetchUserServices(currentUser?.email ?? ''),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasData) {
-                List<Service> userServices = snapshot.data!;
-                return Column(
-                  children: [
-                    const Text(
-                      'Serviços',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Expanded(
-                      flex: 3,
-                      child: ListView.builder(
-                        itemCount: userServices.length,
-                        itemBuilder: (context, index) {
-                          final service = userServices[index];
-                          return ListTile(
-                            title: Text(service.name),
-                            subtitle: Row(
-                              children: [
-                                Text(service.serviceType),
-                                Spacer(), // Add spacer to separate text and trailing icons
-                                IconButton(
-                                  icon: Icon(Icons.edit),
-                                  onPressed: () {
-                                    // Perform edit operation for the service
-                                  },
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.delete),
-                                  onPressed: () {
-                                    // Perform delete operation for the service
-                                  },
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-
-                  ],
-                );
-              } else if (snapshot.hasError) {
-                return Center(child: Text("Error: ${snapshot.error}"));
-              } else {
-                return Center(child: Text("No data found"));
-              }
-            },
-          ),
-        ),
         ],
       ),
     );
