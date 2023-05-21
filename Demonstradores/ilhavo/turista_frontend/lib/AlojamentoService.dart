@@ -24,6 +24,10 @@ class AlojamentoService extends StatefulWidget{
 class _AlojamentoServiceState extends State<AlojamentoService>{
   late Future<List<dynamic>> _futureData;
 
+  final Shader iphoneShader = LinearGradient(
+    colors: [Color(0xFF070D14), Color(0xFF85D1EE)],
+  ).createShader(Rect.fromLTWH(0, 0, 750, 100));
+
   @override
   void initState() {
     super.initState();
@@ -46,6 +50,27 @@ class _AlojamentoServiceState extends State<AlojamentoService>{
           children: [
 
             CustomAppBarAlojamento(),
+
+            Expanded(
+              child: Column(
+                children: [
+                  SizedBox(height: 10),
+                  Text(
+                    'Alojamento em Ílhavo',
+                    style: TextStyle(
+                      fontSize: 80,
+                        fontWeight: FontWeight.bold,
+                        foreground: Paint()..shader = iphoneShader,
+                        shadows: [
+                          Shadow(
+                            offset: Offset(5, 5),
+                            blurRadius: 10,
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                        ],
+                  ),
+                ),
+
 
             Expanded(
               child: FutureBuilder<List<dynamic>>(
@@ -74,7 +99,7 @@ class _AlojamentoServiceState extends State<AlojamentoService>{
                               ListTile(
                                 title: Text(alojamento['name'],
                                   style: TextStyle(
-                                      fontFamily: 'Romelio',
+                                      fontFamily: 'Monteserrat',
                                       fontSize: 18
                                   ),
                                 ),
@@ -111,6 +136,9 @@ class _AlojamentoServiceState extends State<AlojamentoService>{
         ),
       ),
 
+     ]
+        )
+    )
 
 
     );
@@ -139,64 +167,23 @@ class DetalhesServicoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('assets/main_images/Sky.jpg'),
-              fit: BoxFit.cover
-          ),
-        ),
-
-        child: ListView(
-          children: [
-
-            // APP BAR
-            Container(
-              margin: const EdgeInsets.all(20),
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(46),
-                boxShadow: [
-                  BoxShadow(
-                    offset: const Offset(0, -2),
-                    blurRadius: 30,
-                    color: Colors.black.withOpacity(0.16),
-                  ),
-                ],
-              ),
-
-
-              child: Row(
-                children: [
-
-
-                  IconBack(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      }
-                  ),
-
-                  SizedBox(
-                    width: 5,
-                  ),
-
-
-                  Text(
-                    service['name'].toUpperCase(),
-                    style: const TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Hellishy'
-                    ),
-                  ),
-
-                  const Spacer(),
-
-                ],
-              ),
-            ),
+        body: Container(
+        color: Color(0xFFD6E4F0),
+    child: ListView(
+    children: [
+    CustomAppBarAlojamento(),
+    Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Column(
+    children: [
+    Text(
+    service['name'].toUpperCase(),
+    style: const TextStyle(
+    fontSize: 40,
+    fontWeight: FontWeight.bold,
+    fontFamily: 'Montserrat',
+    ),
+    ),
 
             // //////////////////////////////////////////////////////////////
             Column(
@@ -257,9 +244,10 @@ class DetalhesServicoWidget extends StatelessWidget {
                         child: Text(
                           service['description'],
                           style: TextStyle(
-                            fontSize: 30.0,
+                            fontSize: 25.0,
                             fontWeight: FontWeight.bold,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
 
@@ -451,7 +439,10 @@ class DetalhesServicoWidget extends StatelessWidget {
       ),
 
 
-      );
+      ],
+    )
+    )
+    );
 
 
 
@@ -497,7 +488,7 @@ class DetalhesServicoWidget extends StatelessWidget {
                     style: const TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Hellishy'
+                        fontFamily: 'Montserrat'
                     ),
                   ),
 

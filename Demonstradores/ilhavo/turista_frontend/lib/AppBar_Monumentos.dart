@@ -1,152 +1,95 @@
 import 'package:flutter/material.dart';
-
+import 'AlojamentoService.dart';
+import 'EdificiosCulturaisService.dart';
 import 'IconBack.dart';
+import 'RestauracaoService.dart';
+import 'homePage.dart';
 
 class CustomAppBarMonumentos extends StatelessWidget {
   const CustomAppBarMonumentos({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(20),
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(46),
-        boxShadow: [
-          BoxShadow(
-            offset: const Offset(0, -2),
-            blurRadius: 30,
-            color: Colors.black.withOpacity(0.16),
+    return AppBar(
+      toolbarHeight: 75,
+      backgroundColor: Colors.white,
+      elevation: 0,
+      title: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomePage(),
+              ),
+            );
+          },
+          child: Row(
+            children: [
+              Image.asset(
+                'assets/main_images/logo.png',
+                height: 75,
+              ),
+              SizedBox(width: 10),
+              Text(
+                'Câmara Municipal de Ílhavo - Edifícios Culturais',
+                style: TextStyle(fontSize: 18),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
-      child: Row(
-        children: [
-
-          /*
-          Image.asset(
-            "assets/icons/icon_app.png",
-            height: 40,
-            alignment: Alignment.topCenter,
-          ),*/
-
-          IconBack(
-              onPressed: () {
-                Navigator.pop(context);
-              }
+      actions: [
+        SizedBox(width: 16),
+        TextButton.icon(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RestauracaoService('Ílhavo', 'Restauracao'),
+              ),
+            );
+          },
+          icon: Icon(Icons.restaurant),
+          label: Text('Restauração'),
+          style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
           ),
-
-          SizedBox(
-            width: 5,
+        ),
+        SizedBox(width: 16),
+        TextButton.icon(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AlojamentoService('Ílhavo', 'Alojamento'),
+              ),
+            );
+          },
+          icon: Icon(Icons.hotel),
+          label: Text('Alojamento'),
+          style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
           ),
-
-
-          Text(
-            "Edifícios Culturais em ÍLHAVO".toUpperCase(),
-            style: const TextStyle(
-                fontSize: 40,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Hellishy'
-            ),
+        ),
+        SizedBox(width: 16),
+        TextButton.icon(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => EdificiosService('Ílhavo', 'Monumento'),
+              ),
+            );
+          },
+          icon: Icon(Icons.castle),
+          label: Text('Cultura'),
+          style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
           ),
-
-          const Spacer(),
-
-          /*
-          ElevatedButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => RegistoEmpresaPage())
-                );
-              },
-              child: Text("Registo de Empresa",
-                style: TextStyle(
-                    fontSize: 18
-                ),
-              )
-          ),
-          SizedBox(
-            width: 5,
-          ),
-
-          ElevatedButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => LoginTurista())
-                );
-              },
-              child: Text("Login",
-                style: TextStyle(
-                    fontSize: 18
-                ),
-              )
-          ),
-
-          SizedBox(
-            width: 5,
-          ),
-
-          ElevatedButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => FeaturesEmpresa())
-                );
-              },
-              child: Text("Área da Empresa",
-                style: TextStyle(
-                    fontSize: 18
-                ),
-              )
-          ),
-          */
-
-          /*
-          ElevatedButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => RegistoEmpresaPage())
-                );
-              },
-              child: Text("Sobre",)
-          ),*/
-
-
-          /*
-          MenuItem(
-            title: "Registo de Empresa",
-            press: () {
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => RegistoEmpresaPage())
-              );
-            },
-          ),
-          const Spacer(),
-          MenuItem(
-            title: "Login",
-            press: () {
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => LoginTurista())
-              );
-            },
-          ),
-          const Spacer(),
-          MenuItem(
-            title: "Área da Empresa",
-            press: () {
-              Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => FeaturesEmpresa())
-              );
-            },
-          ),
-          const Spacer(),
-          MenuItem(
-            title: "Sobre",
-            press: () {},
-          ),
-          const Spacer(),*/
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
