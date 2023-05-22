@@ -34,6 +34,9 @@ urlpatterns = [
     re_path(r'^user_info/$', request_user_information),
     re_path(r'^user_services/$', request_user_services),
 
+    #change service - restaurant
+    re_path(r'^change_restaurant', update_restaurant),
+
     #by district and type
     re_path(r'^services_distrito/(?P<distrito>[\w-]+)/(?P<tipo>[\w-]+)/?$', services_by_distrito_tipo),
     #by district

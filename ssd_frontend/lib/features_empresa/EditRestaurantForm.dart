@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:ssd_frontend/features_empresa/Servicos.dart';
+import 'package:ssd_frontend/features_empresa/features_empresa.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:flutter/rendering.dart';
 
@@ -199,6 +202,7 @@ Widget _buildMenuInput() {
                     onPressed: () {
                       setState(() {
                         _menuImageStrings.remove(imageString);
+                        widget.restaurantAd.menu.remove(imageString);
                       });
                     },
                   ),
@@ -288,44 +292,58 @@ Widget _buildMenuInput() {
 }
 
 
-  Widget _buildSubmitButton() {
-    return ElevatedButton(
-      onPressed: () {
-        String name = _nameController.text;
-        String latitude = _latitudeController.text;
-        String longitude = _longitudeController.text;
-        List<String> establishmentTypes =
-            _establishmentTypesController.text.split(',').map((e) => e.trim()).toList();
-        List<String> menu =
-            _menuController.text.split(',').map((e) => e.trim()).toList();
-        String hours = _hoursController.text;
-        String description = _descriptionController.text;
-        String promo = _promoController.text;
+Widget _buildSubmitButton() {
+  return ElevatedButton(
+    onPressed: () {
+      String name = _nameController.text;
+      String latitude = _latitudeController.text;
+      String longitude = _longitudeController.text;
+      List<String> establishmentTypes =
+          _establishmentTypesController.text.split(',').map((e) => e.trim()).toList();
+      List<String> menu =
+          _menuController.text.split(',').map((e) => e.trim()).toList();
+      String hours = _hoursController.text;
+      String description = _descriptionController.text;
+      String promo = _promoController.text;
 
-        // RestaurantAd updatedRestaurantAd = RestaurantAd(
-        //   name: name,
-        //   latitude: latitude,
-        //   longitude: longitude,
-        //   images: widget.restaurantAd.images,
-        //   imageDescriptions: widget.restaurantAd.imageDescriptions,
-        //   userEmail: widget.restaurantAd.userEmail,
-        //   serviceType: widget.restaurantAd.serviceType,
-        //   district: widget.restaurantAd.district,
-        //   county: widget.restaurantAd.county,
-        //   f: widget.restaurantAd.district,
-        //   establishmentTypes: establishmentTypes,
-        //   menu: menu,
-        //   menuImages: _menuImageStrings,
-        //   hours: hours,
-        //   description: description,
-        //   promo: promo,
-        // );
+      // Prepare the data to send in the request payload
+      Map<String, dynamic> requestData = {
+        'name': name,
+        'latitude': latitude,
+        'longitude': longitude,
+        'establishmentTypes': establishmentTypes,
+        'menu': widget.restaurantAd.menu,
+        'images': widget.restaurantAd.images,
+        'hours': hours,
+        'description': description,
+        'promo': promo,
+        'user_email': widget.restaurantAd.userEmail,
+        'imageDescriptions' : widget.restaurantAd.imageDescriptions,
+        'id': widget.restaurantAd.id,
+      };
 
-        // TODO: Implement the logic to update the restaurant ad
-      },
-      child: Text('Submit'),
-    );
-  }
+      // Make an HTTP request to update the restaurant ad
+      http.post(Uri.parse('http://127.0.0.1:8000/change_restaurant'),
+          body: jsonEncode(requestData)).then((response) {
+        if (response.statusCode == 200) {
+          // Update was successful
+
+          // Navigate to the new page
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FeaturesEmpresa()),
+          );
+        } else {
+          // Update failed
+          // Handle the error or display an error message
+        }
+      }).catchError((error) {
+        // Handle the error or display an error message
+      });
+    },
+    child: Text('Submit'),
+  );
+}
 
 void _chooseMenuImage() async {
   final picker = ImagePicker();
@@ -337,6 +355,7 @@ void _chooseMenuImage() async {
     setState(() {
       _menuImages.add(File(pickedFile.path));
       _menuImageStrings.add(encodedImage);
+      widget.restaurantAd.menu.add(encodedImage);
     });
   }
 }
