@@ -1,15 +1,16 @@
 class Service {
-  final String name;
-  final String latitude;
-  final String longitude;
-  final List<String> images;
-  final List<String> imageDescriptions;
-  final String userEmail;
-  final String serviceType;
-  final String district;
-  final String county;
-  final String parish;
-  final String street;
+  String name;
+  String latitude;
+  String longitude;
+  List<String> images;
+  List<String> imageDescriptions;
+  String userEmail;
+  String serviceType;
+  String district;
+  String county;
+  String parish;
+  String street;
+  String id;
 
   Service({
     required this.name,
@@ -23,16 +24,65 @@ class Service {
     required this.county,
     required this.parish,
     required this.street,
+    required this.id,
   });
+
+  set setName(String value) {
+    name = value;
+  }
+
+  set setLatitude(String value) {
+    latitude = value;
+  }
+
+  set setLongitude(String value) {
+    longitude = value;
+  }
+
+  set setImages(List<String> value) {
+    images = value;
+  }
+
+  set setImageDescriptions(List<String> value) {
+    imageDescriptions = value;
+  }
+
+  set setUserEmail(String value) {
+    userEmail = value;
+  }
+
+  set setServiceType(String value) {
+    serviceType = value;
+  }
+
+  set setDistrict(String value) {
+    district = value;
+  }
+
+  set setCounty(String value) {
+    county = value;
+  }
+
+  set setParish(String value) {
+    parish = value;
+  }
+
+  set setStreet(String value) {
+    street = value;
+  }
+
+  set setId(String value) {
+    id = value;
+  }
 }
 
 class RestaurantAd extends Service {
-  final List<String> establishmentTypes;
-  final List<String> menu;
-  final String hours;
-  final String description;
-  final String promo;
-  final String email;
+  List<String> establishmentTypes;
+  List<String> menu;
+  String hours;
+  String description;
+  String promo;
+  String email;
 
   RestaurantAd({
     required String name,
@@ -52,6 +102,7 @@ class RestaurantAd extends Service {
     required this.description,
     required this.promo,
     required this.email,
+    required String id,
   }) : super(
           name: name,
           latitude: latitude,
@@ -64,13 +115,38 @@ class RestaurantAd extends Service {
           county: county,
           parish: parish,
           street: street,
+          id: id,
         );
+
+  set setEstablishmentTypes(List<String> value) {
+    establishmentTypes = value;
+  }
+
+  set setMenu(List<String> value) {
+    menu = value;
+  }
+
+  set setHours(String value) {
+    hours = value;
+  }
+
+  set setDescription(String value) {
+    description = value;
+  }
+
+  set setPromo(String value) {
+    promo = value;
+  }
+
+  set setEmail(String value) {
+    email = value;
+  }
 }
 
 class AccommodationAd extends Service {
-  final String bedroomType;
-  final String bedroomPrices;
-  final String services;
+  String bedroomType;
+  String bedroomPrices;
+  String services;
 
   AccommodationAd({
     required String name,
@@ -87,6 +163,7 @@ class AccommodationAd extends Service {
     required this.bedroomType,
     required this.bedroomPrices,
     required this.services,
+    required String id,
   }) : super(
           name: name,
           latitude: latitude,
@@ -99,17 +176,30 @@ class AccommodationAd extends Service {
           county: county,
           parish: parish,
           street: street,
+          id: id,
         );
+
+  set setBedroomType(String value) {
+    bedroomType = value;
+  }
+
+  set setBedroomPrices(String value) {
+    bedroomPrices = value;
+  }
+
+  set setServices(String value) {
+    services = value;
+  }
 }
 
 class MonumentAd extends Service {
-  final String story;
-  final String style;
-  final String accessibility;
-  final String schedule;
-  final String price;
-  final String activity;
-  final String guideVisit;
+  String story;
+  String style;
+  String accessibility;
+  String schedule;
+  String price;
+  String activity;
+  String guideVisit;
 
   MonumentAd({
     required String name,
@@ -130,6 +220,7 @@ class MonumentAd extends Service {
     required this.price,
     required this.activity,
     required this.guideVisit,
+    required String id,
   }) : super(
           name: name,
           latitude: latitude,
@@ -142,5 +233,34 @@ class MonumentAd extends Service {
           county: county,
           parish: parish,
           street: street,
+          id: id,
         );
+
+  set setStory(String value) {
+    story = value;
+  }
+
+  set setStyle(String value) {
+    style = value;
+  }
+
+  set setAccessibility(String value) {
+    accessibility = value;
+  }
+
+  set setSchedule(String value) {
+    schedule = value;
+  }
+
+  set setPrice(String value) {
+    price = value;
+  }
+
+  set setActivity(String value) {
+    activity = value;
+  }
+
+  set setGuideVisit(String value) {
+    guideVisit = value;
+  }
 }

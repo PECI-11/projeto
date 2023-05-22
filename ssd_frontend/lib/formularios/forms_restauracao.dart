@@ -426,7 +426,7 @@ void _submitForm() async {
     // Get the currently logged-in user's email
     final user = FirebaseAuth.instance.currentUser;
     final email = user?.email ?? "";
-    print(_imageDescriptionList);
+    //print(_imageDescriptionList);
 
     // Encode the form data and user email as a JSON object
     final data = json.encode({

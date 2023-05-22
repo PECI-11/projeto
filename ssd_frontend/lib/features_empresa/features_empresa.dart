@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ssd_frontend/main.dart';
 import 'package:ssd_frontend/features_empresa/Ad.dart';
+import 'package:ssd_frontend/features_empresa/EditRestaurantForm.dart';
 import 'package:ssd_frontend/features_empresa/Servicos.dart';
 import 'package:ssd_frontend/noticias/feature_noticias.dart';
 import 'package:ssd_frontend/servicos/servicos.dart';
@@ -78,16 +79,13 @@ Future<List<Service>> fetchUserServices(String email) async {
   var response = await http.get(url);
   if (response.statusCode == 200) {
     var data = jsonDecode(response.body);
-    //print(data);
     List<Service> userServices = [];
 
     for (var serviceData in data['user_services']) {
       var serviceType = serviceData['tipo_servico'];
-      print(serviceData);
+
       switch (serviceType) {
         case 'Restauracao':
-        print("hey");
-        print(serviceData);
           var restaurantAd = RestaurantAd(
             name: serviceData['name'],
             latitude: serviceData['latitude'],
@@ -106,6 +104,7 @@ Future<List<Service>> fetchUserServices(String email) async {
             description: serviceData['description'],
             promo: serviceData['promo'],
             email: serviceData['email'],
+            id: serviceData['_id'], // Add id here
           );
           userServices.add(restaurantAd);
           break;
@@ -125,9 +124,8 @@ Future<List<Service>> fetchUserServices(String email) async {
             bedroomType: serviceData['bedroom_type'],
             bedroomPrices: serviceData['bedroom_prices'],
             services: serviceData['services'],
+            id: serviceData['_id'], // Add id here
           );
-
-
           userServices.add(accommodationAd);
           break;
         case 'Monumento':
@@ -150,8 +148,8 @@ Future<List<Service>> fetchUserServices(String email) async {
             price: serviceData['price'],
             activity: serviceData['activity'],
             guideVisit: serviceData['guide_visit'],
+            id: serviceData['_id'], // Add id here
           );
-
           userServices.add(monumentAd);
           break;
       }
@@ -162,6 +160,7 @@ Future<List<Service>> fetchUserServices(String email) async {
     throw Exception('Failed to load user services');
   }
 }
+
 
 
 
@@ -358,12 +357,30 @@ Future<List<Service>> fetchUserServices(String email) async {
                                   icon: Icon(Icons.edit),
                                   onPressed: () {
                                     // Perform edit operation for the service
+                                    if (service.serviceType == "Restauracao") {
+                                        Navigator.push(
+                                          context,
+                                            MaterialPageRoute(builder: (context) => EditRestaurantForm(restaurantAd: service as RestaurantAd)),
+                                        );
+                                      } 
+                                      // else if (service.serviceType == "Alojamento") {
+                                      //   Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(builder: (context) => EditAccommodationForm(accommodationData: service)),
+                                      //   );
+                                      // } else if (service.serviceType == "Atividade") {
+                                      //   Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(builder: (context) => EditActivityForm(activityData: service)),
+                                      //   );
+                                      // }
                                   },
                                 ),
                                 IconButton(
                                   icon: Icon(Icons.delete),
                                   onPressed: () {
                                     // Perform delete operation for the service
+                                    
                                   },
                                 ),
                               ],

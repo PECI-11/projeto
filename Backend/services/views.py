@@ -10,19 +10,21 @@ from pymongo import MongoClient
 @csrf_exempt
 def insert_restaurant(request):
     if request.method == 'POST':
-        
-    	
+        # print((request.body))
+        data = json.loads(request.body)
+
         try:
             data = json.loads(request.body)
+            # print(data)
             data['tipo_servico'] = 'Restauracao'
             
 
-            print(data)
+            
             latitude = float(data['latitude'])
             longitude = float(data['longitude'])
             #print('https://json.geoapi.pt/gps/'+str(latitude)+', '+str(longitude)+'/base')
             response = requests.get('https://json.geoapi.pt/gps/'+str(latitude)+', '+str(longitude))
-            
+            print(response)
             resposta = json.loads(response.text)
             
             data['distrito'] = resposta['distrito']
