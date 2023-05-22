@@ -166,6 +166,7 @@ class HomePage extends StatelessWidget {
                       ))
                           .toList(),
                       autoPlayInterval: 3000,
+                      isLoop: true,
                     ),
                   ),
                 ],
@@ -190,6 +191,7 @@ class HomePage extends StatelessWidget {
                       ))
                           .toList(),
                       autoPlayInterval: 3000,
+                      isLoop: true,
                     ),
                   ),
                   SizedBox(width: 20),

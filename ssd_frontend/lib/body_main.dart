@@ -20,7 +20,7 @@ class Body extends StatelessWidget {
             ),
           ),
           Text(
-            "Descubra aqui os serviços apropriados\npara o seu gosto!",
+            "Registe-se e usufrua de todas as vantagens\ndesta plataforma!",
             style: TextStyle(
               fontSize: 21,
               color: Colors.white
