@@ -311,10 +311,10 @@ Future<void> _getImage(ImageSource source) async {
       //   imageBytesList.add(bytes);
       // }
 
-      List<Map<String, dynamic>> imageDescriptionList = [];
-      for (String description in _imageDescriptionList) {
-        imageDescriptionList.add({'description': description});
-      }
+      // List<Map<String, dynamic>> imageDescriptionList = [];
+      // for (String description in _imageDescriptionList) {
+      //   imageDescriptionList.add({'description': description});
+      // }
 
       Map<String, dynamic> alojamentoData = {
         'name': _nameController.text,
@@ -326,7 +326,7 @@ Future<void> _getImage(ImageSource source) async {
         'latitude': _latitudeController.text,
         'longitude': _longitudeController.text,
         'images': _imageStringList,
-        'image_descriptions': imageDescriptionList,
+        'image_descriptions': _imageDescriptionList,
         'user_email': email,
       };
 

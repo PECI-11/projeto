@@ -11,7 +11,7 @@ from bson.objectid import ObjectId  # Import ObjectId from bson
 @csrf_exempt
 def insert_restaurant(request):
     if request.method == 'POST':
-        print((request.body))
+        #print((request.body))
         data = json.loads(request.body)
 
         try:
@@ -25,13 +25,20 @@ def insert_restaurant(request):
             longitude = float(data['longitude'])
             #print('https://json.geoapi.pt/gps/'+str(latitude)+', '+str(longitude)+'/base')
             response = requests.get('https://json.geoapi.pt/gps/'+str(latitude)+', '+str(longitude))
-            print(response)
+            
             resposta = json.loads(response.text)
+            print(resposta)
             
             data['distrito'] = resposta['distrito']
             data['concelho'] = resposta['concelho']
             data['freguesia'] = resposta['freguesia']
-            data['rua'] = resposta['rua']
+            data['rua'] = 'nao_existente'
+            #resposta['rua'] # sometimes this doesn't exist so i have to handle that
+
+            if ('rua' in resposta):
+                data['rua'] = resposta['rua'] # sometimes this doesn't exist so i have to handle that
+            
+
             
 
             user_email = data['email'] # user's email, this way I know which user to
@@ -249,7 +256,7 @@ def insert_restaurant_manualy(dados):
         data['concelho'] = resposta['concelho']
         data['freguesia'] = resposta['freguesia']
         data['rua'] = resposta['rua']
-        delete_existing_service(latitude, longitude)
+        delete_existing_services(latitude, longitude)
 
         user_email = data['email'] # user's email, this way I know which user to
 
@@ -266,9 +273,22 @@ def insert_restaurant_manualy(dados):
             
 
 def delete_existing_services(latitude, longitude):
+    print(latitude)
+    print(longitude)
+    print(type(latitude))
     client = MongoClient('mongodb://localhost:27017/')
     db = client['mydatabase']
     services = db['Servicos']
 
-    # Delete the services with the same latitude and longitude
-    services.delete_many({'latitude': str(latitude), 'longitude': str(longitude)})
+    try:
+        # Find the services with matching latitude and longitude
+        matching_services = services.find({'latitude': str(latitude), 'longitude': str(longitude)})
+
+        if matching_services.count() == 0:
+            print("No matching services found for deletion.")
+        else:
+            # Delete the matching services
+            result = services.delete_many({'latitude': str(latitude), 'longitude': str(longitude)})
+            print(f"{result.deleted_count} service(s) deleted")
+    except Exception as e:
+        print(f"An error occurred during deletion: {str(e)}")

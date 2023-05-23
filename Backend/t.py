@@ -1,28 +1,16 @@
-from bson import ObjectId
 from pymongo import MongoClient
 
-# connect to MongoDB
-client = MongoClient('mongodb://localhost:27017/')
+def delete_existing_services(latitude, longitude):
+    client = MongoClient('mongodb://localhost:27017/')
+    db = client['mydatabase']
+    services = db['Servicos']
 
-# select the database and collection
-db = client['mydatabase']
-users = db['users']
+    try:
+        result = services.delete_many({'latitude': str(latitude), 'longitude': str(longitude)})
+        print(f"{result.deleted_count} service(s) deleted")
+    except Exception as e:
+        print(f"An error occurred during deletion: {str(e)}")
 
-# find the document with the given ObjectId
-profile = users.find_one({"user_info.email": 'lopes@ua.pt'})
+# Call the function with latitude and longitude values
+delete_existing_services(40.67898180609411, -7.904348731239755)
 
-# print the document
-#print(profile['services'][-1]['images'])
-imagem = profile['services'][-1]['images'][0]
-print(imagem)
-
-import base64
-
-# Retrieve the encoded image string from MongoDB
-
-# Decode the base64 string to bytes
-image_bytes = base64.b64decode(imagem)
-
-# Write the bytes to a file (in this case, a PNG image)
-with open("image.png", "wb") as f:
-    f.write(image_bytes)
