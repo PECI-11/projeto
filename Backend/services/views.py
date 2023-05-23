@@ -273,22 +273,27 @@ def insert_restaurant_manualy(dados):
             
 
 def delete_existing_services(latitude, longitude):
-    print(latitude)
-    print(longitude)
-    print(type(latitude))
     client = MongoClient('mongodb://localhost:27017/')
     db = client['mydatabase']
     services = db['Servicos']
-
+    
+    matching_services = []
+    
+    for service in services.find({'latitude': str(latitude)}):
+        if service['longitude'].strip() == str(longitude):
+            matching_services.append(service)
+    
+    print("Matching services:")
+    for service in matching_services:
+        print(service)
+    print(len(matching_services))
+    
     try:
-        # Find the services with matching latitude and longitude
-        matching_services = services.find({'latitude': str(latitude), 'longitude': str(longitude)})
-
-        if matching_services.count() == 0:
-            print("No matching services found for deletion.")
+        if matching_services:
+            for service in matching_services:
+                result = services.delete_one({'_id': service['_id']})
+            print(f"{len(matching_services)} service(s) deleted")
         else:
-            # Delete the matching services
-            result = services.delete_many({'latitude': str(latitude), 'longitude': str(longitude)})
-            print(f"{result.deleted_count} service(s) deleted")
+            print("No matching services found for deletion.")
     except Exception as e:
         print(f"An error occurred during deletion: {str(e)}")
