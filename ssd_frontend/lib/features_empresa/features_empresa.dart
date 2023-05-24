@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:ssd_frontend/main.dart';
 import 'package:ssd_frontend/features_empresa/Ad.dart';
 import 'package:ssd_frontend/features_empresa/EditRestaurantForm.dart';
+import 'package:ssd_frontend/features_empresa/EditAccomodationForm.dart';
+import 'package:ssd_frontend/features_empresa/EditMonumentForm.dart';
 import 'package:ssd_frontend/features_empresa/Servicos.dart';
 import 'package:ssd_frontend/noticias/feature_noticias.dart';
 import 'package:ssd_frontend/servicos/servicos.dart';
@@ -124,6 +126,8 @@ Future<List<Service>> fetchUserServices(String email) async {
             bedroomType: serviceData['bedroom_type'],
             bedroomPrices: serviceData['bedroom_prices'],
             services: serviceData['services'],
+            //promo: serviceData['promo'],
+            description: serviceData['description'],
             id: serviceData['_id'], // Add id here
           );
           userServices.add(accommodationAd);
@@ -363,17 +367,18 @@ Future<List<Service>> fetchUserServices(String email) async {
                                             MaterialPageRoute(builder: (context) => EditRestaurantForm(restaurantAd: service as RestaurantAd)),
                                         );
                                       } 
-                                      // else if (service.serviceType == "Alojamento") {
-                                      //   Navigator.push(
-                                      //     context,
-                                      //     MaterialPageRoute(builder: (context) => EditAccommodationForm(accommodationData: service)),
-                                      //   );
-                                      // } else if (service.serviceType == "Atividade") {
-                                      //   Navigator.push(
-                                      //     context,
-                                      //     MaterialPageRoute(builder: (context) => EditActivityForm(activityData: service)),
-                                      //   );
-                                      // }
+                                      else if (service.serviceType == "Alojamento") {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => EditAccommodationForm(accommodationAd: service as AccommodationAd)),
+                                        );
+                                       } 
+                                      else if (service.serviceType == "Monumento") {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => EditMonumentForm(monumentAd: service as MonumentAd)),
+                                        );
+                                      }
                                   },
                                 ),
                                 IconButton(

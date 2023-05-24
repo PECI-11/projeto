@@ -328,6 +328,7 @@ Future<void> _getImage(ImageSource source) async {
         'images': _imageStringList,
         'image_descriptions': _imageDescriptionList,
         'user_email': email,
+        'promo': _promosController.text,
       };
 
       String jsonBody = json.encode(alojamentoData);

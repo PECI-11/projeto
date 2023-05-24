@@ -147,6 +147,8 @@ class AccommodationAd extends Service {
   String bedroomType;
   String bedroomPrices;
   String services;
+  String description;
+  //String promo;
 
   AccommodationAd({
     required String name,
@@ -164,6 +166,8 @@ class AccommodationAd extends Service {
     required this.bedroomPrices,
     required this.services,
     required String id,
+    //required this.promo,
+    required this.description,
   }) : super(
           name: name,
           latitude: latitude,
