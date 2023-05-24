@@ -77,11 +77,16 @@ def insert_alojamento(request):
             response = requests.get('https://json.geoapi.pt/gps/'+str(latitude)+', '+str(longitude))
             
             resposta = json.loads(response.text)
+            print(resposta)
             
             data['distrito'] = resposta['distrito']
             data['concelho'] = resposta['concelho']
             data['freguesia'] = resposta['freguesia']
-            data['rua'] = resposta['rua']
+            data['rua'] = 'nao_existente'
+            #resposta['rua'] # sometimes this doesn't exist so i have to handle that
+
+            if ('rua' in resposta):
+                data['rua'] = resposta['rua'] # sometimes this doesn't exist so i have to handle that
             
 
             user_email = data['user_email'] # user's email, this way I know which user to
@@ -128,7 +133,11 @@ def insert_monumentos(request):
             data['distrito'] = resposta['distrito']
             data['concelho'] = resposta['concelho']
             data['freguesia'] = resposta['freguesia']
-            data['rua'] = resposta['rua']
+            data['rua'] = 'nao_existente'
+            #resposta['rua'] # sometimes this doesn't exist so i have to handle that
+
+            if ('rua' in resposta):
+                data['rua'] = resposta['rua'] # sometimes this doesn't exist so i have to handle that
             
             #print(data)
 
@@ -255,7 +264,11 @@ def insert_restaurant_manualy(dados):
         data['distrito'] = resposta['distrito']
         data['concelho'] = resposta['concelho']
         data['freguesia'] = resposta['freguesia']
-        data['rua'] = resposta['rua']
+        data['rua'] = 'nao_existente'
+            #resposta['rua'] # sometimes this doesn't exist so i have to handle that
+
+        if ('rua' in resposta):
+            data['rua'] = resposta['rua'] # sometimes this doesn't exist so i have to handle that
         delete_existing_services(latitude, longitude)
 
         user_email = data['email'] # user's email, this way I know which user to
@@ -369,7 +382,11 @@ def insert_alojamento_manualy(dados):
         data['distrito'] = resposta['distrito']
         data['concelho'] = resposta['concelho']
         data['freguesia'] = resposta['freguesia']
-        data['rua'] = resposta['rua']
+        data['rua'] = 'nao_existente'
+            #resposta['rua'] # sometimes this doesn't exist so i have to handle that
+
+        if ('rua' in resposta):
+            data['rua'] = resposta['rua'] # sometimes this doesn't exist so i have to handle that
         delete_existing_services_acc(latitude, longitude)
 
         user_email = data['user_email'] # user's email, this way I know which user to
@@ -486,7 +503,11 @@ def insert_monument_manualy(dados):
         data['distrito'] = resposta['distrito']
         data['concelho'] = resposta['concelho']
         data['freguesia'] = resposta['freguesia']
-        data['rua'] = resposta['rua']
+        data['rua'] = 'nao_existente'
+        #resposta['rua'] # sometimes this doesn't exist so i have to handle that
+
+        if ('rua' in resposta):
+            data['rua'] = resposta['rua'] # sometimes this doesn't exist so i have to handle that
         delete_existing_services_mon(latitude, longitude)
 
         user_email = data['user_email'] # user's email, this way I know which user to
