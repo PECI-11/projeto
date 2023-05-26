@@ -29,6 +29,7 @@ class _EditAccommodationFormState extends State<EditAccommodationForm> {
   TextEditingController _bedroomPricesController = TextEditingController();
   TextEditingController _servicesController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
+  TextEditingController _promoController = TextEditingController();
 
   List<File> _images = [];
   List<String> _imageStrings = [];
@@ -43,6 +44,7 @@ class _EditAccommodationFormState extends State<EditAccommodationForm> {
     _bedroomPricesController.text = widget.accommodationAd.bedroomPrices;
     _servicesController.text = widget.accommodationAd.services;
     _descriptionController.text = widget.accommodationAd.description;
+    _promoController.text = widget.accommodationAd.promo;
     widget.accommodationAd.images.forEach((imageString) {
       _imageStrings.add(imageString);
     });
@@ -69,6 +71,8 @@ class _EditAccommodationFormState extends State<EditAccommodationForm> {
             _buildServicesInput(),
             SizedBox(height: 20.0),
             _buildDescriptionInput(),
+            SizedBox(height: 20.0),
+            _buildPromoInput(),
             SizedBox(height: 20.0),
             _buildAccommodationImagesInput(),
             SizedBox(height: 20.0),
@@ -158,6 +162,16 @@ class _EditAccommodationFormState extends State<EditAccommodationForm> {
     );
   }
 
+   Widget _buildPromoInput() {
+    return TextFormField(
+      controller: _promoController,
+      decoration: InputDecoration(
+        labelText: 'Promotion',
+      ),
+    );
+  }
+
+
   Widget _buildAccommodationImagesInput() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -212,6 +226,7 @@ class _EditAccommodationFormState extends State<EditAccommodationForm> {
         String bedroomPrices = _bedroomPricesController.text;
         String services = _servicesController.text;
         String description = _descriptionController.text;
+        String promo = _promoController.text;
 
         // Prepare the data to send in the request payload
         Map<String, dynamic> requestData = {
@@ -225,6 +240,7 @@ class _EditAccommodationFormState extends State<EditAccommodationForm> {
           'images': widget.accommodationAd.images,
           'user_email': widget.accommodationAd.userEmail,
           'imageDescriptions': widget.accommodationAd.imageDescriptions,
+          'promo': promo,
           'id': widget.accommodationAd.id,
         };
 

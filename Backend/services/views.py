@@ -307,10 +307,10 @@ def delete_existing_services(latitude, longitude):
         if service['longitude'].strip() == str(longitude):
             matching_services.append(service)
     
-    print("Matching services:")
-    for service in matching_services:
-        print(service)
-    print(len(matching_services))
+    # print("Matching services:")
+    # for service in matching_services:
+    #     print(service)
+    # print(len(matching_services))
     
     try:
         if matching_services:
@@ -330,6 +330,7 @@ def update_accomodation(request):
         data = json.loads(request.body)
         service_id = data['id']
         print(data.keys())
+        print(data['promo'])
 
         client = MongoClient('mongodb://localhost:27017/')
         db = client['mydatabase']
@@ -357,6 +358,7 @@ def update_accomodation(request):
             nData['images'] = data['images']
             nData['description'] = data['description']
             nData['user_email'] = data['user_email']
+            nData['promo'] = data['promo']
 
             print(nData.keys())
             
@@ -379,7 +381,7 @@ def update_accomodation(request):
 def insert_alojamento_manualy(dados):
         # print((request.body))
         data = dados
-
+        print(dados.keys())
        
         data['tipo_servico'] = 'Alojamento'
 
@@ -425,10 +427,10 @@ def delete_existing_services_acc(latitude, longitude):
         if service['longitude'].strip() == str(longitude):
             matching_services.append(service)
     
-    print("Matching services:")
-    for service in matching_services:
-        print(service)
-    print(len(matching_services))
+    # print("Matching services:")
+    # for service in matching_services:
+    #     print(service)
+    # print(len(matching_services))
     
     try:
         if matching_services:
@@ -546,10 +548,10 @@ def delete_existing_services_mon(latitude, longitude):
         if service['longitude'].strip() == str(longitude):
             matching_services.append(service)
     
-    print("Matching services:")
-    for service in matching_services:
-        print(service)
-    print(len(matching_services))
+    # print("Matching services:")
+    # for service in matching_services:
+    #     print(service)
+    # print(len(matching_services))
     
     try:
         if matching_services:
