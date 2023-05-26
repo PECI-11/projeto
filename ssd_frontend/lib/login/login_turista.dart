@@ -6,59 +6,12 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:lottie/lottie.dart';
 import 'package:ssd_frontend/registo_empresas/signUp_pessoa.dart';
+import 'package:ssd_frontend/curadoria/curadoria.dart';
 import '../componentes/constants.dart';
 import '../componentes/simple_ui_controller.dart';
 import '../features_empresa/features_empresa.dart';
 
 
-/*
-class LoginTurista extends StatefulWidget {
-  const LoginTurista({Key? key}) : super(key: key);
-
-  @override
-  State<LoginTurista> createState() => _LoginTuristaState();
-}
-
-class LoginTuristaState extends State<LoginTurista> {
-  //const LoginTurista({Key? key}) : super(key: key);
-  //static const String _title = 'Login';
-
-  final _formKey = GlobalKey<FormState>();
-
-
-  //This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-
-    var size = MediaQuery.of(context).size;
-    var theme = Theme.of(context);
-
-
-    return MaterialApp(
-      title: _title,
-      home: Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          actions: const [
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 5, 10, 5),
-              child: Image(image: AssetImage("assets/icons/icon_app.png"),
-              ),
-            ),
-          ],
-          leading: const BackButton(
-            color: Colors.white,
-          ),
-          title: const Text(_title),
-            /*leading: const BackButton(
-              color: Colors.white,
-            ),*/
-        ),
-        body: const LoginTuristaState(),
-      ),
-    );
-  }
-}*/
 
 class LoginTurista extends StatefulWidget {
   const LoginTurista({Key? key}) : super(key: key);
@@ -78,21 +31,36 @@ class _LoginTuristaState extends State<LoginTurista> {
   final _formKey = GlobalKey<FormState>();
 
   // Login function
-  static Future<User?> loginUsingEmailPassword({required String email, required String password, required BuildContext context}) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? user;
+static Future<User?> loginUsingEmailPassword({required String email, required String password, required BuildContext context}) async {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  User? user;
 
-    try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email, password: password);
-      user = userCredential.user;
-      print('Login done');
-      print("Login successful: ${user?.email}"); // Print a message with the logged-in user's email
-    } on FirebaseAuthException catch (e) {
-      if (e.code == "user-not-found")
-        print ("Não há nenhum utilizador para este endereço de email");
+  try {
+    UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email, password: password);
+    user = userCredential.user;
+    print('Login done');
+    print("Login successful: ${user?.email}"); // Print a message with the logged-in user's email
+
+    if (user != null) {
+      print(user.email == 'curador@gmail.com');
+      if (user.email == 'curador@gmail.com') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => CuradorPage()),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => FeaturesEmpresa()),
+        );
+      }
     }
-    return user;
+  } on FirebaseAuthException catch (e) {
+    if (e.code == "user-not-found")
+      print("Não há nenhum utilizador para este endereço de email");
   }
+  return user;
+}
 
   // Initialize Firebase App
   Future<FirebaseApp> _initializeFirebase () async {
@@ -106,10 +74,7 @@ class _LoginTuristaState extends State<LoginTurista> {
   @override
   Widget build(BuildContext context) {
 
-    /*
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-    */
+    
 
     var size = MediaQuery.of(context).size;
     var theme = Theme.of(context);
@@ -247,32 +212,7 @@ class _LoginTuristaState extends State<LoginTurista> {
             key: _formKey,
             child: Column(
               children: [
-                /*
-                /// username
-                TextFormField(
-                  style: kTextFormFieldStyle(),
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.person),
-                    hintText: 'Username',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                    ),
-                  ),
-
-                  controller: emailController,
-                  // The validator receives the text that the user has entered.
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter username';
-                    } else if (value.length < 4) {
-                      return 'at least enter 4 characters';
-                    } else if (value.length > 30) {
-                      return 'maximum character is 13';
-                    }
-                    return null;
-                  },
-                ),
-                */
+              
                  
 
                 SizedBox(
@@ -295,9 +235,7 @@ class _LoginTuristaState extends State<LoginTurista> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                     return 'Please enter your e-mail';
-                    } //else if ((!value.endsWith('@gmail.com')) || (!value.endsWith('@outlook.pt'))) {
-                    //return 'please enter valid e-mail';
-                    //}
+                    } 
                     return null;
                   },
                 ),
@@ -344,12 +282,7 @@ class _LoginTuristaState extends State<LoginTurista> {
                 SizedBox(
                   height: size.height * 0.01,
                 ),
-                /*
-                Text(
-                  'Creating an account means you\'re okay with our Terms of Services and our Privacy Policy',
-                  style: kLoginTermsAndPrivacyStyle(size),
-                  textAlign: TextAlign.center,
-                ),*/
+                
 
                 SizedBox(
                   height: size.height * 0.02,
@@ -380,35 +313,6 @@ class _LoginTuristaState extends State<LoginTurista> {
                   ],
                 ),
 
-                /*
-                /// Navigate To Login Screen
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (ctx) => const LoginTurista()));
-                    //nameController.clear();
-                    emailController.clear();
-                    passwordController.clear();
-                    _formKey.currentState?.reset();
-
-                    simpleUIController.isObscure.value = true;
-                  },
-
-                  child: RichText(
-                    text: TextSpan(
-                      text: 'Already have an account?',
-                      style: kHaveAnAccountStyle(size),
-                      children: [
-                        TextSpan(
-                            text: " Login",
-                            style: kLoginOrSignUpTextStyle(size)),
-                      ],
-                    ),
-                  ),
-
-                ),*/
 
               ],
             ),
@@ -437,117 +341,14 @@ class _LoginTuristaState extends State<LoginTurista> {
           print(user);
           print(emailController.text);
           print(passwordController.text);
-          if (user != null) {
-            Navigator.push(context, MaterialPageRoute(
-                builder: (context) => FeaturesEmpresa())
-            );
-          }
+          // if (user != null) {
+          //   Navigator.push(context, MaterialPageRoute(
+          //       builder: (context) => FeaturesEmpresa())
+          //   );
+          // }
         },
         child: const Text('Login'),
       ),
     );
   }
 }
-
-/*
-    // -------------------------------------------------------------------------
-
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
-
-    return Padding(
-        padding: const EdgeInsets.all(10),
-        child: ListView(
-          children: <Widget>[
-            Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Login',
-                  style: TextStyle(
-                      color: Colors.blue,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 30),
-                )),
-            Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
-                child: const Text(
-                  'Sign in',
-                  style: TextStyle(fontSize: 20),
-                )),
-            Container(
-              padding: const EdgeInsets.all(10),
-              child: TextField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'User Name',
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-              child: TextField(
-                obscureText: true,
-                controller: passwordController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
-                ),
-              ),
-            ),
-
-            /*
-            TextButton(
-              onPressed: () {
-                //forgot password screen
-              },
-              child: const Text('Forgot Password',),
-            ),*/
-
-            SizedBox(
-              height: 10,
-            ),
-
-            Container(
-                height: 50,
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: ElevatedButton(
-                  child: Text('LOGIN'),
-                  onPressed: () async {
-                    User? user = await loginUsingEmailPassword(email: emailController.text, password: passwordController.text, context: context);
-                    print(user);
-                    print(emailController.text);
-                    print(passwordController.text);
-                    if (user != null) {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => FeaturesEmpresa())
-                      );
-                    }
-                  },
-                )
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Does not have account?'),
-                TextButton(
-                  child: const Text(
-                    'Sign up',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  onPressed: () {
-                    //signup screen
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => SignUpView())
-                    );
-                  },
-                )
-              ],
-            ),
-          ],
-        ));
-  }
-}
-*/

@@ -74,6 +74,23 @@ class Service {
   set setId(String value) {
     id = value;
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'latitude': latitude,
+      'longitude': longitude,
+      'images': images,
+      'imageDescriptions': imageDescriptions,
+      'userEmail': userEmail,
+      'serviceType': serviceType,
+      'district': district,
+      'county': county,
+      'parish': parish,
+      'street': street,
+      'id': id,
+    };
+  }
 }
 
 class RestaurantAd extends Service {
@@ -141,6 +158,20 @@ class RestaurantAd extends Service {
   set setEmail(String value) {
     email = value;
   }
+
+   @override
+  Map<String, dynamic> toJson() {
+    final map = super.toMap();
+    map.addAll({
+      'establishmentTypes': establishmentTypes,
+      'menu': menu,
+      'hours': hours,
+      'description': description,
+      'promo': promo,
+      'email': email,
+    });
+    return map;
+  }
 }
 
 class AccommodationAd extends Service {
@@ -148,7 +179,7 @@ class AccommodationAd extends Service {
   String bedroomPrices;
   String services;
   String description;
-  //String promo;
+  String promo;
 
   AccommodationAd({
     required String name,
@@ -166,7 +197,7 @@ class AccommodationAd extends Service {
     required this.bedroomPrices,
     required this.services,
     required String id,
-    //required this.promo,
+    required this.promo,
     required this.description,
   }) : super(
           name: name,
@@ -193,6 +224,19 @@ class AccommodationAd extends Service {
 
   set setServices(String value) {
     services = value;
+  }
+
+   @override
+  Map<String, dynamic> toJson() {
+    final map = super.toMap();
+    map.addAll({
+      'bedroomType': bedroomType,
+      'bedroomPrices': bedroomPrices,
+      'services': services,
+      'description': description,
+      'promo': promo,
+    });
+    return map;
   }
 }
 
@@ -266,5 +310,20 @@ class MonumentAd extends Service {
 
   set setGuideVisit(String value) {
     guideVisit = value;
+  }
+
+   @override
+  Map<String, dynamic> toJson() {
+    final map = super.toMap();
+    map.addAll({
+      'story': story,
+      'style': style,
+      'accessibility': accessibility,
+      'schedule': schedule,
+      'price': price,
+      'activity': activity,
+      'guideVisit': guideVisit,
+    });
+    return map;
   }
 }

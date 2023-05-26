@@ -46,13 +46,18 @@ def insert_restaurant(request):
 
             client = MongoClient('mongodb://localhost:27017/')
             db = client['mydatabase']
+            collection = db['Pendente']
+
+            collection.insert_one(data)
+
+
 
             
-            # Insert the user data into the 'users' collection
-            services = db['Servicos']
-            users = db['users']
-            services.insert_one(data)
-            users.update_one({'user_info.email': user_email}, {'$push': {'services': {'$each': [data]}}})
+            # # Insert the user data into the 'users' collection
+            # services = db['Servicos']
+            # users = db['users']
+            # services.insert_one(data)
+            # users.update_one({'user_info.email': user_email}, {'$push': {'services': {'$each': [data]}}})
             
 
             return JsonResponse({'status': 'success'})
@@ -94,14 +99,17 @@ def insert_alojamento(request):
 
             client = MongoClient('mongodb://localhost:27017/')
             db = client['mydatabase']
+            collection = db['Pendente']
+
+            collection.insert_one(data)
 
 
             
             # Insert the user data into the 'users' collection
-            services = db['Servicos']
-            users = db['users']
-            services.insert_one(data)
-            users.update_one({'user_info.email': user_email}, {'$push': {'services': {'$each': [data]}}})
+            # services = db['Servicos']
+            # users = db['users']
+            # services.insert_one(data)
+            # users.update_one({'user_info.email': user_email}, {'$push': {'services': {'$each': [data]}}})
             
 
 
@@ -146,14 +154,17 @@ def insert_monumentos(request):
 
             client = MongoClient('mongodb://localhost:27017/')
             db = client['mydatabase']
+            collection = db['Pendente']
+
+            collection.insert_one(data)
 
 
             
             # Insert the user data into the 'users' collection
-            services = db['Servicos']
-            users = db['users']
-            services.insert_one(data)
-            users.update_one({'user_info.email': user_email}, {'$push': {'services': {'$each': [data]}}})
+            # services = db['Servicos']
+            # users = db['users']
+            # services.insert_one(data)
+            # users.update_one({'user_info.email': user_email}, {'$push': {'services': {'$each': [data]}}})
             
 
 
@@ -549,3 +560,154 @@ def delete_existing_services_mon(latitude, longitude):
             print("No matching services found for deletion.")
     except Exception as e:
         print(f"An error occurred during deletion: {str(e)}")
+
+
+
+@csrf_exempt
+def pending_services(request):
+    if request.method == 'GET':
+        try:
+            # Connect to MongoDB
+            client = MongoClient('mongodb://localhost:27017/')
+            db = client['mydatabase']
+            collection = db['Pendente']
+            
+            # Retrieve all documents from the "Pendente" collection
+            services = list(collection.find())
+            #print(services)
+            # Convert ObjectId to string representation
+            for service in services:
+                service['_id'] = str(service['_id'])
+            
+            # Close the MongoDB connection
+            client.close()
+            
+            #print(services)
+            response_data ={'pending_services': services}
+            # Return the retrieved services as JSON response
+            return JsonResponse(response_data)
+        
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    
+    return JsonResponse({'error': 'Invalid request method.'}, status=405)
+
+
+
+from pymongo import MongoClient
+from django.http import JsonResponse
+import json
+
+@csrf_exempt
+def service_denied(request):
+    if request.method == 'POST':
+        # Connect to MongoDB
+        client = MongoClient('mongodb://localhost:27017/')
+        db = client['mydatabase']
+        collection = db['Pendente']
+
+        data = json.loads(request.body)
+
+        # Service was denied, therefore, it's going to be removed from the Pendente collection
+        object_id = ObjectId(data['id'])
+        result = collection.delete_one({'_id': object_id})
+
+        if result.deleted_count == 1:
+            return JsonResponse({'answer': 'Object deleted successfully.'})
+        else:
+            return JsonResponse({'answer': 'Object not found.'})
+
+    return JsonResponse({'error': 'Invalid request method.'}, status=405)
+
+
+
+@csrf_exempt
+def service_approved(request):
+    if request.method == 'POST':
+        # Connect to MongoDB
+        client = MongoClient('mongodb://localhost:27017/')
+        db = client['mydatabase']
+        collection = db['Pendente']
+
+        data = json.loads(request.body)
+        print(data.keys())
+
+        # Service was approved therefore it should be taken out of the Pendente collection 
+        #nd added to the users'one and appened to it's list of services
+        object_id = ObjectId(data['id'])
+        result = collection.delete_one({'_id': object_id})
+
+
+        newData = {}
+        if data['serviceType'] == 'Restauracao':
+            newData['name'] = data['name']
+            newData['tipoEstabelecimento'] = data['establishmentTypes']
+            newData['ementa'] = data['menu']
+            newData['hours'] = data['hours']
+            newData['description'] = data['description']
+            newData['images'] = data['images']
+            newData['imageDescriptions'] = data['imageDescriptions']
+            newData['latitude'] = data['latitude']
+            newData['longitude'] = data['longitude']
+            newData['promo'] = data['promo']
+            newData['email'] = data['email']
+            newData['tipo_servico'] = data['serviceType']
+            newData['distrito'] = data['district']
+            newData['concelho'] = data['county']
+            newData['freguesia'] = data['parish']
+            newData['rua'] = data['street']
+
+        elif data['serviceType'] == 'Alojamento':
+            newData['name'] = data['name']
+            newData['description'] = data['description']
+            newData['bedroom_type'] = data['bedroomType']
+            newData['bedroom_prices'] = data['bedroomPrices']
+            newData['services'] = data['services']
+            newData['latitude'] = data['latitude']
+            newData['longitude'] = data['longitude']
+            newData['images'] = data['images']
+            newData['latitude'] = data['latitude']
+            newData['longitude'] = data['longitude']
+            newData['image_descriptions'] = data['imageDescriptions']
+            newData['user_email'] = data['userEmail']
+            newData['promo'] = data['promo']
+            newData['tipo_servico'] = data['serviceType']
+            newData['distrito'] = data['district']
+            newData['concelho'] = data['county']
+            newData['freguesia'] = data['parish']
+            newData['rua'] = data['street']
+
+        elif data['serviceType'] == 'Monumento':
+            newData['name'] = data['name']
+            newData['latitude'] = data['latitude']
+            newData['longitude'] = data['longitude']
+            newData['story'] = data['story']
+            newData['style'] = data['style']
+            newData['accessability'] = data['accessibility']
+            newData['imageDescriptions'] = data['imageDescriptions']
+            newData['images'] = data['images']
+            newData['price'] = data['price']
+            newData['schedule'] = data['schedule']
+            newData['activity'] = data['activity']
+            newData['guide_visit'] = data['guideVisit']
+            newData['user_email'] = data['userEmail']
+            newData['tipo_servico'] = data['serviceType']
+            newData['distrito'] = data['district']
+            newData['concelho'] = data['county']
+            newData['freguesia'] = data['parish']
+            newData['rua'] = data['street']
+            
+        # Insert the user data into the 'users' collection
+        services = db['Servicos']
+        users = db['users']
+        services.insert_one(newData)
+        users.update_one({'user_info.email': data['userEmail']}, {'$push': {'services': {'$each': [newData]}}})
+
+        if result.deleted_count == 1:
+            return JsonResponse({'answer': 'Object deleted successfully.'})
+        else:
+            return JsonResponse({'answer': 'Object not found.'})
+    
+        
+
+    return JsonResponse({'error': 'Invalid request method.'}, status=405)

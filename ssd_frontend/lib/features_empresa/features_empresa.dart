@@ -126,7 +126,7 @@ Future<List<Service>> fetchUserServices(String email) async {
             bedroomType: serviceData['bedroom_type'],
             bedroomPrices: serviceData['bedroom_prices'],
             services: serviceData['services'],
-            //promo: serviceData['promo'],
+            promo: serviceData['promo'],
             description: serviceData['description'],
             id: serviceData['_id'], // Add id here
           );

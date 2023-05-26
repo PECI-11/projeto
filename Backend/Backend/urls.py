@@ -29,6 +29,16 @@ urlpatterns = [
     re_path('services/restaurants', insert_restaurant, name='service_restaurant'),
     re_path('services/alojamento', insert_alojamento, name='service_restaurant'),
     re_path('services/monumentos', insert_monumentos, name='service_restaurant'),
+    #request pending services
+    re_path('services/pending', pending_services),
+
+    #Approve services
+    re_path('services/approved', service_approved),
+
+    #Service denied
+    re_path('services/denied', service_denied),
+
+
     re_path('api/', include('api.urls')),
     re_path('users/register', register_user, name='user_register'),
     re_path(r'^user_info/$', request_user_information),

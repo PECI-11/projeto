@@ -394,7 +394,7 @@ class _MonumentoFormState extends State<MonumentoForm> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text('Formulário submetido!'),
-              content: Text('O serviço foi adicionado!'),
+              content: Text('O serviço está a aguardar por verificação. Se for aprovado será disponibilizado!'),
               actions: [
                 TextButton(
                   onPressed: () {
