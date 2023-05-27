@@ -384,11 +384,25 @@ Future<List<Service>> fetchUserServices(String email) async {
                                 ),
                                 IconButton(
                                   icon: Icon(Icons.delete),
-                                  onPressed: () {
-                                    // Perform delete operation for the service
-                                    
+                                  onPressed: () async {
+                                    // Perform the POST request to remove the service
+                                    final response = await http.post(Uri.parse('http://127.0.0.1:8000/services/removed'),
+                                      body: jsonEncode(service),
+                                      headers: {'Content-Type': 'application/json'},
+                                    );
+
+                                    if (response.statusCode == 200) {
+                                      // Delete operation successful, update the userServices array in your app
+                                      setState(() {
+                                        userServices.remove(service); // Remove the service from the userServices array
+                                      });
+                                    } else {
+                                      // Handle the error if the delete operation fails
+                                      print('Delete operation failed with status code: ${response.statusCode}');
+                                    }
                                   },
                                 ),
+
                               ],
                             ),
                           );

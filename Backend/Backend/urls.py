@@ -38,6 +38,8 @@ urlpatterns = [
     #Service denied
     re_path('services/denied', service_denied),
 
+    #service was removed by user
+    re_path('services/removed', service_removed),
 
     re_path('api/', include('api.urls')),
     re_path('users/register', register_user, name='user_register'),

@@ -713,3 +713,58 @@ def service_approved(request):
         
 
     return JsonResponse({'error': 'Invalid request method.'}, status=405)
+
+
+@csrf_exempt
+def service_removed(request):
+    if request.method == 'POST':
+        # Connect to MongoDB
+        client = MongoClient('mongodb://localhost:27017/')
+        db = client['mydatabase']
+        users = db['users']
+        services = db['Servicos']
+        data = json.loads(request.body)
+        print(data)
+        service_id = data['id']
+
+        user_email = data.get('email') or data.get('userEmail', '')
+
+
+        #remove from the user:
+        # Find the user with the matching service ID
+        user = users.find_one({'services._id': ObjectId(service_id)})
+        print(user['services'])
+
+        #print(user['services'])
+
+        if user is not None:
+            # Find the index of the service within the user's services list
+            service_index = next((index for index, s in enumerate(user['services']) if str(s['_id']) == service_id), None)
+            print(service_index)
+            if service_index is not None:
+                    # Delete the service from the user's services list
+                    del user['services'][service_index]
+                    users.save(user)
+    
+        #now remove from the servicos collection:
+        latitude = data['latitude']
+        longitude = data['longitude']
+        matching_services = []
+    
+        for service in services.find({'latitude': str(latitude)}):
+            if service['longitude'].strip() == str(longitude):
+                matching_services.append(service)
+
+        try:
+                if matching_services:
+                    for service in matching_services:
+                        result = services.delete_one({'_id': service['_id']})
+                    print(f"{len(matching_services)} service(s) deleted")
+                else:
+                    print("No matching services found for deletion.")
+        except Exception as e:
+            print(f"An error occurred during deletion: {str(e)}")
+        
+        return JsonResponse({'answer': 'Object deleted successfully.'})
+
+    return JsonResponse({'error': 'Invalid request method.'}, status=405)
